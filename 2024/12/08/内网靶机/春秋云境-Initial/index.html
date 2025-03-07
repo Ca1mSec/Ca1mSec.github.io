@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236798106-eb97002a-7eb3-4451-9964-0f851bdd337c.png">
 <meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741237136731-4cbdf52c-963f-43c8-8ebf-8b8e5cab06ab.png">
 <meta property="article:published_time" content="2024-12-08T14:51:29.000Z">
-<meta property="article:modified_time" content="2025-03-06T08:09:18.496Z">
+<meta property="article:modified_time" content="2025-03-07T01:36:36.117Z">
 <meta property="article:author" content="Ca1m">
 <meta property="article:tag" content="域">
 <meta name="twitter:card" content="summary">
@@ -247,7 +247,7 @@
 <p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236798106-eb97002a-7eb3-4451-9964-0f851bdd337c.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">拿到权限后可以用creds_all等命令收集内网凭据，而我们控制的这台机器是有DCSync的权限的(因为这个是DC1，也就是域控制器), 所以能直接从域控上导出Hash</span><br><span class="line"></span><br><span class="line">DCSync攻击:</span><br><span class="line">DCSync的原理是利用域控制器之间的数据同步复制</span><br><span class="line">DCSync是AD域渗透中常用的凭据窃取手段，默认情况下，域内不同DC每隔15分钟会进行一次数据同步，当一个DC从另外一个DC同步数据时，发起请求的一方会通过目录复制协议（MS- DRSR）来对另外一台域控中的域用户密码进行复制，DCSync就是利用这个原理，“模拟”DC向真实DC发送数据同步请求，获取用户凭据数据，由于这种攻击利用了Windows RPC协议，并不需要登陆域控或者在域控上落地文件，避免触发EDR告警，因此DCSync时一种非常隐蔽的凭据窃取方式</span><br><span class="line"></span><br><span class="line">DCSync 攻击前提:</span><br><span class="line"></span><br><span class="line">想进行DCSync 攻击，必须获得以下任一用户的权限：</span><br><span class="line">Administrators 组内的用户</span><br><span class="line">Domain Admins 组内的用户</span><br><span class="line">Enterprise Admins 组内的用户域控制器的计算机帐户</span><br><span class="line">即：默认情况下域管理员组具有该权限</span><br><span class="line"></span><br><span class="line">这里我们用永恒之蓝打完本来就是system权限，然后我们load kiwi，抓取用户的hash</span><br></pre></td></tr></table></figure>
 
-<p>这里我们抓到了Administrator的hash，所以可以直接用crackmapexec打hash传递了，Administrator是特殊的域用户，就相当于域用户。</p>
+<p>这里我们抓到了Administrator的hash，所以可以直接用crackmapexec打hash传递了，Administrator是域控的机器账户，就相当于域用户。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains crackmapexec smb 172.22.1.2 -u administrator -H 10cf89a850fb1cdbe6bb432b859164c8 -d xiaorang.lab -x &quot;type Users\Administrator\flag\flag03.txt&quot;</span><br></pre></td></tr></table></figure>
 
 <p>打pth</p>

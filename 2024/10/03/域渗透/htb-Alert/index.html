@@ -9,7 +9,7 @@
     <meta name="description" content="开放端口：22、80，httpserver 是 Apache 进入 80 端口的网页，发现存在 Markdown 文件上传 根据Alert，猜测是xss  子域名爆破ffuf -w &#x2F;root&#x2F;fuzzDicts&#x2F;subdomainDicts&#x2F;main.txt -u http:&#x2F;&#x2F;alert.htb -H “Host:FUZZ.alert.htb” -a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="htb-Alert">
-<meta property="og:url" content="https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/index.html">
+<meta property="og:url" content="https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/index.html">
 <meta property="og:site_name" content="Ca1m">
 <meta property="og:description" content="开放端口：22、80，httpserver 是 Apache 进入 80 端口的网页，发现存在 Markdown 文件上传 根据Alert，猜测是xss  子域名爆破ffuf -w &#x2F;root&#x2F;fuzzDicts&#x2F;subdomainDicts&#x2F;main.txt -u http:&#x2F;&#x2F;alert.htb -H “Host:FUZZ.alert.htb” -a">
 <meta property="og:locale" content="en_US">
@@ -104,7 +104,7 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="Previous post" href="/2024/10/03/%E5%9F%9F/%E5%9F%9F%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" aria-label="Next post" href="/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -120,17 +120,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -232,7 +232,7 @@
 <h3 id="爆破hash"><a href="#爆破hash" class="headerlink" title="爆破hash"></a>爆破hash</h3><p>john –wordlist&#x3D;&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt –format&#x3D;md5crypt-long alert.hash</p>
 <p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141313880-0743371f-a2cf-4836-839e-4f3bfbff65fa.png"></p>
 <p>albert:manchesterunited</p>
-<p>ssh <a href="mailto:&#x61;&#108;&#98;&#101;&#114;&#x74;&#x40;&#49;&#48;&#x2e;&#x31;&#48;&#46;&#x31;&#x31;&#46;&#x34;&#52;">&#x61;&#108;&#98;&#101;&#114;&#x74;&#x40;&#49;&#48;&#x2e;&#x31;&#48;&#46;&#x31;&#x31;&#46;&#x34;&#52;</a></p>
+<p>ssh <a href="mailto:&#x61;&#x6c;&#98;&#x65;&#114;&#x74;&#64;&#49;&#x30;&#46;&#49;&#x30;&#46;&#x31;&#49;&#46;&#x34;&#x34;">&#x61;&#x6c;&#98;&#x65;&#114;&#x74;&#64;&#49;&#x30;&#46;&#49;&#x30;&#46;&#x31;&#49;&#46;&#x34;&#x34;</a></p>
 <p>pa -aux看端口，发现8080开着php或者上传linpeas</p>
 <p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141476707-f41a9979-1bd7-48fb-b38a-ed5299e903b1.png"></p>
 <p>看下进程</p>
@@ -316,17 +316,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&title=htb-Alert"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%86%85%E7%BD%91%E9%9D%B6%E6%9C%BA/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

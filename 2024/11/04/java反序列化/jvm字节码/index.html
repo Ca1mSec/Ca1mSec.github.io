@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="jvm以及字节码介绍jvm介绍在介绍类加载器（ClassLoader）和其机制之前先介绍JVM，JVM 大致可以划分为三个部分，分别是类加载器（Class Loader）、运行时数据区（Runtime Data Areas）和执行引擎（Excution Engine）。  三个部分具体又是干什么的，可以通过下面这幅图来了解  Java程序在运行前需要先编译成class文件，Java类初始化的时候会">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ClassLoader">
-<meta property="og:url" content="https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/index.html">
+<meta property="og:title" content="jvm和字节码">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/index.html">
 <meta property="og:site_name" content="Ca1m">
 <meta property="og:description" content="jvm以及字节码介绍jvm介绍在介绍类加载器（ClassLoader）和其机制之前先介绍JVM，JVM 大致可以划分为三个部分，分别是类加载器（Class Loader）、运行时数据区（Runtime Data Areas）和执行引擎（Excution Engine）。  三个部分具体又是干什么的，可以通过下面这幅图来了解  Java程序在运行前需要先编译成class文件，Java类初始化的时候会">
 <meta property="og:locale" content="en_US">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742455032057-787ca7bd-f203-4429-971e-9176d21cc0e7.png">
 <meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742456275516-5262c48b-f50f-42ab-808b-a72e7c353a97.png">
 <meta property="article:published_time" content="2024-11-04T04:52:29.000Z">
-<meta property="article:modified_time" content="2025-03-20T08:01:39.189Z">
+<meta property="article:modified_time" content="2025-03-20T08:03:41.064Z">
 <meta property="article:author" content="Ca1m">
 <meta property="article:tag" content="代码审计">
 <meta property="article:tag" content="web">
@@ -48,7 +48,7 @@
       
     
     <!-- title -->
-    <title>ClassLoader</title>
+    <title>jvm和字节码</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -115,17 +115,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&text=ClassLoader"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&is_video=false&description=ClassLoader"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=ClassLoader&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&name=ClassLoader&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&t=ClassLoader"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&text=jvm和字节码"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&is_video=false&description=jvm和字节码"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=jvm和字节码&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&name=jvm和字节码&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&t=jvm和字节码"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -145,7 +145,7 @@
   <header>
     
     <h1 class="posttitle p-name" itemprop="name headline">
-        ClassLoader
+        jvm和字节码
     </h1>
 
 
@@ -298,17 +298,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&text=ClassLoader"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&is_video=false&description=ClassLoader"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=ClassLoader&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&title=ClassLoader"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&name=ClassLoader&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/ClassLoader/&t=ClassLoader"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&text=jvm和字节码"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&is_video=false&description=jvm和字节码"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=jvm和字节码&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&title=jvm和字节码"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&name=jvm和字节码&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/&t=jvm和字节码"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

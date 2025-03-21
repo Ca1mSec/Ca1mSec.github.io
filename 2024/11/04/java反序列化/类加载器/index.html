@@ -13,21 +13,21 @@
 <meta property="og:site_name" content="Ca1m">
 <meta property="og:description" content="类加载机制上面说到了java字节码，下面是对类加载过程的介绍  类从被加载到 JVM 开始，到卸载出内存，整个生命周期分为七个阶段，分别是加载、验证、准备、解析、初始化、使用和卸载。其中验证、准备和解析这三个阶段统称为连接。 除去使用和卸载，就是 Java 的类加载过程。这 5 个阶段一般是顺序发生的，但在动态绑定的情况下，解析阶段发生在初始化阶段之后（我们随后来解释）。 Loading（载入）类">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png">
 <meta property="article:published_time" content="2024-11-04T04:53:29.000Z">
-<meta property="article:modified_time" content="2025-03-21T05:10:27.079Z">
+<meta property="article:modified_time" content="2025-03-21T05:10:40.274Z">
 <meta property="article:author" content="Ca1m">
 <meta property="article:tag" content="代码审计">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="反序列化">
 <meta property="article:tag" content="安全研究">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
     
     
       
@@ -182,7 +182,7 @@
 
   <div class="content e-content" itemprop="articleBody">
     <h3 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h3><p>上面说到了java字节码，下面是对类加载过程的介绍</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png"></p>
 <p>类从被加载到 JVM 开始，到卸载出内存，整个生命周期分为七个阶段，分别是加载、验证、准备、解析、初始化、使用和卸载。其中验证、准备和解析这三个阶段统称为连接。</p>
 <p>除去使用和卸载，就是 Java 的类加载过程。这 5 个阶段一般是顺序发生的，但在动态绑定的情况下，解析阶段发生在初始化阶段之后（我们随后来解释）。</p>
 <h4 id="Loading（载入）"><a href="#Loading（载入）" class="headerlink" title="Loading（载入）"></a>Loading（载入）</h4><p>类加载过程的第一步，主要完成下面 3 件事情：</p>
@@ -206,14 +206,14 @@
 <li>字节码验证（程序语义检查）</li>
 <li>符号引用验证（类的正确性检查</li>
 </ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png"></p>
 <h4 id="Preparation（准备）"><a href="#Preparation（准备）" class="headerlink" title="Preparation（准备）"></a>Preparation（准备）</h4><p><strong>准备阶段是正式为类变量分配内存并设置类变量初始值的阶段</strong>，这些内存都将在方法区中分配。对于该阶段有以下几点需要注意：</p>
 <ol>
 <li>这时候进行内存分配的仅包括类变量（ Class Variables ，即静态变量，被 <code>static</code> 关键字修饰的变量，只与类相关，因此被称为类变量），而不包括实例变量。实例变量会在对象实例化时随着对象一块分配在 Java 堆中。</li>
 <li>从概念上讲，类变量所使用的内存都应当在 <strong>方法区</strong> 中进行分配。不过有一点需要注意的是：JDK 7 之前，HotSpot 使用永久代来实现方法区的时候，实现是完全符合这种逻辑概念的。 而在 JDK 7 及之后，HotSpot 已经把原本放在永久代的字符串常量池、静态变量等移动到堆中，这个时候类变量则会随着 Class 对象一起存放在 Java 堆中。相关阅读：<a target="_blank" rel="noopener" href="https://github.com/fenixsoft/jvm_book/issues/75">《深入理解 Java 虚拟机（第 3 版）》勘误#75</a></li>
 <li>这里所设置的初始值”通常情况”下是数据类型默认的零值（如 0、0L、null、false 等），比如我们定义了<code>public static int value=111</code> ，那么 value 变量在准备阶段的初始值就是 0 而不是 111（初始化阶段才会赋值）。特殊情况：比如给 value 变量加上了 final 关键字<code>public static final int value=111</code> ，那么准备阶段 value 的值就被赋值为 111。</li>
 </ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png"></p>
 <h4 id="Resolution（解析）"><a href="#Resolution（解析）" class="headerlink" title="Resolution（解析）"></a>Resolution（解析）</h4><p>该阶段将常量池中的符号引用转化为直接引用。这里就牵引出来问题了，什么是符号引用？什么是直接引用？</p>
 <p><strong>符号引用</strong>以一组符号（任何形式的字面量，只要在使用时能够无歧义的定位到目标即可）来描述所引用的目标。</p>
 <p>在编译时，Java 类并不知道所引用的类的实际地址，因此只能使用符号引用来代替。比如 <code>com.Wanger</code> 类引用了 <code>com.Chenmo</code> 类，编译时 Wanger 类并不知道 Chenmo 类的实际内存地址，因此只能使用符号 <code>com.Chenmo</code>。</p>
@@ -231,7 +231,7 @@
 <li><strong>效率</strong>：由于直接指向了内存地址或者偏移量，所以通过直接引用访问对象的效率较高。</li>
 </ul>
 <p>这么说还是有点抽象，具体举个例子</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png"></p>
 <p>在上面的例子中：</p>
 <ul>
 <li><code>class A</code> 引用了 <code>class B</code>。</li>
@@ -254,7 +254,7 @@
 <li>JVM 启动时，用户指定的主类（包含 main 方法的类）将被初始化。</li>
 </ul>
 <h4 id="类加载器分类"><a href="#类加载器分类" class="headerlink" title="类加载器分类"></a>类加载器分类</h4><p>说完了类加载器机制就要说到分类了</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png"></p>
 <p>自底向上查找判断类是否被加载，自顶向下尝试加载类</p>
 <p>在介绍之前先来个例子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package org.example;</span><br><span class="line">public class Main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ClassLoader loader = Main.class.getClassLoader();</span><br><span class="line">        while (loader != null) &#123;</span><br><span class="line">            System.out.println(loader);</span><br><span class="line">            loader = loader.getParent();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -315,7 +315,7 @@
 <p>自定义加载器的话，需要继承 <code>ClassLoader</code> 。如果我们不想打破双亲委派模型，就重写 <code>ClassLoader</code> 类中的 <code>findClass()</code> 方法即可，无法被父类加载器加载的类最终会通过这个方法被加载。但是，如果想打破双亲委派模型则需要重写 <code>loadClass()</code> 方法。</p>
 <p>为什么是重写 <code>loadClass()</code> 方法打破双亲委派模型呢？双亲委派模型的执行流程已经解释了：类加载器在进行类加载的时候，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成（调用父加载器 <code>loadClass()</code>方法来加载类）。重写 <code>loadClass()</code>方法之后，我们就可以改变传统双亲委派模型的执行流程。例如，子类加载器可以在委派给父类加载器之前，先自己尝试加载这个类，或者在父类加载器返回之后，再尝试从其他地方加载这个类。具体的规则由我们自己实现，根据项目需求定制化。</p>
 <p>我们比较熟悉的 Tomcat 服务器为了能够优先加载 Web 应用目录下的类，然后再加载其他目录下的类，就自定义了类加载器 <code>WebAppClassLoader</code> 来打破双亲委托机制。这也是 Tomcat 下 Web 应用之间的类实现隔离的具体原理。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png"></p>
 <p>Tomcat 这四个自定义的类加载器对应的目录如下：</p>
 <ul>
 <li><code>CommonClassLoader</code>对应<code>&lt;Tomcat&gt;/common/*</code></li>

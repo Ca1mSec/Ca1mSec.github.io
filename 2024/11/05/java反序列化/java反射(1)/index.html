@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Java反射   1、什么是Java反射参考：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;9117 Java提供了一套反射API，该API由Class类与java.lang.reflect类库组成。  该类库包含了Field、Method、Constructor等类。 对成员变量，成员方法和构造方法的信息进行的编程操作可以理解为反射机制。 2、为什么要用到反射参考：https:&#x2F;&#x2F;xz.ali">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java反射基础(一)">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="Java反射   1、什么是Java反射参考：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;9117 Java提供了一套反射API，该API由Class类与java.lang.reflect类库组成。  该类库包含了Field、Method、Constructor等类。 对成员变量，成员方法和构造方法的信息进行的编程操作可以理解为反射机制。 2、为什么要用到反射参考：https:&#x2F;&#x2F;xz.ali">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432016646-0893cf9b-fd78-461b-8c17-8344efa880db.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432045564-73a8c04a-6482-4cda-965a-23031f8be4d1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432053646-eeaaa8c8-9a62-42b3-ac08-42db3b5caecd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740707673708-496bacc7-b5ff-4c07-8c9e-8ad2dc77791d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740711965874-3170e5a0-c019-45be-9cfe-f2418045fd7b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740712020504-be8d22b0-39e2-483a-926a-e5e071c26c5e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740712758387-afa09f02-4a77-4d92-8e92-36036f0b3bf2.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742375801741-d4ccab19-7084-4692-b88d-150190aee5e1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742431869599-b1276c67-78bd-4aee-aef5-d8e65f36429e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742436831734-e45beeca-3799-4164-870a-01be2eaf3fb1.png">
+<meta property="article:published_time" content="2024-11-05T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-20T02:37:55.210Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="反序列化">
+<meta property="article:tag" content="安全研究">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432016646-0893cf9b-fd78-461b-8c17-8344efa880db.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java反射基础(一)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/04/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&text=java反射基础(一)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&is_video=false&description=java反射基础(一)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java反射基础(一)&body=Check out this article: https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&name=java反射基础(一)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&t=java反射基础(一)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">Java反射</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFJava%E5%8F%8D%E5%B0%84"><span class="toc-number">1.1.</span> <span class="toc-text">1、什么是Java反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E5%88%B0%E5%8F%8D%E5%B0%84"><span class="toc-number">1.2.</span> <span class="toc-text">2、为什么要用到反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">3、反射机制应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Class%E5%AF%B9%E8%B1%A1%E7%B1%BB%E8%8E%B7%E5%8F%96%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E9%87%87%E7%94%A8%E4%BB%A5%E4%B8%8B%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">#Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Field%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">#Java-反射-Field成员变量类获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Method%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.3.</span> <span class="toc-text">Java-反射-Method成员方法类获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Constructor%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">#Java-反射-Constructor构造方法类获取</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java反射基础(一)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-05T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-11-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>, <a class="p-category" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a>, <a class="p-category" href="/tags/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/" rel="tag">安全研究</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Java反射"><a href="#Java反射" class="headerlink" title="Java反射"></a>Java反射</h1><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432016646-0893cf9b-fd78-461b-8c17-8344efa880db.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432045564-73a8c04a-6482-4cda-965a-23031f8be4d1.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2023/png/25663185/1683432053646-eeaaa8c8-9a62-42b3-ac08-42db3b5caecd.png"></p>
+<h2 id="1、什么是Java反射"><a href="#1、什么是Java反射" class="headerlink" title="1、什么是Java反射"></a>1、什么是Java反射</h2><p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9117">https://xz.aliyun.com/t/9117</a></p>
+<p>Java提供了一套反射API，该API由Class类与java.lang.reflect类库组成。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740707673708-496bacc7-b5ff-4c07-8c9e-8ad2dc77791d.png"></p>
+<p>该类库包含了Field、Method、Constructor等类。</p>
+<p>对成员变量，成员方法和构造方法的信息进行的编程操作可以理解为反射机制。</p>
+<h2 id="2、为什么要用到反射"><a href="#2、为什么要用到反射" class="headerlink" title="2、为什么要用到反射"></a>2、为什么要用到反射</h2><p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9117">https://xz.aliyun.com/t/9117</a></p>
+<p>其实从官方定义中就能找到其存在的价值，在运行时获得程序或程序集中每一个类型的成员和成员的信息，从而动态的创建、修改、调用、获取其属性，而不需要事先知道运行的对象是谁。划重点：在运行时而不是编译时。（不改变原有代码逻辑，自行运行的时候动态创建和编译即可）</p>
+<h2 id="3、反射机制应用"><a href="#3、反射机制应用" class="headerlink" title="3、反射机制应用"></a>3、反射机制应用</h2><p>开发应用场景：</p>
+<p>Spring框架的IOC基于反射创建对象和设置依赖属性。</p>
+<p>SpringMVC的请求调用对应方法，也是通过反射。</p>
+<p>JDBC的Class#forName(String className)方法，也是使用反射。</p>
+<p>安全应用场景：</p>
+<p>构造利用链，触发命令执行</p>
+<p>反序列化中的利用链构造</p>
+<p>动态获取或执行任意类中的属性或方法</p>
+<p>动态代理的底层原理是反射技术</p>
+<p>rmi反序列化也涉及到反射操作</p>
+<h3 id="Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例："><a href="#Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例：" class="headerlink" title="#Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例："></a>#Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Person test = new Person();</span><br></pre></td></tr></table></figure>
+
+<p>而我们在创建class类的实例对象却不能使用上述方法，运行会抛出错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class test = new Class();</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740711965874-3170e5a0-c019-45be-9cfe-f2418045fd7b.png"></p>
+<p>跟进Class类的源码进行查看，发现其构造器是私有的，所以只有JVM能够创建Class对象。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740712020504-be8d22b0-39e2-483a-926a-e5e071c26c5e.png"></p>
+<p>因为Class类是private私有属性，我们也无法通过创建对象的方式来获取class对象，那么我们怎样才能够获取到class对象呢？一般我们获取class对象就有以下几种方法，我们来逐一看看。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//1、根据类名：类名.class</span><br><span class="line">Class userClass =User.class;</span><br><span class="line">//2、根据对象：对象.getClass()</span><br><span class="line">User user =new User();</span><br><span class="line">Class aClass = user.getClass();</span><br><span class="line">//3、根据全限定类名：Class.forName(&quot;全路径类名&quot;)</span><br><span class="line">Class aClass1 =Class.forName(&quot;com.example.reflectdemo.User&quot;);</span><br><span class="line">//4、通过类加载器获得Class对象：//ClassLoader.getSystemClassLoader().loadClass(&quot;全路径类名&quot;);</span><br><span class="line">ClassLoader clsload=ClassLoader.getSystemClassLoader();</span><br><span class="line">Class aClass2 = clsload.loadClass(&quot;com.example.reflectdemo.User&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>实现代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class ReflectTemo &#123;  </span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException &#123;  </span><br><span class="line">        //1、类的.class属性  </span><br><span class="line">        Class c1 = ReflectTemo.class;  </span><br><span class="line">        System.out.println(c1.getName());  </span><br><span class="line">  </span><br><span class="line">        //2、实例化对象的getClass()方法  </span><br><span class="line">        ReflectTemo demo = new ReflectTemo();  </span><br><span class="line">        Class c2 = demo.getClass();  </span><br><span class="line">        System.out.println(c2.getName());  </span><br><span class="line">  </span><br><span class="line">        //3、Class.forName(String className): 动态加载类  </span><br><span class="line">        Class c3 = Class.forName(&quot;org.example.ReflectTemo&quot;);  </span><br><span class="line">        System.out.println(c3.getName());  </span><br><span class="line">        //4、通过类加载器获得Class对象：//ClassLoader.getSystemClassLoader().loadClass(&quot;全路径类名&quot;);  </span><br><span class="line">        ClassLoader c4=ClassLoader.getSystemClassLoader();  </span><br><span class="line">        Class aClass2 = c4.loadClass(&quot;org.example.ReflectTemo&quot;);  </span><br><span class="line">        System.out.println(aClass2.getName());  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1740712758387-afa09f02-4a77-4d92-8e92-36036f0b3bf2.png"></p>
+<h3 id="Java-反射-Field成员变量类获取"><a href="#Java-反射-Field成员变量类获取" class="headerlink" title="#Java-反射-Field成员变量类获取"></a>#Java-反射-Field成员变量类获取</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//Class aClass = Class.forName(&quot;com.example.reflectdemo.User&quot;);</span><br><span class="line">//获取公共成员变量对象</span><br><span class="line">// Field[] fields=aClass.getFields();</span><br><span class="line">// for(Field f:fields)&#123;</span><br><span class="line">// System.out.println(f);</span><br><span class="line">// &#125; </span><br><span class="line">//获取所有成员变量对象</span><br><span class="line">// Field[] fields=aClass.getDeclaredFields();</span><br><span class="line">// for(Field f:fields)&#123;</span><br><span class="line">// System.out.println(f);</span><br><span class="line">// &#125;</span><br><span class="line">//获取公共，私有单个成员变量对象</span><br><span class="line">// Field field=aClass.getField(&quot;age&quot;);</span><br><span class="line">// Field field=aClass.getDeclaredField(&quot;gender&quot;);</span><br><span class="line">// System.out.println(field);</span><br><span class="line">//城边变量值获取和赋值</span><br><span class="line">// User u = new User();</span><br><span class="line">// Field field=aClass.getField(&quot;age&quot;);</span><br><span class="line">// field.set(u,30);</span><br><span class="line">// Object a=field.get(u);</span><br><span class="line">// System.out.println(a);</span><br></pre></td></tr></table></figure>
+
+<p>实现代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class ReflectTemo &#123;</span><br><span class="line">    public String name;</span><br><span class="line">    public String profession;</span><br><span class="line">    protected int age;</span><br><span class="line">    private String number;</span><br><span class="line">    char sex;</span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException &#123;</span><br><span class="line">        Class aClass = Class.forName(&quot;org.example.ReflectTemo&quot;);</span><br><span class="line">//        获取公共成员变量对象</span><br><span class="line">        Field[] fields = aClass.getFields();</span><br><span class="line">        for (Field f : fields) &#123;</span><br><span class="line">            System.out.println(f);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">//        获取所有成员变量对象</span><br><span class="line">        Field[] fields1 = aClass.getDeclaredFields();</span><br><span class="line">        for (Field f : fields1) &#123;</span><br><span class="line">            System.out.println(f);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">//        获取公共，私有单个成员变量对象</span><br><span class="line">        Field field = aClass.getField(&quot;name&quot;);</span><br><span class="line">        Field field1 = aClass.getDeclaredField(&quot;number&quot;);</span><br><span class="line">        System.out.println(field.getName());</span><br><span class="line">        System.out.println(field1.getName());</span><br><span class="line">        System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">//        获取指定成员变量</span><br><span class="line">        Field field2 = aClass.getDeclaredField(&quot;age&quot;);</span><br><span class="line">        System.out.println(field2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742375801741-d4ccab19-7084-4692-b88d-150190aee5e1.png"></p>
+<h3 id="Java-反射-Method成员方法类获取"><a href="#Java-反射-Method成员方法类获取" class="headerlink" title="Java-反射-Method成员方法类获取"></a>Java-反射-Method成员方法类获取</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//Class aClass = Class.forName(&quot;com.example.reflectdemo.User&quot;);</span><br><span class="line">//返回所有公共成员方法对象的数组，包括继承的</span><br><span class="line">// Method[] methods = aClass.getMethods();</span><br><span class="line">// for (Method me:methods)&#123;</span><br><span class="line">// System.out.println(me);</span><br><span class="line">// &#125;</span><br><span class="line">//返回所有成员方法对象的数组，不包括继承的</span><br><span class="line">// Method[] methods = aClass.getDeclaredMethods();</span><br><span class="line">// for (Method me:methods)&#123;</span><br><span class="line">// System.out.println(me);</span><br><span class="line">// &#125;</span><br><span class="line">//返回单个公共成员方法对象</span><br><span class="line">// Method methods = aClass.getMethod(&quot;getName&quot;);</span><br><span class="line">// System.out.println(methods);</span><br><span class="line">// Method methods = aClass.getMethod(&quot;setName&quot;, String.class);</span><br><span class="line">// System.out.println(methods);</span><br><span class="line">//返回单个成员方法对象</span><br><span class="line">// Method methods = aClass.getDeclaredMethod(&quot;UserInfo&quot;, String.class, int.class, String.class);</span><br><span class="line">// System.out.println(methods);</span><br><span class="line">//运行方法invoke</span><br><span class="line">// Method methods = aClass.getDeclaredMethod(&quot;UserInfo&quot;, String.class, int.class, String.class);</span><br><span class="line">// User u = new User();</span><br><span class="line">// //私有需要开启临时</span><br><span class="line">// methods.setAccessible(true);</span><br><span class="line">// methods.invoke(u,&quot;calmsec&quot;,18,&quot;man&quot;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">public class ReflectTemo &#123;</span><br><span class="line">    public void study(String s) &#123;</span><br><span class="line">        System.out.println(&quot;学习中...&quot; + s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void run() &#123;</span><br><span class="line">        System.out.println(&quot;跑步中...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void eat() &#123;</span><br><span class="line">        System.out.println(&quot;吃饭中...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String sleep(int age) &#123;</span><br><span class="line">        System.out.println(&quot;睡眠中...&quot; + age);</span><br><span class="line">        return &quot;sleep&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Class c = Class.forName(&quot;org.example.ReflectTemo&quot;); // 创建Class对象</span><br><span class="line">            Method[] methods1 = c.getDeclaredMethods(); // 获取所有该类中的所有方法</span><br><span class="line">            Method[] methods2 = c.getMethods(); // 获取所有的public方法，包括类自身声明的public方法，父类中的public方法、实现的接口方法</span><br><span class="line"></span><br><span class="line">            for (Method m:methods1) &#123;</span><br><span class="line">                System.out.println(m);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line"></span><br><span class="line">            for (Method m:methods2) &#123;</span><br><span class="line">                System.out.println(m);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line"></span><br><span class="line">            Method methods3 = c.getMethod(&quot;study&quot;, String.class); // 获取公有方法</span><br><span class="line">            System.out.println(methods3);</span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line"></span><br><span class="line">            Method method4 = c.getDeclaredMethod(&quot;sleep&quot;, int.class); // 获取私有方法</span><br><span class="line">            System.out.println(method4);</span><br><span class="line"></span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742431869599-b1276c67-78bd-4aee-aef5-d8e65f36429e.png"></p>
+<h3 id="Java-反射-Constructor构造方法类获取"><a href="#Java-反射-Constructor构造方法类获取" class="headerlink" title="#Java-反射-Constructor构造方法类获取"></a>#Java-反射-Constructor构造方法类获取</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//Class aClass = Class.forName(&quot;com.example.reflectdemo.User&quot;);</span><br><span class="line">//返回所有公共构造方法对象的数组</span><br><span class="line">// Constructor[] constructors = aClass.getConstructors();</span><br><span class="line">// for(Constructor con:constructors)&#123;</span><br><span class="line">// System.out.println(con);</span><br><span class="line">// &#125;</span><br><span class="line">//返回所有构造方法对象的数组</span><br><span class="line">// Constructor[] constructors = aClass.getDeclaredConstructors();</span><br><span class="line">// for(Constructor con:constructors)&#123;</span><br><span class="line">// System.out.println(con);</span><br><span class="line">// &#125;</span><br><span class="line">//返回单个公共构造方法对象</span><br><span class="line">// Constructor con1=aClass.getConstructor();</span><br><span class="line">// Constructor con1=aClass.getConstructor(String.class);</span><br><span class="line">// System.out.println(con1);</span><br><span class="line">//返回单个构造方法对象</span><br><span class="line">// Constructor con2=aClass.getDeclaredConstructor(int.class);</span><br><span class="line">//Constructor con2=aClass.getDeclaredConstructor(String.class,int.class, String.class);</span><br><span class="line">// System.out .println(con2);</span><br><span class="line">// Constructor con2=aClass.getDeclaredConstructor(int.class);</span><br><span class="line">// con2.setAccessible(true);</span><br><span class="line">// User uu=(User) con2.newInstance(&quot;calmsec&quot;,30,&quot;man&quot;);</span><br><span class="line">// System.out.println(uu);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public class ReflectTemo &#123;</span><br><span class="line">    public  ReflectTemo() &#123;</span><br><span class="line">        System.out.println(&quot;无参构造函数&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public ReflectTemo(String name) &#123;</span><br><span class="line">        System.out.println(&quot;有参构造函数&quot; + name);</span><br><span class="line">    &#125;</span><br><span class="line">    private ReflectTemo(boolean n) &#123;</span><br><span class="line">        System.out.println(&quot;私有构造函数&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Class c1 = Class.forName(&quot;org.example.ReflectTemo&quot;);</span><br><span class="line">            Constructor[] constructors1  = c1.getDeclaredConstructors();</span><br><span class="line">            Constructor[] constructors2 = c1.getConstructors();</span><br><span class="line">            for (Constructor c : constructors1) &#123;</span><br><span class="line">                System.out.println(c);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">            for (Constructor c : constructors2) &#123;</span><br><span class="line">                System.out.println(c);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">            Constructor constructors3 = c1.getConstructor(String.class);</span><br><span class="line">            System.out.println(constructors3);</span><br><span class="line">            System.out.println(&quot;-------分割线---------&quot;);</span><br><span class="line">            Constructor constructors4 = c1.getDeclaredConstructor(boolean.class);</span><br><span class="line">            System.out.println(constructors4);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742436831734-e45beeca-3799-4164-870a-01be2eaf3fb1.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">Java反射</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFJava%E5%8F%8D%E5%B0%84"><span class="toc-number">1.1.</span> <span class="toc-text">1、什么是Java反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E5%88%B0%E5%8F%8D%E5%B0%84"><span class="toc-number">1.2.</span> <span class="toc-text">2、为什么要用到反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">3、反射机制应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Class%E5%AF%B9%E8%B1%A1%E7%B1%BB%E8%8E%B7%E5%8F%96%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E9%87%87%E7%94%A8%E4%BB%A5%E4%B8%8B%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">#Java-反射-Class对象类获取普通用户我们可以采用以下方法创建实例：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Field%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">#Java-反射-Field成员变量类获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Method%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.3.</span> <span class="toc-text">Java-反射-Method成员方法类获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E5%8F%8D%E5%B0%84-Constructor%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E7%B1%BB%E8%8E%B7%E5%8F%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">#Java-反射-Constructor构造方法类获取</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&text=java反射基础(一)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&is_video=false&description=java反射基础(一)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java反射基础(一)&body=Check out this article: https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&title=java反射基础(一)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&name=java反射基础(一)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/&t=java反射基础(一)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

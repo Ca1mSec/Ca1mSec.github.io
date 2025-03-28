@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="文件安全-上传&amp;下载&amp;读取&amp;写入等1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字 2、功能点也适用，直接找文件操作功能进行代码追溯 newFile( String path String fileName newFileInputStream( newFileOutputStream( newFileReader response.setContentTy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java代码审计-文件上传">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="文件安全-上传&amp;下载&amp;读取&amp;写入等1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字 2、功能点也适用，直接找文件操作功能进行代码追溯 newFile( String path String fileName newFileInputStream( newFileOutputStream( newFileReader response.setContentTy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719068893048-2503cfef-9c3a-461a-acc9-7c09baacbd99.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719068930224-3a64836b-e172-4623-bd96-5d68e37c6aee.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069005095-f2f9fe37-4bc9-4d95-b566-7ad5d962ce0a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069078849-4b0abd19-5061-4eab-8095-8395fd4e75f0.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069212259-debbc115-311c-493e-98af-ee9a1ad9808a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069326872-b4193e2b-73ba-49a9-af7b-b1da7a363c33.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070033758-cdd4ecef-2a8a-4ce2-a9f5-83ebd59184ae.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070112741-acacfcfc-56a1-4ad2-a6b2-ca9b99f5fc86.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070525953-f23a8ffe-4124-428b-a4a3-30f1664c5765.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070745710-e3e6e95d-bf97-4e5b-93e8-ed03698e226e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070995094-fda056b6-1b84-45bb-9a8e-ba6fcb3f4868.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071449393-abb607cf-cf5f-459d-ae29-a1bf93f29079.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071466110-e0e7ec65-730c-430f-a2fe-864e568c7d82.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071612102-80b02309-7b22-414b-9bdd-0d6c8576e76c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719073243743-4de99772-f3f8-4ac0-8640-cf25a9704be4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719073485815-095c0b56-d12b-46bc-8324-1f8925442ab7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719074030094-1892f6f1-25e9-4bb7-8689-4a7f81872c0a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719131580668-3f95b971-4d95-4809-8e3b-056616c07191.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719132728786-b439cbca-19ad-41b4-a3f0-472b8a9bc98e.png">
+<meta property="article:published_time" content="2024-11-02T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-04T03:48:07.679Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719068893048-2503cfef-9c3a-461a-acc9-7c09baacbd99.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java代码审计-文件上传</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/04/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/jvm%E5%AD%97%E8%8A%82%E7%A0%81/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/01/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/sql%E6%B3%A8%E5%85%A5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=java代码审计-文件上传"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=java代码审计-文件上传"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-文件上传&body=Check out this article: https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=java代码审计-文件上传&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=java代码审计-文件上传"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%AE%89%E5%85%A8-%E4%B8%8A%E4%BC%A0-%E4%B8%8B%E8%BD%BD-%E8%AF%BB%E5%8F%96-%E5%86%99%E5%85%A5%E7%AD%89"><span class="toc-number">1.</span> <span class="toc-text">文件安全-上传&amp;下载&amp;读取&amp;写入等</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-Inxedu"><span class="toc-number">1.1.</span> <span class="toc-text">文件上传-Inxedu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E5%90%88%E8%BF%87%E6%BB%A4%E5%99%A8%E4%B8%8A%E4%BC%A0-Tmall"><span class="toc-number">1.2.</span> <span class="toc-text">配合过滤器上传-Tmall</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.1.</span> <span class="toc-text">文件上传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%89%B4%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.2.</span> <span class="toc-text">鉴权漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-Ruoyi"><span class="toc-number">1.3.</span> <span class="toc-text">文件下载-Ruoyi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-Oasys"><span class="toc-number">1.4.</span> <span class="toc-text">文件读取-Oasys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">总结：</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java代码审计-文件上传
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-02T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-11-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="文件安全-上传-下载-读取-写入等"><a href="#文件安全-上传-下载-读取-写入等" class="headerlink" title="文件安全-上传&amp;下载&amp;读取&amp;写入等"></a>文件安全-上传&amp;下载&amp;读取&amp;写入等</h1><p>1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字</p>
+<p>2、功能点也适用，直接找文件操作功能进行代码追溯</p>
+<p>newFile(</p>
+<p>String path</p>
+<p>String fileName</p>
+<p>newFileInputStream(</p>
+<p>newFileOutputStream(</p>
+<p>newFileReader</p>
+<p>response.setContentType(“application&#x2F;octet-stream;</p>
+<p>file.delete();</p>
+<p>FileUtils.</p>
+<p>newZipEntity(</p>
+<p>file.getName(</p>
+<p>.unzip(</p>
+<p>.mkdirs(</p>
+<p>stream.write(</p>
+<p>save2File(</p>
+<p>fos、fis.close()</p>
+<p>MultipartFile(</p>
+<p>file.getOriginalFilename(</p>
+<p>IOUtil</p>
+<p>FileUtil</p>
+<p>download</p>
+<p>fileName</p>
+<p>filePath</p>
+<p>write</p>
+<p>getFile</p>
+<p>getPath</p>
+<p>getWriter</p>
+<p>上传 &#x2F;&#x2F; 搜注释</p>
+<p>下载 &#x2F;&#x2F; 搜注释</p>
+<p>……..</p>
+<h2 id="文件上传-Inxedu"><a href="#文件上传-Inxedu" class="headerlink" title="文件上传-Inxedu"></a>文件上传-Inxedu</h2><p>功能点-&gt;前台上传-&gt;ImageUploadController.class-&gt;gok4-&gt;fileType-&gt;jspx</p>
+<p>&#x2F;image&#x2F;gok4?&amp;param&#x3D;temp&amp;fileType&#x3D;jspx,jpg,gif,png,jpeg</p>
+<p>修改配置</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719068893048-2503cfef-9c3a-461a-acc9-7c09baacbd99.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719068930224-3a64836b-e172-4623-bd96-5d68e37c6aee.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069005095-f2f9fe37-4bc9-4d95-b566-7ad5d962ce0a.png"></p>
+<p>先上后台随便找个用户，登陆</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069078849-4b0abd19-5061-4eab-8095-8395fd4e75f0.png"></p>
+<p>上传头像</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069212259-debbc115-311c-493e-98af-ee9a1ad9808a.png"></p>
+<p>抓包，提取上传数据包</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719069326872-b4193e2b-73ba-49a9-af7b-b1da7a363c33.png"></p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8282/image/gok4?&param=temp&fileType=jpg,gif,png,jpeg">http://127.0.0.1:8282/image/gok4?&amp;param=temp&amp;fileType=jpg,gif,png,jpeg</a></p>
+<p>搜上面的路径信息，没找到相关类，猜测被封装到jar包中，找配置文件看jar被打包到哪里</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070033758-cdd4ecef-2a8a-4ce2-a9f5-83ebd59184ae.png"></p>
+<p>找到路由路径</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070112741-acacfcfc-56a1-4ad2-a6b2-ca9b99f5fc86.png"></p>
+<p>判断大小和判断文件上传类型fileType&#x3D;jpg,gif,png,jpeg，将前端改为fileType&#x3D;jspx,jpg,gif,png,jpeg</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070525953-f23a8ffe-4124-428b-a4a3-30f1664c5765.png"></p>
+<p>getSuffix跟进去发现该函数是获取文件名最后一个.之后的后缀，再回到之前代码，判断后缀名，不为jsp才执行接下来的流程</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070745710-e3e6e95d-bf97-4e5b-93e8-ed03698e226e.png"></p>
+<p>思路直接上传jspx后门，上哥斯拉</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719070995094-fda056b6-1b84-45bb-9a8e-ba6fcb3f4868.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071449393-abb607cf-cf5f-459d-ae29-a1bf93f29079.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071466110-e0e7ec65-730c-430f-a2fe-864e568c7d82.png"></p>
+<p>后台配置环境时记得修改上传权限</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719071612102-80b02309-7b22-414b-9bdd-0d6c8576e76c.png"></p>
+<h2 id="配合过滤器上传-Tmall"><a href="#配合过滤器上传-Tmall" class="headerlink" title="配合过滤器上传-Tmall"></a>配合过滤器上传-Tmall</h2><p>1、搜newFile(-&gt;filePath-&gt;fileName-&gt;extension-&gt;originalFileName-&gt;file</p>
+<p>2、AdminPermissionFilter.java-&gt;doFilter-&gt;contains(“&#x2F;admin&#x2F;login”)</p>
+<p>&#x2F;admin&#x2F;login&#x2F;..&#x2F;..&#x2F;tmall&#x2F;admin&#x2F;uploadAdminHeadImage</p>
+<h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h3><p>搜关键字</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719073243743-4de99772-f3f8-4ac0-8640-cf25a9704be4.png"></p>
+<p>跟进去发现后端文件没有过滤</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719073485815-095c0b56-d12b-46bc-8324-1f8925442ab7.png"> 前端有过滤，抓个包修改后缀绕过就行。</p>
+<h3 id="鉴权漏洞"><a href="#鉴权漏洞" class="headerlink" title="鉴权漏洞"></a>鉴权漏洞</h3><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719074030094-1892f6f1-25e9-4bb7-8689-4a7f81872c0a.png"></p>
+<p>这里代码有逻辑鉴权漏洞，只要url包含&#x2F;admin&#x2F;login就不鉴权了</p>
+<p>&#x2F;admin&#x2F;login&#x2F;..&#x2F;..&#x2F;tmall&#x2F;admin&#x2F;uploadAdminHeadImage</p>
+<p>这样就可以配合前面的上传漏洞</p>
+<h2 id="文件下载-Ruoyi"><a href="#文件下载-Ruoyi" class="headerlink" title="文件下载-Ruoyi"></a>文件下载-Ruoyi</h2><p>搜FileInputStream-&gt;writeBytes-&gt;resourceDownload-&gt;resource</p>
+<p>common&#x2F;download&#x2F;resource?resource&#x3D;&#x2F;profile&#x2F;..&#x2F;RuoYi-v4.5.0&#x2F;ruoyi-admin&#x2F;src&#x2F;main&#x2F;resources&#x2F;application-druid.yml</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719131580668-3f95b971-4d95-4809-8e3b-056616c07191.png"></p>
+<p>如果不确定路径变量名是什么可以打印看一下</p>
+<h2 id="文件读取-Oasys"><a href="#文件读取-Oasys" class="headerlink" title="文件读取-Oasys"></a>文件读取-Oasys</h2><p>搜索new FileInputStream(-&gt;image-&gt;f.getPath()-&gt;path-&gt;startpath</p>
+<p>&#x2F;image&#x2F;&#x2F;&#x2F;image..&#x2F;&#x2F;image..&#x2F;&#x2F;image..&#x2F;&#x2F;image..&#x2F;&#x2F;image..&#x2F;&#x2F;image..&#x2F;&#x2F;IDEA.txt</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719132728786-b439cbca-19ad-41b4-a3f0-472b8a9bc98e.png"></p>
+<p>把上面地址都输出打印确定一下，打印出来位置，确定和想要读取的文件位置之前的关系，进行绕过</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>鉴权</p>
+<p>1、过滤器：看逻辑</p>
+<p>2、自定义代码：看逻辑</p>
+<p>3、shiro框架：找版本漏洞 </p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%AE%89%E5%85%A8-%E4%B8%8A%E4%BC%A0-%E4%B8%8B%E8%BD%BD-%E8%AF%BB%E5%8F%96-%E5%86%99%E5%85%A5%E7%AD%89"><span class="toc-number">1.</span> <span class="toc-text">文件安全-上传&amp;下载&amp;读取&amp;写入等</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-Inxedu"><span class="toc-number">1.1.</span> <span class="toc-text">文件上传-Inxedu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E5%90%88%E8%BF%87%E6%BB%A4%E5%99%A8%E4%B8%8A%E4%BC%A0-Tmall"><span class="toc-number">1.2.</span> <span class="toc-text">配合过滤器上传-Tmall</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.1.</span> <span class="toc-text">文件上传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%89%B4%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.2.</span> <span class="toc-text">鉴权漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD-Ruoyi"><span class="toc-number">1.3.</span> <span class="toc-text">文件下载-Ruoyi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-Oasys"><span class="toc-number">1.4.</span> <span class="toc-text">文件读取-Oasys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">总结：</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=java代码审计-文件上传"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=java代码审计-文件上传"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-文件上传&body=Check out this article: https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=java代码审计-文件上传"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=java代码审计-文件上传&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/02/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=java代码审计-文件上传"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

